@@ -2,8 +2,12 @@ import express from 'express';
 
 //importing main router
 import mainRouter from './routes/main.routes.js';
+//importing MongoDB connection
+import connectDB from './config/mongoDB.config.js';
 
 const app = express();
+
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
