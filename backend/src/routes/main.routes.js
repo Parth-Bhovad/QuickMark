@@ -14,3 +14,5 @@ mainRouter.use('/users', userRouter);
 mainRouter.use('/subjects', subjectRouter);
 mainRouter.use('/attendance', attendanceRouter);
 mainRouter.use('/teachers', teacherRouter);
+
+export default mainRouter;
