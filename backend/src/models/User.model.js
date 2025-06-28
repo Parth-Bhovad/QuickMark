@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Schema from 'mongoose';
+import {Schema} from 'mongoose';
 
 const userSchema = new Schema({
     rollNo: {
@@ -10,6 +10,17 @@ const userSchema = new Schema({
     studentName: {
         type: String,
         required: true,
+    },
+    studentEmail:{
+        type: String,
+        required: true,
+        unique: true,
+        match: /.+\@.+\..+/ // Basic email validation
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6 // Minimum length for password
     },
     subjects: [{
         default: [],
