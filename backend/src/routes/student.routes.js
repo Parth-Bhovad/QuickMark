@@ -1,27 +1,27 @@
 import { Router } from 'express';
 
 //importing controllers
-import { registerUser } from '../controllers/auth.controller.js';
+import { registerStudent } from '../controllers/auth.controller.js';
 
-const userRouter = Router({ mergeParams: true });
+const studentRouter = Router({ mergeParams: true });
 
-userRouter.post('/', registerUser);
+studentRouter.post('/', registerStudent);
 
-userRouter.get('/:userId', (req, res) => {
-    let userId = req.params.userId;
-    console.log("Get user route", userId);
+studentRouter.get('/:studentId', (req, res) => {
+    let studentId = req.params.studentId;
+    console.log("Get student route", studentId);
 });
-userRouter.put('/:userId', (req, res) => {
-    let userId = req.params.userId;
-    console.log("Update user route", userId);
+studentRouter.put('/:studentId', (req, res) => {
+    let studentId = req.params.studentId;
+    console.log("Update student route", studentId);
 });
-userRouter.delete('/:userId', (req, res) => {
-    let userId = req.params.userId;
-    console.log("Delete user route", userId);
+studentRouter.delete('/:studentId', (req, res) => {
+    let studentId = req.params.studentId;
+    console.log("Delete student route", studentId);
 });
-userRouter.patch('/:userId/password', (req, res) => {
-    let userId = req.params.userId;
-    console.log("Update user password route", userId);
+studentRouter.patch('/:studentId/password', (req, res) => {
+    let studentId = req.params.studentId;
+    console.log("Update student password route", studentId);
 });
 
-export default userRouter;
+export default studentRouter;
