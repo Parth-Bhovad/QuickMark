@@ -11,3 +11,13 @@ export const findStudentByEmail = async (studentEmail) => {
     const student = await Student.findOne({ studentEmail });
     return student;
 }
+
+export const findStudentById = async (studentId) => {
+    const student = await Student.findById(studentId);
+    return student;
+}
+
+export const findStudentByRollNo = async (rollNo) => {
+    const student = await Student.findOne({ rollNo });
+    return student;
+}

@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 //importing controllers
 import { registerStudent, loginStudent } from '../controllers/auth.controller.js';
+import { getStudent } from '../controllers/student.controller.js';
 
 const studentRouter = Router({ mergeParams: true });
 
@@ -9,10 +10,7 @@ studentRouter.post('/', registerStudent);
 
 studentRouter.post('/login', loginStudent);
 
-studentRouter.get('/:studentId', (req, res) => {
-    let studentId = req.params.studentId;
-    console.log("Get student route", studentId);
-});
+studentRouter.get('/:rollNo', getStudent);
 studentRouter.put('/:studentId', (req, res) => {
     let studentId = req.params.studentId;
     console.log("Update student route", studentId);
