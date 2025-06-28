@@ -17,7 +17,7 @@ const userSchema = new Schema({
         unique: true,
         match: /.+\@.+\..+/ // Basic email validation
     },
-    password: {
+    studentPassword: {
         type: String,
         required: true,
         minlength: 6 // Minimum length for password

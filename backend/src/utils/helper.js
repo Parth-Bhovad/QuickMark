@@ -1,18 +1,18 @@
-import { findUserByEmail } from '../dao/user.dao.js';
+import { findStudentByEmail } from '../dao/student.dao.js';
 import jwt from 'jsonwebtoken';
 
-export const signJWT = (userId) => {
+export const signJWT = (studentId) => {
     // Generate JWT token
-    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: studentId }, process.env.JWT_SECRET, {
         expiresIn: "1d"
     });
     return token;
 }
 
-export const checkExistingUser = async (studentEmail) => {
-    // Check if user already exists
-    const existingUser = await findUserByEmail(studentEmail);
-    if (existingUser) {
-        throw new Error("User already exists");
+export const checkExistingStudent = async (studentEmail) => {
+    // Check if student already exists
+    const existingStudent = await findStudentByEmail(studentEmail);
+    if (existingStudent) {
+        throw new Error("Student already exists");
     }
 }

@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 //importing helpers
-import { createUser } from '../dao/user.dao.js';
+import { createStudent } from '../dao/student.dao.js';
 import { signJWT, checkExistingUser } from '../utils/helper.js';
 
-export const registerUserService = async (studentName, rollNo, studentEmail, password) => {
+export const registerStudentService = async (studentName, rollNo, studentEmail, password) => {
     // Check if user already exists
     await checkExistingUser(studentEmail);
 
@@ -11,10 +11,10 @@ export const registerUserService = async (studentName, rollNo, studentEmail, pas
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
 
-    const newUser = await createUser(studentName, rollNo, studentEmail, password);
+    const newStudent = await createStudent(studentName, rollNo, studentEmail, password);
 
     // Generate JWT token
-    const token = signJWT(newUser._id);
+    const token = signJWT(newStudent._id);
 
-    return { user: newUser, token };
+    return { student: newStudent, token };
 }
