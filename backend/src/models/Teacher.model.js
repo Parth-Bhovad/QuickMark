@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Schema from "mongoose";
+import {Schema} from "mongoose";
 
 const teacherSchema = new Schema({
     teacherName: {

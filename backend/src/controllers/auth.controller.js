@@ -1,5 +1,5 @@
 //import necessary services
-import { registerStudentService, loginStudentService } from '../services/auth.service.js';
+import { registerStudentService, loginStudentService, registerTeacherService, loginTeacherService } from '../services/auth.service.js';
 
 export const registerStudent = async (req, res) => {
     try {
@@ -20,6 +20,28 @@ export const loginStudent = async (req, res) => {
         console.log(studentEmail, studentPassword);
         const { student, token } = await loginStudentService(studentEmail, studentPassword);
         res.status(200).json({ student, token });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const registerTeacher = async (req, res) => {
+    try {
+        let { teacherName, teacherEmail, teacherPassword } = req.body;
+        const { teacher, token } = await registerTeacherService(teacherName, teacherEmail, teacherPassword);
+        res.status(201).json({ teacher, token });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: error.message });
+    }
+}
+
+export const loginTeacher = async (req, res) => {
+    try {
+        let { teacherEmail, teacherPassword } = req.body;
+        const { teacher, token } = await loginTeacherService(teacherEmail, teacherPassword);
+        res.status(200).json({ teacher, token });
     } catch (error) {
         console.log(error);
         res.status(400).json({ error: error.message });

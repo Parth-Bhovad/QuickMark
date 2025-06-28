@@ -1,19 +1,18 @@
 import { Router } from 'express';
+//importing controllers
+import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js';
+import { getTeacher, deleteTeacher } from '../controllers/teacher.controller.js';
 
 const teacherRouter = Router({ mergeParams: true });
 
-teacherRouter.post('/', (req, res) => {
-    console.log("Create teacher route");
-});
-teacherRouter.get('/:teacherId', (req, res) => {
-    console.log("Get teacher route");
-});
+teacherRouter.post('/', registerTeacher);
+teacherRouter.post('/login', loginTeacher);
+
+teacherRouter.get('/:teacherId', getTeacher);
 teacherRouter.put('/:teacherId', (req, res) => {
     console.log("Update teacher route");
 });
-teacherRouter.delete('/:teacherId', (req, res) => {
-    console.log("Delete teacher route");
-});
+teacherRouter.delete('/:teacherId', deleteTeacher);
 teacherRouter.patch('/:teacherId/password', (req, res) => {
     console.log("Update teacher password route");
 });
