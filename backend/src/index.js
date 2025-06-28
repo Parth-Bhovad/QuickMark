@@ -1,9 +1,11 @@
 import express from 'express';
-
+import dotenv from "dotenv"
 //importing main router
 import mainRouter from './routes/main.routes.js';
 //importing MongoDB connection
 import connectDB from './config/mongoDB.config.js';
+
+dotenv.config();
 
 const app = express();
 
