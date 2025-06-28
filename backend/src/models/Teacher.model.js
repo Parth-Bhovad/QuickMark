@@ -6,6 +6,17 @@ const teacherSchema = new Schema({
         type: String,
         required: true,
     },
+    teacherEmail:{
+        type: String,
+        required: true,
+        unique: true,
+        match: /.+\@.+\..+/ // Basic email validation
+    },
+    teacherPassword:{
+        type: String,
+        required: true,
+        minlength: 6 // Minimum length for password
+    },
     subjects: [{
         default: [],
         type: Schema.Types.ObjectId,
