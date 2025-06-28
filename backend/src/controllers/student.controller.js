@@ -1,5 +1,5 @@
 //importing services
-import {getStudentService} from '../services/student.service.js';
+import { getStudentService, deleteStudentService } from '../services/student.service.js';
 
 export const getStudent = async (req, res) => {
     let rollNo = req.params.rollNo;
@@ -8,4 +8,10 @@ export const getStudent = async (req, res) => {
     const student = await getStudentService(rollNo);
 
     res.status(200).json({ student });
-}
+};
+
+export const deleteStudent = async (req, res) => {
+    let rollNo = req.params.rollNo;
+    const deletedStudent = await deleteStudentService(rollNo);
+    res.status(200).json({ student: deletedStudent });
+};

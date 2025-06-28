@@ -21,3 +21,8 @@ export const findStudentByRollNo = async (rollNo) => {
     const student = await Student.findOne({ rollNo });
     return student;
 }
+
+export const deleteStudentByRollNo = async (rollNo) => {
+    const student = await Student.findOneAndDelete({ rollNo });
+    return student;
+}
