@@ -1,10 +1,12 @@
 import { Router } from 'express';
 
+//importing controllers
+import { registerUser } from '../controllers/auth.controller.js';
+
 const userRouter = Router({ mergeParams: true });
 
-userRouter.post('/', (req, res)=> {
-    console.log("Create user route");
-});
+userRouter.post('/', registerUser);
+
 userRouter.get('/:userId', (req, res) => {
     let userId = req.params.userId;
     console.log("Get user route", userId);
