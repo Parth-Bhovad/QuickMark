@@ -1,9 +1,33 @@
-
+import React, { useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 
 function TeacherAttendanceSession() {
-    return ( 
-        <h1>Teacher Attendance Session</h1>
-     );
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    console.log("TeacherAttendanceSession component mounted");
+
+    // Connect to the socket server
+    socketRef.current = io('http://localhost:3000');
+
+    socketRef.current.emit("teacher", () => {
+      console.log("req sended to server");
+    });
+
+    // Example event listener
+    socketRef.current.on("teacher", (data) => {
+      console.log("Received teacher event from server:", data);
+    });
+
+    // Clean up the connection when component unmounts
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
+
+  return (
+    <h1>Teacher Attendance Session</h1>
+  );
 }
 
 export default TeacherAttendanceSession;
