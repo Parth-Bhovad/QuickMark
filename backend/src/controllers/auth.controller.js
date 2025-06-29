@@ -5,6 +5,9 @@ export const registerStudent = async (req, res) => {
     try {
         let { studentName, rollNo, studentEmail, studentPassword } = req.body;
         const { student, token } = await registerStudentService(studentName, rollNo, studentEmail, studentPassword);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
         res.status(201).json({ student, token });
     } catch (error) {
         console.log(error);
@@ -19,6 +22,9 @@ export const loginStudent = async (req, res) => {
         
         console.log(studentEmail, studentPassword);
         const { student, token } = await loginStudentService(studentEmail, studentPassword);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
         res.status(200).json({ student, token });
     } catch (error) {
         console.log(error);
@@ -30,6 +36,9 @@ export const registerTeacher = async (req, res) => {
     try {
         let { teacherName, teacherEmail, teacherPassword } = req.body;
         const { teacher, token } = await registerTeacherService(teacherName, teacherEmail, teacherPassword);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
         res.status(201).json({ teacher, token });
     } catch (error) {
         console.log(error);
@@ -41,6 +50,9 @@ export const loginTeacher = async (req, res) => {
     try {
         let { teacherEmail, teacherPassword } = req.body;
         const { teacher, token } = await loginTeacherService(teacherEmail, teacherPassword);
+        res.cookie('token', token, {
+            httpOnly: true,
+        });
         res.status(200).json({ teacher, token });
     } catch (error) {
         console.log(error);
