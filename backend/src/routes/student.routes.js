@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 //importing controllers
 import { registerStudent, loginStudent } from '../controllers/auth.controller.js';
-import { getStudent, deleteStudent } from '../controllers/student.controller.js';
+import { getStudent, deleteStudent, addSubjectToStudent } from '../controllers/student.controller.js';
 
 const studentRouter = Router({ mergeParams: true });
 
@@ -20,5 +20,5 @@ studentRouter.patch('/:studentId/password', (req, res) => {
     let studentId = req.params.studentId;
     console.log("Update student password route", studentId);
 });
-
+studentRouter.patch('/:rollNo/subjects', addSubjectToStudent);
 export default studentRouter;

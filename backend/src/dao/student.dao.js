@@ -1,5 +1,6 @@
 //importing models
 import Student from '../models/Student.model.js';
+import { findSubjectByName } from './subject.dao.js';
 
 export const createStudent = async (studentName, rollNo, studentEmail, studentPassword) => {
     const newStudent = new Student({ studentName, rollNo, studentEmail, studentPassword });
@@ -24,5 +25,15 @@ export const findStudentByRollNo = async (rollNo) => {
 
 export const deleteStudentByRollNo = async (rollNo) => {
     const student = await Student.findOneAndDelete({ rollNo });
+    return student;
+}
+
+export const addSubjectToStudent = async (studentId, subjectName) => {
+    console.log(`Adding subject ${subjectName} to student with ID ${studentId}`);
+    
+    const subject = await findSubjectByName(subjectName);
+    const student = await findStudentById(studentId);
+    student.subjects.push(subject._id);
+    await student.save();
     return student;
 }
