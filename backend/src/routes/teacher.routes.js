@@ -1,7 +1,7 @@
 import { Router } from 'express';
 //importing controllers
 import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js';
-import { getTeacher, deleteTeacher } from '../controllers/teacher.controller.js';
+import { getTeacher, deleteTeacher, addSubjectToTeacher } from '../controllers/teacher.controller.js';
 
 const teacherRouter = Router({ mergeParams: true });
 
@@ -16,5 +16,6 @@ teacherRouter.delete('/:teacherId', deleteTeacher);
 teacherRouter.patch('/:teacherId/password', (req, res) => {
     console.log("Update teacher password route");
 });
+teacherRouter.patch('/:teacherId/subjects', addSubjectToTeacher)
 
 export default teacherRouter;

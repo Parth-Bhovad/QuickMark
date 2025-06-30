@@ -21,3 +21,10 @@ export const deleteTeacherById = async (teacherId) => {
     const teacher = await Teacher.findByIdAndDelete(teacherId);
     return teacher;
 }
+
+export const addSubjectToTeacher = async (teacherId, subjectId) => {
+    const teacher = await findTeacherById(teacherId);
+    teacher.subjects.push(subjectId);
+    await teacher.save();
+    return teacher;
+}
