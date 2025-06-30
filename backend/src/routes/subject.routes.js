@@ -1,10 +1,12 @@
 import { Router } from 'express';
 
+//importing controllers
+import { createSubject } from '../controllers/subject.controller.js';
+
 const subjectRouter = Router({ mergeParams: true });
 
-subjectRouter.post('/', (req, res)=> {
-    console.log("Create subject route");
-});
+subjectRouter.post('/', createSubject);
+
 subjectRouter.get('/:subjectId', (req, res) => {
     let subjectId = req.params.subjectId;
     console.log("Get subject route", subjectId);
