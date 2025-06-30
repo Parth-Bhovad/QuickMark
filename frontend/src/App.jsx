@@ -10,6 +10,7 @@ import AttendanceList from './pages/AttendanceList'
 import TeacherAttendanceSession from './pages/TeacherAttendanceSession'
 import StudentMarkAttendance from './pages/StudentMarkAttendance'
 import TeacherProfile from './pages/TeacherProfile'
+import StudentProfile from './pages/StudentProfile'
 import { BrowserRouter, Routes, Route } from "react-router";
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/teacher-attendance-session" element={<TeacherAttendanceSession />} />
         <Route path="/student-mark-attendance" element={<StudentMarkAttendance />} />
         <Route path="/teacher-profile" element={<TeacherProfile />} />
+        <Route path="/student-profile" element={<StudentProfile />} />
       </Routes>
     </BrowserRouter>
   );
