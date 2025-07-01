@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Schema from "mongoose";
+import {Schema} from "mongoose";
 
 const attendanceSchema = new Schema({
     isPresent: {
@@ -9,7 +9,7 @@ const attendanceSchema = new Schema({
     },
     day: {
         type: String,
-        required: true,
+        // required: true,
         enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     },
     date: {

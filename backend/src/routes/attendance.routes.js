@@ -1,9 +1,8 @@
 import { Router } from 'express';
-
+//importing controllers
+import { addAttendance } from '../controllers/attendance.controller.js';
 const attendanceRouter = Router({ mergeParams: true });
 
-attendanceRouter.post('/', (req, res) => {
-    console.log("Create attendance route");
-});
+attendanceRouter.post('/', addAttendance);
 
 export default attendanceRouter;
