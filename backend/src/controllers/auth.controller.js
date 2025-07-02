@@ -1,5 +1,5 @@
 //import necessary services
-import { registerStudentService, loginStudentService, registerTeacherService, loginTeacherService } from '../services/auth.service.js';
+import { registerStudentService, loginStudentService, registerTeacherService, loginTeacherService, sendOTPEmailService, verifyOTPService } from '../services/auth.service.js';
 
 export const registerStudent = async (req, res) => {
     try {
@@ -59,3 +59,30 @@ export const loginTeacher = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+
+export const sendOTPEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const otp = await sendOTPEmailService(email);
+    // TODO: store OTP in DB or memory store with expiry
+    console.log(`OTP sent to ${email}: ${otp}`);
+    
+    res.status(200).json({ message: 'OTP sent successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to send OTP' });
+  }
+};
+
+export const verifyOTPEmail = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const isValid = await verifyOTPService(email, otp);
+    if (isValid) {
+      res.status(200).json({ message: 'OTP verified successfully' });
+    } else {
+      res.status(400).json({ error: 'Invalid OTP' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to verify OTP' });
+  }
+};

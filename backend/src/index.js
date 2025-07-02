@@ -1,5 +1,6 @@
-import express from 'express';
 import dotenv from "dotenv"
+dotenv.config();
+import express from 'express';
 //importing main router
 import mainRouter from './routes/main.routes.js';
 //importing MongoDB connection
@@ -7,8 +8,6 @@ import connectDB from './config/mongoDB.config.js';
 import cors from 'cors';
 import {createServer} from 'http';
 import { Server } from 'socket.io';
-
-dotenv.config();
 
 const app = express();
 app.use(cors({
