@@ -14,15 +14,17 @@ export const signJWT = (studentId) => {
 export const checkExistingStudent = async (studentEmail) => {
     // Check if student already exists
     const existingStudent = await findStudentByEmail(studentEmail);
-    if (existingStudent) {
-        throw new Error("Student already exists");
-    }
+    return existingStudent ? true : false;
 }
 
 export const checkExistingTeacher = async (teacherEmail) => {
     // Check if teacher already exists
     const existingTeacher = await findTeacherByEmail(teacherEmail);
-    if (existingTeacher) {
-        throw new Error("Teacher already exists");
-    }
+    return existingTeacher ? true : false;
+}
+
+export const hashPassword = async (password) => {
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
 }
