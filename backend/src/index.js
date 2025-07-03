@@ -8,8 +8,6 @@ import connectDB from './config/mongoDB.config.js';
 import cors from 'cors';
 import {createServer} from 'http';
 import { Server } from 'socket.io';
-//importing custom error handler
-import ExpressError from './utils/ExpressError.js';
 
 const app = express();
 app.use(cors({
