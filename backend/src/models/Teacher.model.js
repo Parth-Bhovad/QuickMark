@@ -5,6 +5,7 @@ const teacherSchema = new Schema({
     teacherName: {
         type: String,
         required: true,
+        match: [/^[A-Za-z ]+$/, 'Name can only contain alphabets and spaces'],
     },
     teacherEmail:{
         type: String,
