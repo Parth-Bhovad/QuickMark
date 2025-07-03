@@ -8,6 +8,8 @@ import connectDB from './config/mongoDB.config.js';
 import cors from 'cors';
 import {createServer} from 'http';
 import { Server } from 'socket.io';
+//importing custom error handler
+import ExpressError from './utils/ExpressError.js';
 
 const app = express();
 app.use(cors({
@@ -43,6 +45,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/v1', mainRouter);
+
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).json({ msg: message });
+});
 
 httpServer.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
