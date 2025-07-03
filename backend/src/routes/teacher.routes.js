@@ -2,11 +2,17 @@ import { Router } from 'express';
 //importing controllers
 import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js';
 import { getTeacher, deleteTeacher, addSubjectToTeacher } from '../controllers/teacher.controller.js';
+//importing middlewares
+import validateRequest from '../middlewares/validateRequest.middleware.js';
+//import Joi schemas
+import { registerTeacherSchema, loginTeacherSchema } from '../validators/teacher.validator.js';
+//importing wrapAsync
+import wrapAsync from '../utils/wrapAsync.js';
 
 const teacherRouter = Router({ mergeParams: true });
 
-teacherRouter.post('/', registerTeacher);
-teacherRouter.post('/login', loginTeacher);
+teacherRouter.post('/', validateRequest(registerTeacherSchema), wrapAsync(registerTeacher));
+teacherRouter.post('/login', validateRequest(loginTeacherSchema), wrapAsync(loginTeacher));
 
 teacherRouter.get('/:teacherId', getTeacher);
 teacherRouter.put('/:teacherId', (req, res) => {
