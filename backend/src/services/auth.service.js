@@ -1,45 +1,49 @@
 import bcrypt from 'bcrypt';
 //importing helpers
-import { signJWT, checkExistingStudent, checkExistingTeacher } from '../utils/helper.js';
+import { signJWT, checkExistingStudent, checkExistingTeacher, hashPassword } from '../utils/helper.js';
 //importing utils
 import { generateOTP, storeVerificationCode, getVerificationCode } from '../utils/generateOTP.js';
 //importing DAOs
-import { createStudent, findStudentByEmail } from '../dao/student.dao.js';
+import { createStudent } from '../dao/student.dao.js';
 import { createTeacher, findTeacherByEmail } from "../dao/teacher.dao.js";
 //importing transporter for sending emails
 import transporter from '../config/nodeMailer.config.js';
+//importing custom error class
+import ExpressError from '../utils/ExpressError.js';
 
 export const registerStudentService = async (studentName, rollNo, studentEmail, studentPassword) => {
   // Check if student already exists
-  await checkExistingStudent(studentEmail);
+  const existingStudent = await checkExistingStudent(studentEmail);
+
+  if (existingStudent) {
+    throw new ExpressError(400, "Student already exists");
+  }
 
   // Hash the password
-  const salt = await bcrypt.genSalt(10);
-  studentPassword = await bcrypt.hash(studentPassword, salt);
+  studentPassword = await hashPassword(studentPassword);
 
   const newStudent = await createStudent(studentName, rollNo, studentEmail, studentPassword);
 
   // Generate JWT token
   const token = signJWT(newStudent._id);
 
-  return { student: newStudent, token };
+  return { token };
 }
 
 export const loginStudentService = async (studentEmail, studentPassword) => {
-  console.log(studentEmail, studentPassword);
-
-  const student = await findStudentByEmail(studentEmail);
-  if (!student) {
-    throw new Error("Invalid email or password");
+  // Check if student already exists
+  const existingStudent = await checkExistingStudent(studentEmail);
+  if (!existingStudent) {
+    throw new ExpressError(401, "Invalid email or password");
   }
 
   const isMatch = await bcrypt.compare(studentPassword, student.studentPassword);
   if (!isMatch) {
-    throw new Error("Invalid email or password");
+    throw new ExpressError(401, "Invalid email or password");
   }
 
   const token = signJWT(student._id);
-  return { student, token };
+  return { token };
 }
 
 export const registerTeacherService = async (teacherName, teacherEmail, teacherPassword) => {
@@ -47,30 +51,29 @@ export const registerTeacherService = async (teacherName, teacherEmail, teacherP
   await checkExistingTeacher(teacherEmail);
 
   // Hash the password
-  const salt = await bcrypt.genSalt(10);
-  teacherPassword = await bcrypt.hash(teacherPassword, salt);
+  teacherPassword = await hashPassword(teacherPassword);
 
   const newTeacher = await createTeacher(teacherName, teacherEmail, teacherPassword);
 
   // Generate JWT token
   const token = signJWT(newTeacher._id);
 
-  return { teacher: newTeacher, token };
+  return { token };
 }
 
 export const loginTeacherService = async (teacherEmail, teacherPassword) => {
   const teacher = await findTeacherByEmail(teacherEmail);
   if (!teacher) {
-    throw new Error("Invalid email or password");
+    throw new ExpressError(401, "Invalid email or password");
   }
 
   const isMatch = await bcrypt.compare(teacherPassword, teacher.teacherPassword);
   if (!isMatch) {
-    throw new Error("Invalid email or password");
+    throw new ExpressError(401, "Invalid email or password");
   }
 
   const token = signJWT(teacher._id);
-  return { teacher, token };
+  return { token };
 }
 
 export const sendOTPEmailService = async (userEmail) => {
@@ -85,21 +88,12 @@ export const sendOTPEmailService = async (userEmail) => {
     html: `<p>Your OTP is <b>${otp}</b></p>`
   };
 
-  try {
     const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
-    return otp; // Return it to store/verify on server side
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw error;
-  }
-}
+    return otp;
+};
 
 export const verifyOTPService = async (email, otp) => {
   const storedOtp = getVerificationCode(email);
-  if (!storedOtp) {
-    throw new Error("OTP not found or expired");
-  }
-
   return storedOtp === otp ? true : false;
-}
+};
