@@ -1,17 +1,20 @@
 import mongoose from 'mongoose';
-import {Schema} from 'mongoose';
+import { Schema } from 'mongoose';
 
 const userSchema = new Schema({
     rollNo: {
         type: Number,
         required: true,
-        unique: true
+        min: 10000,
+        max: 99999,
+        unique: true,
     },
     studentName: {
         type: String,
         required: true,
+        match: [/^[A-Za-z ]+$/, 'Name can only contain alphabets and spaces'],
     },
-    studentEmail:{
+    studentEmail: {
         type: String,
         required: true,
         unique: true,
