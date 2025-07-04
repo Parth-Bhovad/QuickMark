@@ -4,6 +4,7 @@ import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js
 import { getTeacher, deleteTeacher, addSubjectToTeacher } from '../controllers/teacher.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
+import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
 //import Joi schemas
 import { registerTeacherSchema, loginTeacherSchema } from '../validators/teacher.validator.js';
 //importing wrapAsync
@@ -11,7 +12,7 @@ import wrapAsync from '../utils/wrapAsync.js';
 
 const teacherRouter = Router({ mergeParams: true });
 
-teacherRouter.post('/', validateRequest(registerTeacherSchema), wrapAsync(registerTeacher));
+teacherRouter.post('/', validateRequest(registerTeacherSchema), isVerifiedEmail, wrapAsync(registerTeacher));
 teacherRouter.post('/login', validateRequest(loginTeacherSchema), wrapAsync(loginTeacher));
 
 teacherRouter.get('/:teacherId', getTeacher);
