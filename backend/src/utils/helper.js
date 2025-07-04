@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 //importing DAOs
 import { findStudentByEmail } from '../dao/student.dao.js';
 import { findTeacherByEmail } from '../dao/teacher.dao.js';
@@ -14,13 +15,13 @@ export const signJWT = (studentId) => {
 export const checkExistingStudent = async (studentEmail) => {
     // Check if student already exists
     const existingStudent = await findStudentByEmail(studentEmail);
-    return existingStudent ? true : false;
+    return existingStudent;
 }
 
 export const checkExistingTeacher = async (teacherEmail) => {
     // Check if teacher already exists
     const existingTeacher = await findTeacherByEmail(teacherEmail);
-    return existingTeacher ? true : false;
+    return existingTeacher;
 }
 
 export const hashPassword = async (password) => {
