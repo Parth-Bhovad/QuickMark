@@ -36,19 +36,21 @@ export const loginStudentService = async (studentEmail, studentPassword) => {
   if (!existingStudent) {
     throw new ExpressError(401, "Invalid email or password");
   }
-
-  const isMatch = await bcrypt.compare(studentPassword, student.studentPassword);
+  const isMatch = await bcrypt.compare(studentPassword, existingStudent.studentPassword);
   if (!isMatch) {
     throw new ExpressError(401, "Invalid email or password");
   }
 
-  const token = signJWT(student._id);
+  const token = signJWT(existingStudent._id);
   return { token };
 }
 
 export const registerTeacherService = async (teacherName, teacherEmail, teacherPassword) => {
   // Check if teacher already exists
-  await checkExistingTeacher(teacherEmail);
+  const existingTeacher = await checkExistingTeacher(teacherEmail);
+  if (existingTeacher) {
+    throw new ExpressError(400, "Teacher already exists");
+  }
 
   // Hash the password
   teacherPassword = await hashPassword(teacherPassword);
