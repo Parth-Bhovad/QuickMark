@@ -1,10 +1,10 @@
 import './App.css'
 import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
-import StudentLogin from './pages/StudentLogin'
-import StudentSignup from './pages/StudentSignup'
-import TeacherLogin from './pages/TeacherLogin'
-import TeacherSignup from './pages/TeacherSignup'
+import StudentLoginPage from './features/student/pages/StudentLoginPage'
+import StudentSignupPage from './features/student/pages/StudentSignupPage'
+import TeacherLoginPage from './features/teacher/pages/TeacherLoginPage'
+import TeacherSignupPage from './features/teacher/pages/TeacherSignupPage'
 import AttendancePage from './pages/AttendancePage'
 import AttendanceList from './pages/AttendanceList'
 import TeacherAttendanceSession from './pages/TeacherAttendanceSession'
@@ -19,10 +19,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<StudentLogin />} />
-        <Route path="/signup" element={<StudentSignup />} />
-        <Route path="/teacher-login" element={<TeacherLogin />} />
-        <Route path="/teacher-signup" element={<TeacherSignup />} />
+        <Route path="/login" element={<StudentLoginPage />} />
+        <Route path="/signup" element={<StudentSignupPage />} />
+        <Route path="/teacher-login" element={<TeacherLoginPage />} />
+        <Route path="/teacher-signup" element={<TeacherSignupPage />} />
         <Route path="/attendance" element={<AttendancePage />} />
         <Route path="/attendance-list" element={<AttendanceList />} />
         <Route path="/teacher-attendance-session" element={<TeacherAttendanceSession />} />
