@@ -5,6 +5,7 @@ import { registerStudent, loginStudent } from '../controllers/auth.controller.js
 import { getStudent, deleteStudent, addSubjectToStudent } from '../controllers/student.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
+import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
 //import Joi schemas
 import { registerStudentSchema, loginStudentSchema } from '../validators/student.validator.js';
 //importing wrapAsync
@@ -12,7 +13,7 @@ import wrapAsync from '../utils/wrapAsync.js';
 
 const studentRouter = Router({ mergeParams: true });
 
-studentRouter.post('/', validateRequest(registerStudentSchema), wrapAsync(registerStudent));
+studentRouter.post('/', validateRequest(registerStudentSchema), isVerifiedEmail, wrapAsync(registerStudent));
 
 studentRouter.post('/login', validateRequest(loginStudentSchema), wrapAsync(loginStudent));
 
