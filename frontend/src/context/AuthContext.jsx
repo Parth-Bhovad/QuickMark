@@ -10,16 +10,18 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-
   useEffect(() => {
     const checkAuth = async () => {
-      console.log("Checking authentication status...");
-
-      const res = await axios.get("http://localhost:3000/api/v1/authenticate/me", { withCredentials: true });
-      console.log("Checking authentication status...2");
-      console.log(res.data.user);
-      setCurrentUser(res.data.user);
+      try {
+        const res = await axios.get("http://localhost:3000/api/v1/authenticate/me", { withCredentials: true });
+      if(res.status === 200) {
+        setCurrentUser(res.data.user);
+      }
       setAuthChecked(true);
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setAuthChecked(true);
+      }
     };
     checkAuth();
   }, []);
