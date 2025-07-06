@@ -7,10 +7,10 @@ import { useAuthContext } from "../context/AuthContext";
 const TeacherRoute = () => {
   const navigate = useNavigate();
   const { currentUser, authChecked } = useAuthContext();
-
   useEffect(() => {
-    if (!authChecked) return; // Wait for auth check
-
+    if (!authChecked){ 
+      return; 
+    }
     if (!currentUser || currentUser.role !== "teacher") {
       navigate("/teacher-login");
     }
