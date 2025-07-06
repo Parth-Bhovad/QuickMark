@@ -4,9 +4,9 @@ import bcrypt from 'bcrypt';
 import { findStudentByEmail } from '../dao/student.dao.js';
 import { findTeacherByEmail } from '../dao/teacher.dao.js';
 
-export const signJWT = (studentId) => {
+export const signJWT = (userId, role) => {
     // Generate JWT token
-    const token = jwt.sign({ id: studentId }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
         expiresIn: "1d"
     });
     return token;
