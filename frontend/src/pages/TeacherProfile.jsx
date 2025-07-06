@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
 
 function TeacherProfile() {
-    const [subjects, setSubjects] = useState(["Mathematics", "Physics"]);
+
+    const {currentUser, authChecked} = useAuthContext();
+
+    const [subjects, setSubjects] = useState(["No subjects available"]);
     const [showInput, setShowInput] = useState(false);
     const [subjectName, setSubjectName] = useState("");
     const [loading, setLoading] = useState(false);
@@ -26,7 +30,7 @@ function TeacherProfile() {
         setError("");
         try {
             // Replace with your backend endpoint
-            const res = await axios.patch("http://localhost:3000/api/v1/teachers/68611190c0ee92d80f69d8f3/subjects", { subjectName });
+            const res = await axios.patch(`http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`, { subjectName });
             setSubjects([...subjects, subjectName]);
             setSubjectName("");
             setShowInput(false);
@@ -36,6 +40,26 @@ function TeacherProfile() {
             setLoading(false);
         }
     };
+
+    const getTeacherSubjects = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`);
+      console.log(response);
+      if(response.data.subjects.length !==0){
+        setSubjects(response.data.subjects);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+    useEffect(() => {
+        if (!authChecked) {
+            return;
+        }
+        getTeacherSubjects();
+    }, [authChecked, currentUser]);
 
     return (
         <>
