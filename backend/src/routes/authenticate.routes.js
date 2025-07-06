@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 //importing controllers
-import { sendOTPEmail, verifyOTPEmail } from '../controllers/auth.controller.js';
+import { sendOTPEmail, verifyOTPEmail, authMe } from '../controllers/auth.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 //import Joi schemas
@@ -11,6 +11,8 @@ import { otpValidator } from '../validators/otp.validator.js';
 import wrapAsync from '../utils/wrapAsync.js';
 
 const authenticateRouter = Router({ mergeParams: true });
+
+authenticateRouter.get('/me', wrapAsync(authMe));
 
 authenticateRouter.post('/send-otp', validateRequest(emailValidator), wrapAsync(sendOTPEmail));
 
