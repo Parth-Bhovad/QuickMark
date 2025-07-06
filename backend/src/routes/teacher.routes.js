@@ -1,7 +1,7 @@
 import { Router } from 'express';
 //importing controllers
 import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js';
-import { getTeacher, deleteTeacher, addSubjectToTeacher } from '../controllers/teacher.controller.js';
+import { getTeacher, deleteTeacher, addSubjectToTeacher, getTeacherSubjects } from '../controllers/teacher.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
@@ -16,6 +16,7 @@ teacherRouter.post('/', validateRequest(registerTeacherSchema), isVerifiedEmail,
 teacherRouter.post('/login', validateRequest(loginTeacherSchema), wrapAsync(loginTeacher));
 
 teacherRouter.get('/:teacherId', getTeacher);
+teacherRouter.get('/:teacherId/subjects', getTeacherSubjects);
 teacherRouter.put('/:teacherId', (req, res) => {
     console.log("Update teacher route");
 });
