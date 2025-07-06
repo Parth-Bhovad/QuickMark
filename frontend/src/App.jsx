@@ -7,15 +7,13 @@ import TeacherLoginPage from './features/teacher/pages/TeacherLoginPage'
 import TeacherSignupPage from './features/teacher/pages/TeacherSignupPage'
 import AttendancePage from './pages/AttendancePage'
 import AttendanceList from './pages/AttendanceList'
-import { BrowserRouter, Routes, Route } from "react-router";
+import { Routes, Route } from "react-router";
 import StudentRoute from './routes/StudentRoute';
 import TeacherRoute from './routes/TeacherRoute';
-import { AuthProvider } from './context/AuthContext';
 function App() {
 
   return (
-    <BrowserRouter>
-      <AuthProvider>
+        <>
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -28,8 +26,7 @@ function App() {
           <Route path="/student/*" element={<StudentRoute />} />
           <Route path="/teacher/*" element={<TeacherRoute />} />
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+      </>
   );
 }
 
