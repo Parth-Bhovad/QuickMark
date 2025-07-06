@@ -1,5 +1,5 @@
 import { findTeacherById, deleteTeacherById, addSubjectToTeacher } from '../dao/teacher.dao.js';
-import { findSubjectByName } from '../dao/subject.dao.js';
+import { findSubjectByName, findSubjectById } from '../dao/subject.dao.js';
 import { createSubject } from '../dao/subject.dao.js';
 
 export const getTeacherService = async (teacherId) => {
@@ -28,4 +28,18 @@ export const addSubjectToTeacherService = async (subjectName, teacherId) => {
 
     await addSubjectToTeacher(teacherId, subject._id);
     return subject;
+}
+
+export const getTeacherSubjectsService = async (teacherId) => {
+    const teacher = await findTeacherById(teacherId);
+    if (!teacher) {
+        throw new Error(404, `Teacher with ID: ${teacherId} not found`);
+    }
+    const subjectsNameArray=[];
+    for (let i = 0; i < teacher.subjects.length; i++) {
+        const subjectId = teacher.subjects[i];
+        const subjectName = await findSubjectById(subjectId);
+        subjectsNameArray.push(subjectName);
+    }
+    return subjectsNameArray;
 }
