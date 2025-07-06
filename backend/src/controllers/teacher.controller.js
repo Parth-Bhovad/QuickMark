@@ -1,4 +1,4 @@
-import {deleteTeacherService, getTeacherService, addSubjectToTeacherService } from '../services/teacher.service.js';
+import {deleteTeacherService, getTeacherService, addSubjectToTeacherService,getTeacherSubjectsService } from '../services/teacher.service.js';
 
 export const getTeacher = async (req, res) => {
     let teacherId = req.params.teacherId;
@@ -25,4 +25,14 @@ export const addSubjectToTeacher = async (req, res) => {
         res.status(500).json({ error: error.message });
         
     }
+}
+
+export const getTeacherSubjects = async (req, res) => {
+        const teacherId = req.params.teacherId;
+        const subjectsNameArray = await getTeacherSubjectsService(teacherId);
+
+        if (!subjectsNameArray || subjectsNameArray.length === 0) {
+            throw new ExpressError(404, `Teacher with ID: ${teacherId} not found`);
+        }
+        res.status(200).json({ subjects: subjectsNameArray });
 }
