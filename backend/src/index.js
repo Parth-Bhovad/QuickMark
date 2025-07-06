@@ -8,6 +8,7 @@ import connectDB from './config/mongoDB.config.js';
 import cors from 'cors';
 import {createServer} from 'http';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(cors({
@@ -38,7 +39,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
