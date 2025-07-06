@@ -25,7 +25,7 @@ export const registerStudentService = async (studentName, rollNo, studentEmail, 
   const newStudent = await createStudent(studentName, rollNo, studentEmail, studentPassword);
 
   // Generate JWT token
-  const token = signJWT(newStudent._id);
+  const token = signJWT(newStudent._id, "student");
 
   return { token };
 }
@@ -41,7 +41,7 @@ export const loginStudentService = async (studentEmail, studentPassword) => {
     throw new ExpressError(401, "Invalid email or password");
   }
 
-  const token = signJWT(existingStudent._id);
+  const token = signJWT(existingStudent._id, "student");
   return { token };
 }
 
@@ -58,7 +58,7 @@ export const registerTeacherService = async (teacherName, teacherEmail, teacherP
   const newTeacher = await createTeacher(teacherName, teacherEmail, teacherPassword);
 
   // Generate JWT token
-  const token = signJWT(newTeacher._id);
+  const token = signJWT(newTeacher._id, "teacher");
 
   return { token };
 }
@@ -74,7 +74,7 @@ export const loginTeacherService = async (teacherEmail, teacherPassword) => {
     throw new ExpressError(401, "Invalid email or password");
   }
 
-  const token = signJWT(teacher._id);
+  const token = signJWT(teacher._id, "teacher");
   return { token };
 }
 
