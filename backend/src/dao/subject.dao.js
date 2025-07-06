@@ -11,3 +11,8 @@ export const findSubjectByName = async (subjectName) => {
     const subject = await Subject.findOne({ subjectName });
     return subject;
 }
+
+export const findSubjectById = async (subjectId) => {
+    const {subjectName} = await Subject.findById(subjectId);
+    return subjectName;
+}
