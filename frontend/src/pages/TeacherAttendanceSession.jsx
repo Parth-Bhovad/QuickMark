@@ -101,7 +101,7 @@ function TeacherAttendanceSession() {
           try {
             const axios = (await import("axios")).default;
             const response = await axios.get("http://localhost:3000/api/v1/attendance/otp", {
-              params: { subjectName: "WEB" }
+              params: { subjectName: selectedSubject }
             });
             console.log(response);
 
