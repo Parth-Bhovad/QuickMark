@@ -1,12 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
 
 function StudentMarkAttendance() {
     const [otp, setOtp] = useState("");
+      const { currentUser, authChecked } = useAuthContext();
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post("http://localhost:3000/api/v1/attendance/", { otp, subjectName:"WEB", isPresent:true,studentId:"686122728243239b2603d768", subjectId:"686250d85ff470fd3dcbd332" });
+            const res = await axios.post("http://localhost:3000/api/v1/attendance/", { otp, isPresent:true, studentId:currentUser.id});
             console.log(res);
             // alert("Attendance marked successfully!");
 
