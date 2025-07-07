@@ -10,7 +10,7 @@ attendanceRouter.get('/otp', (req, res) => {
     const otp = generateOTP();
     console.log("OTP Generated", otp);
     
-    storeVerificationCode(req.query.subjectName, otp);
+    storeVerificationCode(otp, req.query.subjectName);
     res.json({ otp });
 });
 
