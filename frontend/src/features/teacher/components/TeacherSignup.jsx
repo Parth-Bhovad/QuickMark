@@ -1,75 +1,120 @@
-import InputField from "../../../components/InputField";
-//importing custom hooks 
+import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
-import useVerifyEmail from "../../../hooks/useVerifyEmail.js";
+import useVerifyEmail from "../../../hooks/useVerifyEmail";
+import isValidEmail from "../../../utils/isValidEmail";
 
 function TeacherSignup() {
-    const {
-        teacherName,
-        setTeacherName,
-        teacherEmail,
-        setTeacherEmail,
-        teacherPassword,
-        setTeacherPassword,
-        handleRegisterTeacher
-    } = useAuth();
+  const {
+    teacherName,
+    setTeacherName,
+    teacherEmail,
+    setTeacherEmail,
+    teacherPassword,
+    setTeacherPassword,
+    handleRegisterTeacher,
+    validated,
+  } = useAuth();
 
-    const {
-        isOTPSent,
-        isOTPVerified,
-        otp,
-        setOtp,
-        handleSendOTPToEmail,
-        handleVerifyOtp
-    } = useVerifyEmail();
+  const {
+    isOTPSent,
+    isOTPVerified,
+    otp,
+    setOtp,
+    handleSendOTPToEmail,
+    handleVerifyOtp,
+  } = useVerifyEmail();
 
-    return (
-        <>
-            <h1>Teacher Signup Page</h1>
-            <form>
-                <InputField
-                    label={"Teacher Name:"}
-                    id={"name"}
-                    name={"teacherName"}
-                    required={true}
-                    value={teacherName}
-                    onChange={(e) => setTeacherName(e.target.value)} />
-                <InputField
-                    label={"Teacher Email:"}
-                    id={"email"}
-                    name={"teacherEmail"}
-                    required={true}
-                    value={teacherEmail}
-                    onChange={(e) => setTeacherEmail(e.target.value)} />
+  return (
+    <main className="container">
+      <h3 className="text-center mb-5 mt-3">Teacher Signup Page</h3>
+      <Form noValidate validated={validated} onSubmit={handleRegisterTeacher}>
+        <Form.Group className="mb-3" controlId="formTeacherEmail">
+          <Form.Label>Teacher Email:</Form.Label>
+          <Form.Control
+            required
+            type="email"
+            placeholder="Enter your email"
+            value={teacherEmail}
+            onChange={(e) => setTeacherEmail(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a valid email.
+          </Form.Control.Feedback>
+        </Form.Group>
 
-                <button type="button" onClick={() => handleSendOTPToEmail(teacherEmail)}>Verify Email</button>
-                {
-                    isOTPSent && (
-                        <div>
-                            <label htmlFor="otp">OTP:</label>
-                            <input
-                                type="text"
-                                id="otp"
-                                name="otp"
-                                value={otp}
-                                onChange={(e) => setOtp(e.target.value)}
-                            />
-                            <button onClick={() => handleVerifyOtp(teacherEmail)}>Verify OTP</button>
-                        </div>
-                    )
-                }
-                <InputField
-                    label={"Teacher Password:"}
-                    id={"password"}
-                    name={"teacherPassword"}
-                    required={true}
-                    type={"password"}
-                    value={teacherPassword}
-                    onChange={(e) => setTeacherPassword(e.target.value)} />
-                <button type="submit" disabled={!isOTPVerified} onClick={handleRegisterTeacher}>Sign Up</button>
-            </form>
-        </>
-    );
+        <Button
+          type="button"
+          onClick={() => handleSendOTPToEmail(teacherEmail)}
+          className="mb-3"
+          disabled={!isValidEmail(teacherEmail)}
+        >
+          Send OTP
+        </Button>
+
+        {isOTPSent && (
+          <>
+            <Form.Group className="mb-3" controlId="formOTP">
+              <Form.Label>Confirm OTP:</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                minLength={6}
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid 6-digit OTP.
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Button
+              type="button"
+              onClick={() => handleVerifyOtp(teacherEmail)}
+              className="mb-3"
+              disabled={!otp || otp.length !== 6}
+            >
+              Verify OTP
+            </Button>
+          </>
+        )}
+
+        <Form.Group className="mb-3" controlId="formTeacherName">
+          <Form.Label>Teacher Name:</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            pattern="^[A-Za-z ]+$"
+            placeholder="Enter your name"
+            value={teacherName}
+            onChange={(e) => setTeacherName(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a valid name (letters and spaces only).
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formTeacherPassword">
+          <Form.Label>Teacher Password:</Form.Label>
+          <Form.Control
+            required
+            type="password"
+            minLength={6}
+            placeholder="Password"
+            value={teacherPassword}
+            onChange={(e) => setTeacherPassword(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Password should be at least 6 characters.
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Button type="submit" className="w-100" disabled={!isOTPVerified}>
+          Sign Up
+        </Button>
+      </Form>
+    </main>
+  );
 }
 
 export default TeacherSignup;
