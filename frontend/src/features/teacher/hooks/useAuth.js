@@ -6,12 +6,19 @@ function useAuth() {
     const [teacherEmail, setTeacherEmail] = useState("");
     const [teacherPassword, setTeacherPassword] = useState("");
     const [teacherName, setTeacherName] = useState("");
+    const [validated, setValidated] = useState(false);
 
     const handleLoginTeacher = async (e) => {
         try {
+            const form = e.currentTarget;
             e.preventDefault();
-            const response = await loginTeacherAPI(teacherEmail, teacherPassword);
-            console.log(response);
+            if (form.checkValidity() === false) {
+                console.log("Form is invalid");
+            } else {
+                const response = await loginTeacherAPI(teacherEmail, teacherPassword);
+                console.log(response);
+            }
+            setValidated(true);
         } catch (error) {
             console.log(error);
         }
@@ -20,8 +27,14 @@ function useAuth() {
     const handleRegisterTeacher = async (e) => {
         try {
             e.preventDefault();
-            const response = await registerTeacherAPI(teacherEmail, teacherPassword, teacherName);
-            console.log(response);
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+                console.log("Form is invalid");
+            } else {
+                const response = await registerTeacherAPI(teacherEmail, teacherPassword, teacherName);
+                console.log(response);
+            }
+            setValidated(true);
         } catch (error) {
             console.log(error);
         }
@@ -35,7 +48,9 @@ function useAuth() {
         teacherName,
         setTeacherName,
         handleLoginTeacher,
-        handleRegisterTeacher
+        handleRegisterTeacher,
+        validated,
+        setValidated,
     });
 }
 
