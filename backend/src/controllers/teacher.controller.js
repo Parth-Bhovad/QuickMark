@@ -1,3 +1,4 @@
+import ExpressError from '../utils/ExpressError.js';
 import {deleteTeacherService, getTeacherService, addSubjectToTeacherService,getTeacherSubjectsService } from '../services/teacher.service.js';
 
 export const getTeacher = async (req, res) => {
@@ -32,7 +33,7 @@ export const getTeacherSubjects = async (req, res) => {
         const subjectsNameArray = await getTeacherSubjectsService(teacherId);
 
         if (!subjectsNameArray || subjectsNameArray.length === 0) {
-            throw new ExpressError(404, `Teacher with ID: ${teacherId} not found`);
+            throw new ExpressError(404, `Subjects not found`);
         }
         res.status(200).json({ subjects: subjectsNameArray });
 }
