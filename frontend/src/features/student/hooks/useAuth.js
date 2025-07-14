@@ -8,12 +8,19 @@ function useAuth() {
     const [studentName, setStudentName] = useState('');
     const [emailVerified, setEmailVerified] = useState(false);
     const [otp, setOtp] = useState('');
+    const [validated, setValidated] = useState(false);
 
     const handleLoginStudent = async (e) => {
         try {
             e.preventDefault();
-            const data = await loginStudentAPI(studentEmail, studentPassword);
-            console.log(data);
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+                console.log("Form is invalid");
+            } else {
+                const data = await loginStudentAPI(studentEmail, studentPassword);
+                console.log(data);
+            }
+            setValidated(true);
         } catch (error) {
             console.log(error);
         }
@@ -22,28 +29,36 @@ function useAuth() {
     const handleRegisterStudent = async (e) => {
         try {
             e.preventDefault();
-            const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword);
-            console.log(data);
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+                console.log("Form is invalid");
+            } else {
+                const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword);
+                console.log(data);
+            }
+            setValidated(true);
         } catch (error) {
             console.log(error);
         }
     }
 
-    return ({ 
-        studentEmail, 
-        setStudentEmail, 
-        studentPassword, 
-        setStudentPassword, 
-        handleLoginStudent, 
-        rollNo, 
-        setRollNo, 
-        studentName, 
-        setStudentName, 
-        emailVerified, 
-        setEmailVerified, 
-        otp, 
+    return ({
+        studentEmail,
+        setStudentEmail,
+        studentPassword,
+        setStudentPassword,
+        handleLoginStudent,
+        rollNo,
+        setRollNo,
+        studentName,
+        setStudentName,
+        emailVerified,
+        setEmailVerified,
+        otp,
         setOtp,
-        handleRegisterStudent
+        handleRegisterStudent,
+        validated,
+        setValidated
     });
 }
 
