@@ -39,7 +39,7 @@ function useTeacherAttendanceSession() {
             setTimer(60);
         } catch (error) {
             console.log(error);
-            setFeedback("Failed to fetch OTP.");
+            setFeedback("Failed to fetch OTP: " + (error.response.data.msg || error.message));
         }
     };
 

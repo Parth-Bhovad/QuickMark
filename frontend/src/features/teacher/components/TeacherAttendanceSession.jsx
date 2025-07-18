@@ -80,7 +80,7 @@ function TeacherAttendanceSession() {
 
             {feedback && (
                 <Alert
-                    variant={feedback.includes("OTP:") ? "success" : "danger"}
+                    variant={feedback.includes("Failed") ? "danger" : "success"}
                     className="mt-4 text-center"
                 >
                     {feedback}
