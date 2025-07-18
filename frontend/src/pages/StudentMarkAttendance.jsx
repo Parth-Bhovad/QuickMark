@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 function StudentMarkAttendance() {
+
+  const navigate = useNavigate();
+
   const [otp, setOtp] = useState("");
   const [validated, setValidated] = useState(false);
   const [feedback, setFeedback] = useState("");
@@ -35,6 +39,24 @@ function StudentMarkAttendance() {
 
     setValidated(true);
   };
+
+  useEffect(() => {
+    const checkActiveSession = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3000/api/v1/attendance/check-active-session"
+        );
+        console.log(res.status);
+      } catch (error) {
+        console.log(error.status);
+        if(error.status === 429){
+          navigate("/");
+        }
+      }
+    };
+
+    checkActiveSession();
+  }, []);
 
   return (
     <Container className="mt-5">
