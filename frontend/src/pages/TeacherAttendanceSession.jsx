@@ -49,6 +49,18 @@ function TeacherAttendanceSession() {
     }
   };
 
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
   return (
     <Container className="mt-5">
       <h3 className="text-center mb-4">Teacher Attendance Session</h3>
@@ -96,13 +108,22 @@ function TeacherAttendanceSession() {
 
       <div className="text-center mt-4">
         <Button
-          onClick={handleGetOtp}
-          disabled={!selectedSubject}
+          onClick={async () => {
+            await handleGetOtp();
+            setTimer(60);
+          }}
+          disabled={!selectedSubject || timer > 0}
           className="px-4"
         >
           Get OTP
         </Button>
       </div>
+
+      {timer > 0 && (
+        <div className="text-center mt-3">
+          <Alert variant="info">OTP valid for: {timer} seconds</Alert>
+        </div>
+      )}
 
       {feedback && (
         <Alert
