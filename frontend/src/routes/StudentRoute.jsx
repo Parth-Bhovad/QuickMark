@@ -1,6 +1,6 @@
 import { useNavigate, useRoutes } from "react-router-dom";
 //importing necessary components
-import StudentMarkAttendance from "../pages/StudentMarkAttendance";
+import StudentMarkAttendancePage from "../features/student/pages/StudentMarkAttendancePage";
 import StudentProfile from "../pages/StudentProfile";
 //importing auth context
 import { useAuthContext } from "../context/AuthContext";
@@ -22,7 +22,7 @@ const StudentRoute = () => {
     const element = useRoutes([
         {
             path: "/mark-attendance",
-            element: <StudentMarkAttendance />,
+            element: <StudentMarkAttendancePage />,
         },
         {
             path: "/profile",
