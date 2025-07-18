@@ -8,17 +8,17 @@ function generateOTP(length = 6) {
 }
 
 const verificationCodes = new Map();
-function storeVerificationCode(subjectName, code) {
-  verificationCodes.set(subjectName, code);
-  // Auto-delete code after 10 minutes
-  setTimeout(() => verificationCodes.delete(subjectName), 10 * 60 * 1000);
+function storeVerificationCode(key, value, timeLimit = 10 * 60 * 1000) {
+  verificationCodes.set(key, value);
+  // Auto-delete code after timeLimit
+  setTimeout(() => verificationCodes.delete(key), timeLimit);
 }
-function getVerificationCode(subjectName) {
-  return verificationCodes.get(subjectName);
+function getVerificationCode(key) {
+  return verificationCodes.get(key);
 }
 
-function deleteVerificationCode(subjectName) {
-  verificationCodes.delete(subjectName);
+function deleteVerificationCode(key) {
+  verificationCodes.delete(key);
 }
 
 export { generateOTP, storeVerificationCode, getVerificationCode, deleteVerificationCode };
