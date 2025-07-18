@@ -3,8 +3,7 @@ import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 
 function TeacherProfile() {
-
-    const {currentUser, authChecked} = useAuthContext();
+    const { currentUser, authChecked } = useAuthContext();
 
     const [subjects, setSubjects] = useState(["No subjects available"]);
     const [showInput, setShowInput] = useState(false);
@@ -29,8 +28,10 @@ function TeacherProfile() {
         setLoading(true);
         setError("");
         try {
-            // Replace with your backend endpoint
-            const res = await axios.patch(`http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`, { subjectName });
+            const res = await axios.patch(
+                `http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`,
+                { subjectName }
+            );
             setSubjects([...subjects, subjectName]);
             setSubjectName("");
             setShowInput(false);
@@ -42,50 +43,64 @@ function TeacherProfile() {
     };
 
     const getTeacherSubjects = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`);
-      console.log(response);
-      if(response.data.subjects.length !==0){
-        setSubjects(response.data.subjects);
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        try {
+            const response = await axios.get(
+                `http://localhost:3000/api/v1/teachers/${currentUser.id}/subjects`
+            );
+            if (response.data.subjects.length !== 0) {
+                setSubjects(response.data.subjects);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        if (!authChecked) {
-            return;
-        }
+        if (!authChecked) return;
         getTeacherSubjects();
     }, [authChecked, currentUser]);
 
     return (
-        <>
-            <h1>Teacher Profile</h1>
-            <div>
+        <div className="container mt-5">
+            <h2 className="mb-4">Teacher Profile</h2>
+            <div className="mb-3">
                 <p><strong>Name:</strong> John Doe</p>
                 <p><strong>Subjects:</strong> {subjects.join(", ")}</p>
-                <button onClick={handleAddClick}>Add Subject</button>
-                {showInput && (
-                    <div>
-                        <input
-                            type="text"
-                            value={subjectName}
-                            onChange={handleInputChange}
-                            placeholder="Enter subject name"
+            </div>
+            <button className="btn btn-primary mb-3" onClick={handleAddClick}>
+                Add Subject
+            </button>
+
+            {showInput && (
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control mb-2"
+                        value={subjectName}
+                        onChange={handleInputChange}
+                        placeholder="Enter subject name"
+                        disabled={loading}
+                    />
+                    <div className="d-flex gap-2">
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleSubmit}
                             disabled={loading}
-                        />
-                        <button onClick={handleSubmit} disabled={loading}>
+                        >
                             {loading ? "Adding..." : "Submit"}
                         </button>
-                        <button onClick={() => setShowInput(false)} disabled={loading}>Cancel</button>
-                        {error && <div style={{ color: "red" }}>{error}</div>}
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => setShowInput(false)}
+                            disabled={loading}
+                        >
+                            Cancel
+                        </button>
                     </div>
-                )}
-            </div>
-        </>
+                    {error && <div className="text-danger mt-2">{error}</div>}
+                </div>
+            )}
+        </div>
     );
 }
 
