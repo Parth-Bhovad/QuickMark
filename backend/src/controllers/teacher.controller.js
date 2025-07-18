@@ -5,9 +5,9 @@ export const getTeacher = async (req, res) => {
     let teacherId = req.params.teacherId;
     console.log("Get teacher route", teacherId);
 
-    const teacher = await getTeacherService(teacherId);
+    const { teacherName, subjects } = await getTeacherService(teacherId);
 
-    res.status(200).json({ teacher });
+    res.status(200).json({ teacherName, subjects });
 };
 
 export const deleteTeacher = async (req, res) => {

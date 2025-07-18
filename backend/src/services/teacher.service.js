@@ -7,7 +7,8 @@ export const getTeacherService = async (teacherId) => {
     if (!teacher) {
         throw new Error(`Teacher with ID: ${teacherId} not found`);
     }
-    return teacher;
+    const subjectsNameArray = await getTeacherSubjectsService(teacherId);
+    return { teacherName: teacher.teacherName, subjects: subjectsNameArray };
 }
 
 export const deleteTeacherService = async (teacherId) => {
