@@ -1,7 +1,7 @@
 import { useNavigate, useRoutes } from "react-router-dom";
 import { useEffect } from "react";
 import TeacherAttendanceSessionPage from "../features/teacher/pages/TeacherAttendanceSessionPage";
-import TeacherProfile from "../pages/TeacherProfile";
+import TeacherProfilePage from "../features/teacher/pages/TeacherProfilePage";
 import { useAuthContext } from "../context/AuthContext";
 
 const TeacherRoute = () => {
@@ -23,7 +23,7 @@ const TeacherRoute = () => {
     },
     {
       path: "/profile",
-      element: <TeacherProfile />,
+      element: <TeacherProfilePage />,
     },
   ]);
 
