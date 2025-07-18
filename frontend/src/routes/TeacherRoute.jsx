@@ -1,6 +1,6 @@
 import { useNavigate, useRoutes } from "react-router-dom";
 import { useEffect } from "react";
-import TeacherAttendanceSession from "../pages/TeacherAttendanceSession";
+import TeacherAttendanceSessionPage from "../features/teacher/pages/TeacherAttendanceSessionPage";
 import TeacherProfile from "../pages/TeacherProfile";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -19,7 +19,7 @@ const TeacherRoute = () => {
   const element = useRoutes([
     {
       path: "/attendance-session",
-      element: <TeacherAttendanceSession />,
+      element: <TeacherAttendanceSessionPage />,
     },
     {
       path: "/profile",
