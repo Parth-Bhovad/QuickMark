@@ -56,21 +56,11 @@ export const verifyOTPEmail = async (req, res) => {
 };
 
 export const authMe = async (req, res) => {
-  console.log("authMe called");
-
   const token = req.cookies.token;
-  console.log("Token from cookies:", token);
-
   if (!token) {
-    console.log("No token found, returning unauthorized error");
-
     throw new ExpressError(401, "Unauthorized");
   }
-  console.log("1");
-
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
   if (!decoded) throw new ExpressError(401, "Unauthorized");
-  console.log("2");
   res.status(200).json({ user: decoded });
 };
