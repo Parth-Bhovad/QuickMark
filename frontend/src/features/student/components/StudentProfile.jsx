@@ -6,6 +6,7 @@ function StudentProfile() {
         studentName,
         showInput,
         setShowInput,
+        availableSubjects,
         subjects,
         subjectName,
         setSubjectName,
@@ -24,26 +25,33 @@ function StudentProfile() {
                 <p><strong>Roll No:</strong> {rollNo}</p>
                 <p><strong>Subjects:</strong>{subjects.join(", ")}</p>
             </div>
-
             <button className="btn btn-primary mb-3" onClick={() => setShowInput(true)}>
                 Add Subject
             </button>
 
             {showInput && (
                 <div className="mb-3">
-                    <input
-                        type="text"
-                        className="form-control mb-2"
+                    <label htmlFor="subject-select" className="form-label">Select Subject</label>
+                    <select
+                        id="subject-select"
+                        className="form-select mb-2"
                         value={subjectName}
                         onChange={(e) => setSubjectName(e.target.value)}
-                        placeholder="Enter subject name"
                         disabled={loading}
-                    />
+                    >
+                        <option value="">-- Select a subject --</option>
+                        {availableSubjects.filter(subject => !subjects.includes(subject))
+                            .map((subject, idx) => (
+                                <option key={idx} value={subject}>
+                                    {subject}
+                                </option>
+                            ))}
+                    </select>
                     <div className="d-flex gap-2">
                         <button
                             className="btn btn-primary"
                             onClick={handleAddSubject}
-                            disabled={loading}
+                            disabled={loading || !subjectName}
                         >
                             {loading ? "Adding..." : "Submit"}
                         </button>

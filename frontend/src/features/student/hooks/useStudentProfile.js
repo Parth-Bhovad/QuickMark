@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../context/AuthContext";
 //importing APIs
 import { getStudentProfileAPI, addSubjectToStudentAPI } from "../api/student.api.js";
+import { getAvailableSubjectsAPI } from "../../../api/getAvailableSubjects.api.js";
 
 function useStudentProfile() {
     const { currentUser, authChecked } = useAuthContext();
 
     const [subjectName, setSubjectName] = useState("");
+    const [availableSubjects, setAvailableSubjects] = useState([]);
     const [studentName, setStudentName] = useState("");
     const [showInput, setShowInput] = useState(false);
     const [subjects, setSubjects] = useState(["No subjects available"]);
@@ -20,9 +22,15 @@ function useStudentProfile() {
             setError("Subject name cannot be empty.");
             return;
         }
+        if (!subjects.includes(subjectName)) {
+            console.log(`Subject already added: ${subjectName}`);
+
+            setError("Subject already added.");
+            return;
+        }
         try {
             await addSubjectToStudentAPI(currentUser.id, subjectName);
-            setSubjects([subjectName]);
+            setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
             setSubjectName("");
         } catch (error) {
             console.error("Failed to add subject:", error);
@@ -33,8 +41,6 @@ function useStudentProfile() {
     const getStudentProfile = async () => {
         try {
             const response = await getStudentProfileAPI(currentUser.id);
-            console.log(response);
-            console.log(response.studentName);
 
             setStudentName(response.studentName);
             setRollNo(response.rollNo);
@@ -47,14 +53,26 @@ function useStudentProfile() {
         }
     }
 
+    const getAvailableSubjects = async () => {
+        try {
+            const response = await getAvailableSubjectsAPI(currentUser.id);
+            setAvailableSubjects(response.availableSubjects || []);
+        } catch (error) {
+            console.error("Failed to fetch available subjects:", error);
+            setError("Failed to fetch available subjects:", error);
+        }
+    };
+
     useEffect(() => {
         if (!authChecked) return;
         getStudentProfile();
+        getAvailableSubjects();
     }, [authChecked, currentUser]);
 
     return {
         studentName,
         setStudentName,
+        availableSubjects,
         showInput,
         setShowInput,
         subjects,
