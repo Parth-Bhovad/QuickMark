@@ -15,15 +15,15 @@ const teacherRouter = Router({ mergeParams: true });
 teacherRouter.post('/', validateRequest(registerTeacherSchema), isVerifiedEmail, wrapAsync(registerTeacher));
 teacherRouter.post('/login', validateRequest(loginTeacherSchema), wrapAsync(loginTeacher));
 
-teacherRouter.get('/:teacherId', getTeacher);
-teacherRouter.get('/:teacherId/subjects', getTeacherSubjects);
+teacherRouter.get('/:teacherId', wrapAsync(getTeacher));
+teacherRouter.get('/:teacherId/subjects', wrapAsync(getTeacherSubjects));
 teacherRouter.put('/:teacherId', (req, res) => {
     console.log("Update teacher route");
 });
-teacherRouter.delete('/:teacherId', deleteTeacher);
+teacherRouter.delete('/:teacherId', wrapAsync(deleteTeacher));
 teacherRouter.patch('/:teacherId/password', (req, res) => {
     console.log("Update teacher password route");
 });
-teacherRouter.patch('/:teacherId/subjects', addSubjectToTeacher)
+teacherRouter.patch('/:teacherId/subjects', wrapAsync(addSubjectToTeacher));
 
 export default teacherRouter;
