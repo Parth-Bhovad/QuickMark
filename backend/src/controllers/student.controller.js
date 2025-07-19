@@ -2,12 +2,12 @@
 import { getStudentService, deleteStudentService, addSubjectToStudentService } from '../services/student.service.js';
 
 export const getStudent = async (req, res) => {
-    let rollNo = req.params.rollNo;
-    console.log("Get student route", rollNo);
+    let studentId = req.params.studentId;
+    console.log("Get student route", studentId);
 
-    const student = await getStudentService(rollNo);
+    const { studentName, subjects, rollNo } = await getStudentService(studentId);
 
-    res.status(200).json({ student });
+    res.status(200).json({ studentName, subjects, rollNo });
 };
 
 export const deleteStudent = async (req, res) => {
@@ -19,7 +19,7 @@ export const deleteStudent = async (req, res) => {
 export const addSubjectToStudent = async (req, res) => {
     try {
         let rollNo = req.params.rollNo;
-        let {subjectName} = req.body;
+        let { subjectName } = req.body;
 
         const updatedStudent = await addSubjectToStudentService(rollNo, subjectName);
         res.status(200).json({ message: "Subject added to student successfully" });
