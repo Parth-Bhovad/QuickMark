@@ -3,7 +3,6 @@ import {deleteTeacherService, getTeacherService, addSubjectToTeacherService,getT
 
 export const getTeacher = async (req, res) => {
     let teacherId = req.params.teacherId;
-    console.log("Get teacher route", teacherId);
 
     const { teacherName, subjects } = await getTeacherService(teacherId);
 
@@ -31,9 +30,5 @@ export const addSubjectToTeacher = async (req, res) => {
 export const getTeacherSubjects = async (req, res) => {
         const teacherId = req.params.teacherId;
         const subjectsNameArray = await getTeacherSubjectsService(teacherId);
-
-        if (!subjectsNameArray || subjectsNameArray.length === 0) {
-            throw new ExpressError(404, `Subjects not found`);
-        }
         res.status(200).json({ subjects: subjectsNameArray });
 }
