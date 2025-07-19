@@ -17,14 +17,9 @@ export const deleteStudent = async (req, res) => {
 };
 
 export const addSubjectToStudent = async (req, res) => {
-    try {
-        let rollNo = req.params.rollNo;
+        let studentId = req.params.studentId;
         let { subjectName } = req.body;
 
-        const updatedStudent = await addSubjectToStudentService(rollNo, subjectName);
+        const updatedStudent = await addSubjectToStudentService(studentId, subjectName);
         res.status(200).json({ message: "Subject added to student successfully" });
-    } catch (error) {
-        console.error("Error adding subject to student:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
 }
