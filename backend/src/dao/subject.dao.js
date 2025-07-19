@@ -16,3 +16,8 @@ export const findSubjectById = async (subjectId) => {
     const {subjectName} = await Subject.findById(subjectId);
     return subjectName;
 }
+
+export const getAvailableSubjects = async () => {
+    const subjects = await Subject.find({});
+    return subjects.map(subject => subject.subjectName);
+}
