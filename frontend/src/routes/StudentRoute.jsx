@@ -1,7 +1,7 @@
 import { useNavigate, useRoutes } from "react-router-dom";
 //importing necessary components
 import StudentMarkAttendancePage from "../features/student/pages/StudentMarkAttendancePage";
-import StudentProfile from "../pages/StudentProfile";
+import StudentProfilePage from "../features/student/pages/StudentProfilePage";
 //importing auth context
 import { useAuthContext } from "../context/AuthContext";
 import { useEffect } from "react";
@@ -26,7 +26,7 @@ const StudentRoute = () => {
         },
         {
             path: "/profile",
-            element: <StudentProfile />,
+            element: <StudentProfilePage />,
         },
     ]);
 
