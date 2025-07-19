@@ -13,6 +13,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         match: [/^[A-Za-z ]+$/, 'Name can only contain alphabets and spaces'],
+        unique: true
     },
     studentEmail: {
         type: String,
@@ -29,6 +30,7 @@ const userSchema = new Schema({
         default: [],
         type: Schema.Types.ObjectId,
         ref: "Subject",
+        unique: true
     }],
 })
 

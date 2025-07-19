@@ -10,7 +10,7 @@ const subjectSchema = new Schema({
     teacherId:{
         type: Schema.Types.ObjectId,
         ref: "Teacher",
-        required: true
+        required: true,
     }
 });
 
