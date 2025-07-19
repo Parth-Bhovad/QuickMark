@@ -17,15 +17,15 @@ studentRouter.post('/', validateRequest(registerStudentSchema), isVerifiedEmail,
 
 studentRouter.post('/login', validateRequest(loginStudentSchema), wrapAsync(loginStudent));
 
-studentRouter.get('/:studentId', getStudent);
+studentRouter.get('/:studentId', wrapAsync(getStudent));
 studentRouter.put('/:studentId', (req, res) => {
     let studentId = req.params.studentId;
     console.log("Update student route", studentId);
 });
-studentRouter.delete('/:rollNo', deleteStudent);
+studentRouter.delete('/:studentId', wrapAsync(deleteStudent));
 studentRouter.patch('/:studentId/password', (req, res) => {
     let studentId = req.params.studentId;
     console.log("Update student password route", studentId);
 });
-studentRouter.patch('/:rollNo/subjects', addSubjectToStudent);
+studentRouter.patch('/:studentId/subjects', wrapAsync(addSubjectToStudent));
 export default studentRouter;
