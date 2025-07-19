@@ -17,7 +17,7 @@ studentRouter.post('/', validateRequest(registerStudentSchema), isVerifiedEmail,
 
 studentRouter.post('/login', validateRequest(loginStudentSchema), wrapAsync(loginStudent));
 
-studentRouter.get('/:rollNo', getStudent);
+studentRouter.get('/:studentId', getStudent);
 studentRouter.put('/:studentId', (req, res) => {
     let studentId = req.params.studentId;
     console.log("Update student route", studentId);
