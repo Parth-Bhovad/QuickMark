@@ -1,15 +1,24 @@
-import { useState, useEffect } from "react";
-import {useNavigate} from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 //importing APIs
-import { markStudentAttendanceAPI, checkActiveSessionAPI } from "../api/student.api";
+import { markStudentAttendanceAPI, checkActiveSessionAPI, deleteStudentAtendanceAPI } from "../api/student.api";
 //importing context
 import { useAuthContext } from "../../../context/AuthContext";
 
 function useStudentMarkAttendance() {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
+  const currentUserRef = useRef(currentUser);
+
+  useEffect(() => {
+    currentUserRef.current = currentUser;
+  }, [currentUser]);
 
   const [otp, setOtp] = useState("");
+  const otpRef = useRef(otp);
+  useEffect(() => {
+    otpRef.current = otp;
+  }, [otp]);
   const [validated, setValidated] = useState(false);
   const [feedback, setFeedback] = useState("");
 
@@ -33,31 +42,53 @@ function useStudentMarkAttendance() {
     setValidated(true);
   };
 
-  useEffect(() => {
-    const checkActiveSession = async () => {
-      try {
-        const res = await checkActiveSessionAPI();
-        console.log(res.status);
-      } catch (error) {
-        console.log(error.status);
-        if (error.status === 429) {
-          navigate("/");
-        }
+  const handleVisibilityChange = async () => {
+    console.log("Visibility Event Listener added");
+
+    if (document.visibilityState === "hidden") {
+      const user = currentUserRef.current;
+      const otp = otpRef.current;
+
+      if (otp.length > 0) {
+        await deleteStudentAtendanceAPI(user.id, new Date().toISOString().split("T")[0], otp);
       }
-    };
-
-    checkActiveSession();
-  }, []);
-
-  return {
-    otp,
-    setOtp,
-    validated,
-    setValidated,
-    feedback,
-    setFeedback,
-    handleSubmit,
+      navigate("/");
+    }
   };
-}
 
-export default useStudentMarkAttendance;
+    useEffect(() => {
+      const checkActiveSession = async () => {
+        try {
+          const res = await checkActiveSessionAPI();
+          console.log(res.status);
+        } catch (error) {
+          console.log(error.status);
+          if (error.status === 429) {
+            navigate("/");
+          }
+        }
+      };
+
+      checkActiveSession();
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+
+      // Cleanup function to remove the event listener
+      return () => {
+        document.removeEventListener("visibilitychange", handleVisibilityChange);
+        console.log("Visibility change listener removed");
+        
+      };
+    }, []);
+
+    return {
+      otp,
+      setOtp,
+      validated,
+      setValidated,
+      feedback,
+      setFeedback,
+      handleSubmit,
+    };
+  }
+
+  export default useStudentMarkAttendance;
