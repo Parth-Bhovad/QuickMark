@@ -23,3 +23,14 @@ export const getStudentProfileAPI = async (studentId) => {
     const response = await api.get(`/students/${studentId}`);
     return response.data;
 }
+
+export const deleteStudentAtendanceAPI = async (studentId, date, otp) => {
+    const response = await api.delete("http://localhost:3000/api/v1/attendance", {
+        data: {
+            studentId,
+            date,
+            otp,
+        },
+    });
+    return response.data;
+}
