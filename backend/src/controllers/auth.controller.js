@@ -21,6 +21,13 @@ export const loginStudent = async (req, res) => {
   res.status(200).json({ token });
 }
 
+export const logout = async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+};
+
 export const registerTeacher = async (req, res) => {
   let { teacherName, teacherEmail, teacherPassword } = req.body;
   const { token } = await registerTeacherService(teacherName, teacherEmail, teacherPassword);

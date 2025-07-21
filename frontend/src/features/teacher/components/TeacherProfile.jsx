@@ -1,5 +1,6 @@
 //importing custom hooks
 import useTeacherProfile from "../hooks/useTeacherProfile";
+import useLogoutUser from "../../../hooks/useLogoutUser";
 
 function TeacherProfile() {
     const {
@@ -13,6 +14,8 @@ function TeacherProfile() {
         loading,
         error
     } = useTeacherProfile();
+
+    const { handleLogout } = useLogoutUser();
     return (
         <div className="container mt-5">
             <h2 className="mb-4">Teacher Profile</h2>
@@ -53,6 +56,14 @@ function TeacherProfile() {
                     {error && <div className="text-danger mt-2">{error}</div>}
                 </div>
             )}
+            <div className="mt-4">
+                <button
+                    className="btn btn-danger"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
+            </div>
         </div>
     );
 }
