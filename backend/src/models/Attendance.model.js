@@ -13,9 +13,12 @@ const attendanceSchema = new Schema({
         enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     },
     date: {
-        default: Date.now,
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        default: () => {
+            const now = new Date();
+            return now.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+        }
     },
     subjectId: {
         default: [],

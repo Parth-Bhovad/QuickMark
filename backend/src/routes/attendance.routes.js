@@ -1,10 +1,12 @@
 import { Router } from 'express';
 //importing controllers
-import { addAttendance } from '../controllers/attendance.controller.js';
+import { addAttendance, deleteAttendance } from '../controllers/attendance.controller.js';
 //importing utils
 import {generateOTP, storeVerificationCode} from '../utils/generateOTP.js';
 //importing custom error classes
 import ExpressError from '../utils/ExpressError.js';
+//importing wrapAsync utility
+import wrapAsync from '../utils/wrapAsync.js';
 const attendanceRouter = Router({ mergeParams: true });
 
 attendanceRouter.get('/check-active-session', (req, res) => {
@@ -36,5 +38,6 @@ attendanceRouter.get('/otp', (req, res) => {
     storeVerificationCode(otp, req.query.subjectName, 60 * 1000); // Store OTP with a 1-minute expiry
     res.json({ otp });
 });
+attendanceRouter.delete('/', wrapAsync(deleteAttendance));
 
 export default attendanceRouter;

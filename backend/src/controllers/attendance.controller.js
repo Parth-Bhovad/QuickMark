@@ -1,5 +1,5 @@
 //importing services
-import { addAttendanceService } from "../services/attendance.service.js";
+import { addAttendanceService, deleteAttendanceService } from "../services/attendance.service.js";
 //importing utils
 import { getVerificationCode } from "../utils/generateOTP.js";
 import { findSubjectByName } from "../dao/subject.dao.js";
@@ -7,7 +7,6 @@ import { findSubjectByName } from "../dao/subject.dao.js";
 export const addAttendance = async (req, res) => {
     try {
         const getSubjectName = getVerificationCode(req.body.otp);
-        console.log(getSubjectName);
         // If the OTP is invalid, getVerificationCode will return undefined
         // If the OTP is valid, it will return the subject name associated with that OTP    
         if (getSubjectName=== undefined) {
@@ -23,3 +22,11 @@ export const addAttendance = async (req, res) => {
         
     }
 }
+
+export const deleteAttendance = async (req, res) => {
+        const {studentId, date, otp} = req.body;
+        const subjectName = getVerificationCode(otp);
+        const subjectId = await findSubjectByName(subjectName);
+        await deleteAttendanceService(studentId, date, subjectId);
+        res.status(200).json({ message: "Attendance deleted successfully" });
+};
