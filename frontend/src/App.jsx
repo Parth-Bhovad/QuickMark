@@ -2,8 +2,10 @@ import './App.css'
 import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
 import StudentLoginPage from './features/student/pages/StudentLoginPage'
+import StudentForgotPasswordPage from './features/student/pages/StudentForgotPasswordPage'
 import StudentSignupPage from './features/student/pages/StudentSignupPage'
 import TeacherLoginPage from './features/teacher/pages/TeacherLoginPage'
+import TeacherForgotPasswordPage from './features/teacher/pages/TeacherForgotPasswordPage'
 import TeacherSignupPage from './features/teacher/pages/TeacherSignupPage'
 import AttendancePage from './pages/AttendancePage'
 import AttendanceList from './pages/AttendanceList'
@@ -18,8 +20,10 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/student-login" element={<StudentLoginPage />} />
+          <Route path="/student-forgot-password" element={<StudentForgotPasswordPage />} />
           <Route path="/student-signup" element={<StudentSignupPage />} />
           <Route path="/teacher-login" element={<TeacherLoginPage />} />
+          <Route path="/teacher-forgot-password" element={<TeacherForgotPasswordPage />} />
           <Route path="/teacher-signup" element={<TeacherSignupPage />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/attendance-list" element={<AttendanceList />} />

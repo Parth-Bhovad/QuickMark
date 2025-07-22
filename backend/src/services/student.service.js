@@ -1,7 +1,9 @@
-import { findStudentByRollNo,findStudentById, deleteStudentByRollNo, addSubjectToStudent } from "../dao/student.dao.js";
+import { findStudentByRollNo, findStudentById, deleteStudentByRollNo, addSubjectToStudent, findStudentByEmail, changeStudentPassword } from "../dao/student.dao.js";
 import { findSubjectById, findSubjectByName } from "../dao/subject.dao.js";
 //importing Express Error
 import ExpressError from "../utils/ExpressError.js";
+//importing hashPassword utility
+import { hashPassword } from '../utils/helper.js';
 
 export const getStudentService = async (studentId) => {
     const student = await findStudentById(studentId);
@@ -42,11 +44,22 @@ export const getStudentSubjectsService = async (studentId) => {
     if (!student) {
         throw new ExpressError(404, `Student with ID: ${studentId} not found`);
     }
-    const subjectsNameArray=[];
+    const subjectsNameArray = [];
     for (let i = 0; i < student.subjects.length; i++) {
         const subjectId = student.subjects[i];
         const subjectName = await findSubjectById(subjectId);
         subjectsNameArray.push(subjectName);
     }
     return subjectsNameArray;
+}
+
+export const studentForgotPasswordService = async (studentEmail, newPassword) => {
+    const student = await findStudentByEmail(studentEmail);
+    if (!student) {
+        throw new ExpressError(404, `Student with email: ${studentEmail} not found`);
+    }
+    // Hash the password
+    newPassword = await hashPassword(newPassword);
+    changeStudentPassword(student, newPassword);
+    return { message: "Password reset successfully" };
 }

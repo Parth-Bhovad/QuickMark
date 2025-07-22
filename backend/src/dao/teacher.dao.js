@@ -28,3 +28,9 @@ export const addSubjectToTeacher = async (teacherId, subjectId) => {
     await teacher.save();
     return teacher;
 }
+
+export const changeTeacherPassword = async (teacher, newPassword) => {
+    teacher.teacherPassword = newPassword;
+    await teacher.save();
+    return teacher;
+}

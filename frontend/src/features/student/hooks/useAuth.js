@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginStudentAPI, registerStudentAPI } from "../api/auth.api.js";
+import { loginStudentAPI, registerStudentAPI, studentForgotPasswordAPI } from "../api/auth.api.js";
 
 function useAuth() {
     const [studentEmail, setStudentEmail] = useState("");
@@ -42,6 +42,23 @@ function useAuth() {
         }
     }
 
+    const handleForgotPassword = async (e) => {
+        try {
+            e.preventDefault();
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+                console.log("Form is invalid");
+            } else {
+                // Call API to send OTP
+                const data = await studentForgotPasswordAPI(studentEmail, studentPassword);
+                console.log(data);
+            }
+            setValidated(true);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return ({
         studentEmail,
         setStudentEmail,
@@ -58,7 +75,8 @@ function useAuth() {
         setOtp,
         handleRegisterStudent,
         validated,
-        setValidated
+        setValidated,
+        handleForgotPassword
     });
 }
 

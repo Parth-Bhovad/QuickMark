@@ -1,5 +1,6 @@
 import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
+import {Link} from "react-router-dom";
 
 function StudentLogin() {
   // using custom hook
@@ -50,6 +51,14 @@ function StudentLogin() {
           Login
         </Button>
       </Form>
+      <div className="d-flex justify-content-between mt-3">
+        <Link to="/student-forgot-password" className="text-decoration-none">
+          Forgot password?
+        </Link>
+        <Link to="/student-signup" className="text-decoration-none">
+          Don't have an account?
+        </Link>
+      </div>
     </main>
   );
 }

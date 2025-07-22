@@ -37,3 +37,9 @@ export const addSubjectToStudent = async (studentId, subjectName) => {
     await student.save();
     return student;
 }
+
+export const changeStudentPassword = async (student, newPassword) => {
+    student.studentPassword = newPassword;
+    await student.save();
+    return student;
+}

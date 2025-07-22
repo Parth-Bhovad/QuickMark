@@ -1,8 +1,10 @@
-import { findTeacherById, deleteTeacherById, addSubjectToTeacher } from '../dao/teacher.dao.js';
+import { findTeacherById, deleteTeacherById, addSubjectToTeacher, changeTeacherPassword, findTeacherByEmail } from '../dao/teacher.dao.js';
 import { findSubjectByName, findSubjectById } from '../dao/subject.dao.js';
 import { createSubject } from '../dao/subject.dao.js';
 //import Express Error
 import ExpressError from '../utils/ExpressError.js';
+//importing hashPassword utility
+import { hashPassword } from '../utils/helper.js';
 
 export const getTeacherService = async (teacherId) => {
     const teacher = await findTeacherById(teacherId);
@@ -56,4 +58,15 @@ export const getTeacherSubjectsService = async (teacherId) => {
     }
 
     return subjectsNameArray;
+}
+
+export const teacherForgotPasswordService = async (teacherEmail, newPassword) => {
+    const teacher = await findTeacherByEmail(teacherEmail);
+    if (!teacher) {
+        throw new ExpressError(404, `Teacher with email: ${teacherEmail} not found`);
+    }
+    // Hash the password
+    newPassword = await hashPassword(newPassword);
+    changeTeacherPassword(teacher, newPassword);
+    return { message: "Password reset successfully" };
 }

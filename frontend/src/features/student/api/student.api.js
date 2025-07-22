@@ -25,7 +25,7 @@ export const getStudentProfileAPI = async (studentId) => {
 }
 
 export const deleteStudentAtendanceAPI = async (studentId, date, otp) => {
-    const response = await api.delete("http://localhost:3000/api/v1/attendance", {
+    const response = await api.delete("/attendance", {
         data: {
             studentId,
             date,

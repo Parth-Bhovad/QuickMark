@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {Link} from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 
@@ -50,6 +50,14 @@ function TeacherLogin() {
           Login
         </Button>
       </Form>
+      <div className="d-flex justify-content-between mt-3">
+        <Link to="/teacher-forgot-password" className="text-decoration-none">
+          Forgot password?
+        </Link>
+        <Link to="/teacher-signup" className="text-decoration-none">
+          Don't have an account?
+        </Link>
+      </div>
     </main>
   );
 }

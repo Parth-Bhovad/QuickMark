@@ -16,3 +16,11 @@ export const registerTeacherAPI = async (teacherEmail, teacherPassword, teacherN
     });
     return response;
 }
+
+export const teacherForgotPasswordAPI = async (teacherEmail, newPassword) => {
+    const response = await api.patch("/teachers/forgot-password", {
+        teacherEmail,
+        newPassword,
+    });
+    return response.data;
+}

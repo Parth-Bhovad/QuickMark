@@ -1,6 +1,6 @@
 import { useState } from "react";
 //importing APIs
-import { loginTeacherAPI, registerTeacherAPI } from "../api/auth.api";
+import { loginTeacherAPI, registerTeacherAPI, teacherForgotPasswordAPI } from "../api/auth.api";
 
 function useAuth() {
     const [teacherEmail, setTeacherEmail] = useState("");
@@ -40,6 +40,23 @@ function useAuth() {
         }
     }
 
+    const handleForgotPassword = async (e) => {
+            try {
+                e.preventDefault();
+                const form = e.currentTarget;
+                if (form.checkValidity() === false) {
+                    console.log("Form is invalid");
+                } else {
+                    // Call API to send OTP
+                    const data = await teacherForgotPasswordAPI(teacherEmail, teacherPassword);
+                    console.log(data);
+                }
+                setValidated(true);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
     return ({
         teacherEmail,
         setTeacherEmail,
@@ -51,6 +68,7 @@ function useAuth() {
         handleRegisterTeacher,
         validated,
         setValidated,
+        handleForgotPassword
     });
 }
 

@@ -17,3 +17,11 @@ export const registerStudentAPI = async (rollNo, studentName, studentEmail, stud
     });
     return response.data;
 }
+
+export const studentForgotPasswordAPI = async (studentEmail, newPassword) => {
+    const response = await api.patch("/students/forgot-password", {
+        studentEmail,
+        newPassword,
+    });
+    return response.data;
+}
