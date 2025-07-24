@@ -1,6 +1,6 @@
 import { Router } from 'express';
 //importing controllers
-import { addAttendance, deleteAttendance } from '../controllers/attendance.controller.js';
+import { addAttendance, deleteAttendance, getAttendance } from '../controllers/attendance.controller.js';
 //importing utils
 import {generateOTP, storeVerificationCode} from '../utils/generateOTP.js';
 //importing custom error classes
@@ -39,5 +39,6 @@ attendanceRouter.get('/otp', (req, res) => {
     res.json({ otp });
 });
 attendanceRouter.delete('/', wrapAsync(deleteAttendance));
+attendanceRouter.get('/:subjectName', wrapAsync(getAttendance));
 
 export default attendanceRouter;

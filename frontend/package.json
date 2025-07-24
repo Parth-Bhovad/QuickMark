@@ -12,11 +12,13 @@
   "dependencies": {
     "axios": "^1.10.0",
     "bootstrap": "^5.3.7",
+    "json-as-xlsx": "^2.5.6",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.3",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

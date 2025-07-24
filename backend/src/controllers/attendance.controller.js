@@ -1,5 +1,5 @@
 //importing services
-import { addAttendanceService, deleteAttendanceService } from "../services/attendance.service.js";
+import { addAttendanceService, deleteAttendanceService, getAttendanceService } from "../services/attendance.service.js";
 //importing utils
 import { getVerificationCode } from "../utils/generateOTP.js";
 import { findSubjectByName } from "../dao/subject.dao.js";
@@ -30,3 +30,13 @@ export const deleteAttendance = async (req, res) => {
         await deleteAttendanceService(studentId, date, subjectId);
         res.status(200).json({ message: "Attendance deleted successfully" });
 };
+
+export const getAttendance = async (req, res) => {
+    const { subjectName } = req.params;
+
+    const attendance = await getAttendanceService(subjectName);
+    if (!attendance) {
+        return res.status(404).json({ message: "Attendance not found" });
+    }
+    res.status(200).json({ attendance });
+}

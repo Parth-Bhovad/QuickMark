@@ -14,3 +14,8 @@ export const findAttendance = async (studentId, date, subjectId) => {
 export const deleteAttendance = async (attendanceId) => {
     await Attendance.deleteOne({ _id: attendanceId });
 };
+
+export const findAllAttendanceBySubject = async (subjectId) => {
+    const attendance = await Attendance.find({ subjectId });
+    return attendance;
+};

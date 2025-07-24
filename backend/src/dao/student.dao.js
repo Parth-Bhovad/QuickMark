@@ -18,6 +18,11 @@ export const findStudentById = async (studentId) => {
     return student;
 }
 
+export const findStudentsById = async (studentIds) => {
+    const students = await Student.find({ _id: { $in: studentIds } });
+    return students;
+}
+
 export const findStudentByRollNo = async (rollNo) => {
     const student = await Student.findOne({ rollNo });
     return student;
