@@ -8,11 +8,12 @@ export const loginTeacherAPI = async (teacherEmail, teacherPassword) => {
     return response;
 }
 
-export const registerTeacherAPI = async (teacherEmail, teacherPassword, teacherName) => {
+export const registerTeacherAPI = async (teacherEmail, teacherPassword, teacherName, otp) => {
     const response = await api.post("/teachers", {
         teacherEmail,
         teacherPassword,
-        teacherName
+        teacherName,
+        otp
     });
     return response;
 }
