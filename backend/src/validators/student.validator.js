@@ -21,7 +21,10 @@ export const registerStudentSchema  = Joi.object({
         .required(),
     subjects: Joi.array()
         .items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)) // MongoDB ObjectId validation
-        .default([])
+        .default([]),
+    otp: Joi.string()
+        .length(6)
+        .required()
 });
 
 export const loginStudentSchema = Joi.object({
