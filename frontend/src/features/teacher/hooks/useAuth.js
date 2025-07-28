@@ -24,14 +24,14 @@ function useAuth() {
         }
     }
 
-    const handleRegisterTeacher = async (e) => {
+    const handleRegisterTeacher = async (e, otp) => {
         try {
             e.preventDefault();
             const form = e.currentTarget;
             if (form.checkValidity() === false) {
                 console.log("Form is invalid");
             } else {
-                const response = await registerTeacherAPI(teacherEmail, teacherPassword, teacherName);
+                const response = await registerTeacherAPI(teacherEmail, teacherPassword, teacherName, otp);
                 console.log(response);
             }
             setValidated(true);
