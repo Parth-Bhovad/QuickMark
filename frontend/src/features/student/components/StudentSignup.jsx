@@ -30,7 +30,7 @@ function StudentSignup() {
     <main className="container">
       <h3 className="text-center mb-5 mt-3">Student Signup Page</h3>
 
-      <Form noValidate validated={validated} onSubmit={handleRegisterStudent}>
+      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterStudent(e, otp)}>
         <Form.Group className="mb-3" controlId="formStudentEmail">
           <Form.Label>Email:</Form.Label>
           <Form.Control
