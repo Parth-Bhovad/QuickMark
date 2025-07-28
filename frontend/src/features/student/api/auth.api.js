@@ -8,12 +8,13 @@ export const loginStudentAPI = async (studentEmail, studentPassword) => {
     return response.data;
 }
 
-export const registerStudentAPI = async (rollNo, studentName, studentEmail, studentPassword) => {
+export const registerStudentAPI = async (rollNo, studentName, studentEmail, studentPassword, otp) => {
     const response = await api.post("students/", {
         rollNo,
         studentName,
         studentEmail,
         studentPassword,
+        otp
     });
     return response.data;
 }
