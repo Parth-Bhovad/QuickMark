@@ -27,7 +27,7 @@ function TeacherSignup() {
   return (
     <main className="container">
       <h3 className="text-center mb-5 mt-3">Teacher Signup Page</h3>
-      <Form noValidate validated={validated} onSubmit={handleRegisterTeacher}>
+      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterTeacher(e, otp)}>
         <Form.Group className="mb-3" controlId="formTeacherEmail">
           <Form.Label>Teacher Email:</Form.Label>
           <Form.Control
