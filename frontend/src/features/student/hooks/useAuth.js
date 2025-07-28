@@ -7,7 +7,6 @@ function useAuth() {
     const [rollNo, setRollNo] = useState('');
     const [studentName, setStudentName] = useState('');
     const [emailVerified, setEmailVerified] = useState(false);
-    const [otp, setOtp] = useState('');
     const [validated, setValidated] = useState(false);
 
     const handleLoginStudent = async (e) => {
@@ -26,14 +25,14 @@ function useAuth() {
         }
     }
 
-    const handleRegisterStudent = async (e) => {
+    const handleRegisterStudent = async (e, otp) => {
         try {
             e.preventDefault();
             const form = e.currentTarget;
             if (form.checkValidity() === false) {
                 console.log("Form is invalid");
             } else {
-                const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword);
+                const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword, otp);
                 console.log(data);
             }
             setValidated(true);
@@ -71,8 +70,6 @@ function useAuth() {
         setStudentName,
         emailVerified,
         setEmailVerified,
-        otp,
-        setOtp,
         handleRegisterStudent,
         validated,
         setValidated,
