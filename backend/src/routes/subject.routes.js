@@ -2,13 +2,16 @@ import { Router } from 'express';
 
 //importing controllers
 import { createSubject, getAvailableSubjects } from '../controllers/subject.controller.js';
+//importing middlewares
+import isLoggedIn from '../middlewares/isLoggedIn.js';
+import isTeacher from '../middlewares/isTeacher.js';
 //importing WrapAsync
 import WrapAsync from '../utils/wrapAsync.js';
 
 
 const subjectRouter = Router({ mergeParams: true });
 
-subjectRouter.post('/', WrapAsync(createSubject));
+subjectRouter.post('/', isLoggedIn, isTeacher, WrapAsync(createSubject));
 
 subjectRouter.get('/:subjectId', (req, res) => {
     let subjectId = req.params.subjectId;
@@ -26,6 +29,6 @@ subjectRouter.get('/:subjectId/attendance', (req, res) => {
     let subjectId = req.params.subjectId;
     console.log("Get subject attendance route", subjectId);
 });
-subjectRouter.get('/', WrapAsync(getAvailableSubjects));
+subjectRouter.get('/', isLoggedIn, WrapAsync(getAvailableSubjects));
 
 export default subjectRouter;

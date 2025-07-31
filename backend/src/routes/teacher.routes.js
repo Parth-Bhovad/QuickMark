@@ -5,23 +5,25 @@ import { getTeacher, deleteTeacher, addSubjectToTeacher, getTeacherSubjects, tea
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
+import isLoggedIn from '../middlewares/isLoggedIn.js';
 //import Joi schemas
 import { registerTeacherSchema, loginTeacherSchema } from '../validators/teacher.validator.js';
 //importing wrapAsync
 import wrapAsync from '../utils/wrapAsync.js';
+import isTeacher from '../middlewares/isTeacher.js';
 
 const teacherRouter = Router({ mergeParams: true });
 
 teacherRouter.post('/', validateRequest(registerTeacherSchema), isVerifiedEmail, wrapAsync(registerTeacher));
 teacherRouter.post('/login', validateRequest(loginTeacherSchema), wrapAsync(loginTeacher));
 
-teacherRouter.get('/:teacherId', wrapAsync(getTeacher));
-teacherRouter.get('/:teacherId/subjects', wrapAsync(getTeacherSubjects));
-teacherRouter.put('/:teacherId', (req, res) => {
+teacherRouter.get('/:teacherId', isLoggedIn, isTeacher, wrapAsync(getTeacher));
+teacherRouter.get('/:teacherId/subjects', isLoggedIn,isTeacher, wrapAsync(getTeacherSubjects));
+teacherRouter.put('/:teacherId', isLoggedIn, (req, res) => {
     console.log("Update teacher route");
 });
-teacherRouter.delete('/:teacherId', wrapAsync(deleteTeacher));
+teacherRouter.delete('/:teacherId', isLoggedIn, isTeacher, wrapAsync(deleteTeacher));
 teacherRouter.patch('/forgot-password', isVerifiedEmail, wrapAsync(teacherForgotPassword));
-teacherRouter.patch('/:teacherId/subjects', wrapAsync(addSubjectToTeacher));
+teacherRouter.patch('/:teacherId/subjects', isLoggedIn, isTeacher, wrapAsync(addSubjectToTeacher));
 
 export default teacherRouter;
