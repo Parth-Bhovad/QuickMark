@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import {Link} from "react-router-dom";
 
@@ -11,6 +11,8 @@ function StudentLogin() {
     setStudentPassword,
     handleLoginStudent,
     validated,
+    error,
+    setError
   } = useAuth();
 
   return (
@@ -51,6 +53,11 @@ function StudentLogin() {
           Login
         </Button>
       </Form>
+      {error && (
+          <div className="w-100 mt-3">
+            <Alert variant="danger">{error}</Alert>
+          </div>
+        )}
       <div className="d-flex justify-content-between mt-3">
         <Link to="/student-forgot-password" className="text-decoration-none">
           Forgot password?
