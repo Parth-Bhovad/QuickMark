@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 
 function TeacherLogin() {
@@ -9,7 +9,8 @@ function TeacherLogin() {
     teacherPassword,
     setTeacherPassword,
     handleLoginTeacher,
-    validated
+    validated,
+    error
   } = useAuth();
 
   return (
@@ -50,6 +51,11 @@ function TeacherLogin() {
           Login
         </Button>
       </Form>
+      {error && (
+          <div className="w-100 mt-3">
+            <Alert variant="danger">{error}</Alert>
+          </div>
+        )}
       <div className="d-flex justify-content-between mt-3">
         <Link to="/teacher-forgot-password" className="text-decoration-none">
           Forgot password?
