@@ -72,40 +72,72 @@ function Navbar() {
                 </div>
             </div>
 
-            {showLoginPopup && <div style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                background: "rgba(0,0,0,0.5)",
-                zIndex: 9999,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}>
-                <h2>Select Your Role</h2>
-                <button onClick={() => handleLoginRedirect('student')}>Student</button>
-                <button onClick={() => handleLoginRedirect('teacher')}>Teacher</button>
-                <button onClick={() => setShowLoginPopup(false)}>Close</button>
-            </div>}
-            {showSignupPopup && <div style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100vw",
-                height: "100vh",
-                background: "rgba(0,0,0,0.5)",
-                zIndex: 9999,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}>
-                <h2>Select Your Role</h2>
-                <button onClick={() => handleSignupRedirect('student')}>Student</button>
-                <button onClick={() => handleSignupRedirect('teacher')}>Teacher</button>
-                <button onClick={() => setShowSignupPopup(false)}>Close</button>
-            </div>}
+            {showLoginPopup && <div
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    background: "rgba(0,0,0,0.5)",
+                    zIndex: 9999,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div
+                    className="bg-white rounded shadow p-4 text-center"
+                    style={{ width: "90%", maxWidth: "400px" }}
+                >
+                    <h4 className="mb-4">Select Your Role</h4>
+                    <div className="d-grid gap-2 mb-3">
+                        <button className="btn btn-primary" onClick={() => handleLoginRedirect('student')}>
+                            Student
+                        </button>
+                        <button className="btn btn-primary" onClick={() => handleLoginRedirect('teacher')}>
+                            Teacher
+                        </button>
+                    </div>
+                    <button className="btn btn-secondary w-100" onClick={() => setShowLoginPopup(false)}>
+                        Close
+                    </button>
+                </div>
+            </div>
+            }
+            {showSignupPopup && <div
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    background: "rgba(0,0,0,0.5)",
+                    zIndex: 9999,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <div
+                    className="bg-white rounded shadow p-4 text-center"
+                    style={{ width: "90%", maxWidth: "400px" }}
+                >
+                    <h4 className="mb-4">Select Your Role</h4>
+                    <div className="d-grid gap-2 mb-3">
+                        <button className="btn btn-primary" onClick={() => handleSignupRedirect('student')}>
+                            Student
+                        </button>
+                        <button className="btn btn-primary" onClick={() => handleSignupRedirect('teacher')}>
+                            Teacher
+                        </button>
+                    </div>
+                    <button className="btn btn-secondary w-100" onClick={() => setShowSignupPopup(false)}>
+                        Close
+                    </button>
+                </div>
+            </div>
+            }
         </nav>
     );
 }
