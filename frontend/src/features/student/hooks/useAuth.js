@@ -8,6 +8,7 @@ function useAuth() {
     const [studentName, setStudentName] = useState('');
     const [emailVerified, setEmailVerified] = useState(false);
     const [validated, setValidated] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleLoginStudent = async (e) => {
         try {
@@ -22,6 +23,8 @@ function useAuth() {
             setValidated(true);
         } catch (error) {
             console.log(error);
+            setError(error.response.data.msg || error.response.data.error);
+            setValidated(false);
         }
     }
 
@@ -38,6 +41,8 @@ function useAuth() {
             setValidated(true);
         } catch (error) {
             console.log(error);
+            setError(error.response.data.msg || error.response.data.error);
+            setValidated(false);
         }
     }
 
@@ -55,6 +60,7 @@ function useAuth() {
             setValidated(true);
         } catch (error) {
             console.log(error);
+            setError(error.response.data.msg);
         }
     }
 
@@ -73,7 +79,9 @@ function useAuth() {
         handleRegisterStudent,
         validated,
         setValidated,
-        handleForgotPassword
+        handleForgotPassword,
+        error,
+        setError
     });
 }
 
