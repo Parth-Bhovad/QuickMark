@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import useVerifyEmail from "../../../hooks/useVerifyEmail";
 import isValidEmail from "../../../utils/isValidEmail";
@@ -15,6 +15,8 @@ function StudentSignup() {
     setStudentPassword,
     handleRegisterStudent,
     validated,
+    error,
+    setError
   } = useAuth();
 
   const {
@@ -24,6 +26,7 @@ function StudentSignup() {
     setOtp,
     handleSendOTPToEmail,
     handleVerifyOtp,
+    emailVerificationError
   } = useVerifyEmail();
 
   return (
@@ -134,6 +137,16 @@ function StudentSignup() {
           Sign Up
         </Button>
       </Form>
+      {error && (
+        <div className="w-100 mt-3">
+          <Alert variant="danger">{error}</Alert>
+        </div>
+      )}
+      {emailVerificationError && (
+        <div className="w-100 mt-3">
+          <Alert variant="danger">{emailVerificationError}</Alert>
+        </div>
+      )}
     </main>
   );
 }
