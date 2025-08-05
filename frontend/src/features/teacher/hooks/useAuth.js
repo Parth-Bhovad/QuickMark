@@ -7,6 +7,7 @@ function useAuth() {
     const [teacherPassword, setTeacherPassword] = useState("");
     const [teacherName, setTeacherName] = useState("");
     const [validated, setValidated] = useState(false);
+    const [error, setError] = useState("");
 
     const handleLoginTeacher = async (e) => {
         try {
@@ -21,6 +22,8 @@ function useAuth() {
             setValidated(true);
         } catch (error) {
             console.log(error);
+            setError(error.response.data.msg || error.response.data.error);
+            setValidated(true);
         }
     }
 
@@ -37,6 +40,8 @@ function useAuth() {
             setValidated(true);
         } catch (error) {
             console.log(error);
+            setError(error.response.data.msg || error.response.data.error);
+            setValidated(false);
         }
     }
 
@@ -54,6 +59,7 @@ function useAuth() {
                 setValidated(true);
             } catch (error) {
                 console.log(error);
+                setError(error.response.data.msg || error.response.data.error);
             }
         }
 
@@ -68,7 +74,9 @@ function useAuth() {
         handleRegisterTeacher,
         validated,
         setValidated,
-        handleForgotPassword
+        handleForgotPassword,
+        error,
+        setError
     });
 }
 
