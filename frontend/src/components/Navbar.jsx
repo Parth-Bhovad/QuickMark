@@ -14,16 +14,20 @@ function Navbar() {
     const handleLoginRedirect = (role) => {
         if (role === 'student') {
             navigate('/student-login');
+            setShowLoginPopup(false);
         } else if (role === 'teacher') {
             navigate('/teacher-login');
+            setShowLoginPopup(false);
         }
     }
 
     const handleSignupRedirect = (role) => {
         if (role === 'student') {
             navigate('/student-signup');
+            setShowSignupPopup(false);
         } else if (role === 'teacher') {
             navigate('/teacher-signup');
+            setShowSignupPopup(false);
         }
     }
 
@@ -35,17 +39,17 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav d-flex justify-content-end w-100">
                         <li className="nav-item">
                             <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                         </li>
                         {!currentUser &&
                             <>
                                 <li className="nav-item">
-                                    <div onClick={() => setShowLoginPopup(true)}>Login</div>
+                                    <div className="nav-link" onClick={() => setShowLoginPopup(true)}>Login</div>
                                 </li>
                                 <li className="nav-item">
-                                    <div onClick={() => setShowSignupPopup(true)}>SignUp</div>
+                                    <div className="nav-link" onClick={() => setShowSignupPopup(true)}>SignUp</div>
                                 </li>
                             </>}
 
