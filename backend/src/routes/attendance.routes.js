@@ -2,7 +2,7 @@ import { Router } from 'express';
 //importing controllers
 import { addAttendance, deleteAttendance, getAttendance } from '../controllers/attendance.controller.js';
 //importing utils
-import { generateOTP, storeVerificationCode } from '../utils/generateOTP.js';
+import { generateAttendanceOTP, storeVerificationCode } from '../utils/generateOTP.js';
 //importing custom error classes
 import ExpressError from '../utils/ExpressError.js';
 //importing wrapAsync utility
@@ -35,7 +35,7 @@ attendanceRouter.get('/otp', isLoggedIn, (req, res) => {
         attendanceRouter.otpActive = false;
     }, 60 * 1000); // 1 minute
 
-    const otp = generateOTP();
+    const otp = generateAttendanceOTP();
     console.log("OTP Generated", otp);
 
     storeVerificationCode(otp, req.query.subjectName, 60 * 1000); // Store OTP with a 1-minute expiry

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 //importing helpers
 import { signJWT, checkExistingStudent, checkExistingTeacher, hashPassword } from '../utils/helper.js';
 //importing utils
-import { generateOTP, storeVerificationCode, getVerificationCode } from '../utils/generateOTP.js';
+import { generateEmailOTP, storeVerificationCode, getVerificationCode } from '../utils/generateOTP.js';
 //importing DAOs
 import { createStudent } from '../dao/student.dao.js';
 import { createTeacher, findTeacherByEmail } from "../dao/teacher.dao.js";
@@ -79,7 +79,7 @@ export const loginTeacherService = async (teacherEmail, teacherPassword) => {
 }
 
 export const sendOTPEmailService = async (userEmail) => {
-  const otp = generateOTP();
+  const otp = generateEmailOTP();
   storeVerificationCode(userEmail, otp);
 
   const mailOptions = {
