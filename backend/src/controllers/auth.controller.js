@@ -29,6 +29,10 @@ export const registerStudent = async (req, res) => {
 export const loginStudent = async (req, res) => {
   let { studentEmail, studentPassword } = req.body;
   const { token } = await loginStudentService(studentEmail, studentPassword);
+  console.log(process.env.NODE_ENV);
+  
+  console.log("Is production:", process.env.NODE_ENV === "production");
+
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
