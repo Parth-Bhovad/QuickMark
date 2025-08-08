@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import dotenv from "dotenv"
+dotenv.config();
 
-const mongoUri = `mongodb://localhost:27017/QuickMark`;
+const mongoUri = process.env.MONGO_URI;
 const connectDB = () => {
     mongoose.connect(mongoUri)
         .then(() => console.log("MongoDB connected"))
