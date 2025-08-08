@@ -2,3 +2,26 @@ html, body {
   height: auto;
   overflow-y: auto;
 }
+
+/* By default the blocker is hidden */
+.split-blocker {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(255,255,255,0.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* When viewport width ≤300px, show the blocker */
+@media  (max-width: 300px), (max-height: 600px)  {
+  .split-blocker {
+    display: flex;
+  }
+}
