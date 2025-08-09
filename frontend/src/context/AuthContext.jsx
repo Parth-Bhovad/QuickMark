@@ -10,25 +10,27 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await api.get("/authenticate/me", { withCredentials: true });
-      if(res.status === 200) {
+
+  const checkAuth = async () => {
+    try {
+      const res = await api.get("/authenticate/me", { withCredentials: true });
+      if (res.status === 200) {
         setCurrentUser(res.data.user);
       }
       setAuthChecked(true);
-      } catch (error) {
-        console.error("Error checking authentication:", error);
-        setAuthChecked(true);
-      }
-    };
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      setAuthChecked(true);
+    }
+  };
+
+  useEffect(() => {
     checkAuth();
   }, []);
 
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, authChecked, setAuthChecked }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser, authChecked, setAuthChecked, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

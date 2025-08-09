@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { loginStudentAPI, registerStudentAPI, studentForgotPasswordAPI } from "../api/auth.api.js";
+//importing auth context
+import { useAuthContext } from "../../../context/AuthContext.jsx";
+// import { checkAuth } from "../../../context/AuthContext.jsx";
 
 function useAuth() {
     const [studentEmail, setStudentEmail] = useState("");
@@ -9,6 +12,7 @@ function useAuth() {
     const [emailVerified, setEmailVerified] = useState(false);
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState(null);
+    const {checkAuth } = useAuthContext();
 
     const handleLoginStudent = async (e) => {
         try {
@@ -19,6 +23,7 @@ function useAuth() {
             } else {
                 const data = await loginStudentAPI(studentEmail, studentPassword);
                 console.log(data);
+                checkAuth();
             }
             setValidated(true);
         } catch (error) {
