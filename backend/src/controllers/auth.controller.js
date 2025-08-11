@@ -22,6 +22,7 @@ export const registerStudent = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+    maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
   res.status(201).json({ token });
 };
@@ -37,6 +38,7 @@ export const loginStudent = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+    maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
   res.status(200).json({ token });
 };
@@ -46,6 +48,7 @@ export const logout = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+    maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
@@ -61,6 +64,7 @@ export const registerTeacher = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+    maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
   res.status(201).json({ token });
 };
@@ -72,6 +76,7 @@ export const loginTeacher = async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
+    maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
   res.status(200).json({ token });
 };

@@ -7,7 +7,7 @@ import { findTeacherByEmail } from '../dao/teacher.dao.js';
 export const signJWT = (userId, role) => {
     // Generate JWT token
     const token = jwt.sign({ id: userId, role }, process.env.JWT_SECRET, {
-        expiresIn: "1d"
+        expiresIn: "2d"
     });
     return token;
 }
