@@ -22,7 +22,7 @@ function useStudentProfile() {
             setError("Subject name cannot be empty.");
             return;
         }
-        if (!subjects.includes(subjectName)) {
+        if (subjects.includes(subjectName)) {
             console.log(`Subject already added: ${subjectName}`);
 
             setError("Subject already added.");
@@ -30,6 +30,9 @@ function useStudentProfile() {
         }
         try {
             await addSubjectToStudentAPI(currentUser.id, subjectName);
+            if(subjects[0] == "No subjects available"){
+                setSubjects([]);
+            }
             setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
             setSubjectName("");
         } catch (error) {
