@@ -33,12 +33,12 @@ attendanceRouter.get('/otp', isLoggedIn, (req, res) => {
     attendanceRouter.otpActive = true;
     setTimeout(() => {
         attendanceRouter.otpActive = false;
-    }, 60 * 1000); // 1 minute
+    }, 30 * 1000); // 30 seconds
 
     const otp = generateAttendanceOTP();
     console.log("OTP Generated", otp);
 
-    storeVerificationCode(otp, req.query.subjectName, 60 * 1000); // Store OTP with a 1-minute expiry
+    storeVerificationCode(otp, req.query.subjectName, 30 * 1000); // Store OTP with a 30-second expiry
     res.json({ otp });
 });
 attendanceRouter.delete('/', isLoggedIn, wrapAsync(deleteAttendance));
