@@ -36,7 +36,7 @@ function useTeacherAttendanceSession() {
         try {
             const res = await getAttendanceOtpAPI(selectedSubject);
             setFeedback(`OTP: ${res.data.otp}`);
-            setTimer(60);
+            setTimer(30);
         } catch (error) {
             console.log(error);
             setFeedback("Failed to fetch OTP: " + (error.response.data.msg || error.message));
