@@ -9,6 +9,7 @@ function useStudentMarkAttendance() {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const currentUserRef = useRef(currentUser);
+  const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
 
   useEffect(() => {
     currentUserRef.current = currentUser;
@@ -33,6 +34,7 @@ function useStudentMarkAttendance() {
         const res = await markStudentAttendanceAPI(otp, true, currentUser.id);
         console.log(res);
         setFeedback("Attendance marked successfully!");
+        setIsAttendanceMarked(true);
       } catch (error) {
         console.log(error);
         setFeedback("Failed to mark attendance.");
@@ -49,7 +51,7 @@ function useStudentMarkAttendance() {
       const user = currentUserRef.current;
       const otp = otpRef.current;
 
-      if (otp.length > 0) {
+      if (isAttendanceMarked) {
         await deleteStudentAtendanceAPI(user.id, new Date().toISOString().split("T")[0], otp);
       }
       navigate("/");
