@@ -12,6 +12,41 @@ function StudentMarkAttendance() {
     const [warningMsg, setWarningMsg] = useState("");
 
     useEffect(() => {
+        const otpEl = otpRef.current;
+        if (!otpEl) return;
+
+        let lastLen = otpEl.value.length;
+
+        // Block beforeinput paste/drop
+        const handleBeforeInput = (e) => {
+            if (e.inputType === "insertFromPaste" || e.inputType === "insertFromDrop") {
+                e.preventDefault();
+                console.log("Paste blocked: beforeinput");
+            }
+        };
+
+        // Fallback sudden insert detection
+        const handleInput = () => {
+            const cur = otpEl.value;
+            if (cur.length - lastLen > 1) {
+                otpEl.value = cur.slice(0, lastLen); // revert
+                setOtp(otpEl.value);
+                console.log("Paste blocked: sudden insert detected");
+            } else {
+                lastLen = cur.length;
+            }
+        };
+
+        otpEl.addEventListener("beforeinput", handleBeforeInput);
+        otpEl.addEventListener("input", handleInput);
+
+        return () => {
+            otpEl.removeEventListener("beforeinput", handleBeforeInput);
+            otpEl.removeEventListener("input", handleInput);
+        };
+    }, []);
+
+    useEffect(() => {
         const input = otpRef.current;
 
         const handleFocus = () => {
