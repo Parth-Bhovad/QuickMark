@@ -1,6 +1,7 @@
 import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import {Link} from "react-router-dom";
+import LoadingButton from "../../../components/LoadingButton";
 
 function StudentLogin() {
   // using custom hook
@@ -12,7 +13,8 @@ function StudentLogin() {
     handleLoginStudent,
     validated,
     error,
-    setError
+    setError,
+    loggingInStudent
   } = useAuth();
 
   return (
@@ -49,9 +51,16 @@ function StudentLogin() {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button type="submit" className="w-100">
+        {/* <Button type="submit" className="w-100">
           Login
-        </Button>
+        </Button> */}
+        <LoadingButton
+          loading={loggingInStudent}
+          type="submit"
+          className="w-100"
+        >
+          Login
+        </LoadingButton>
       </Form>
       {error && (
           <div className="w-100 mt-3">

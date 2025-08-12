@@ -1,5 +1,4 @@
 import { useState } from "react";
-//importing APIs
 import { sendOTPToEmailAPI, verifyOtpAPI } from "../api/verifyEmail.api";
 
 function useVerifyEmail() {
@@ -8,35 +7,43 @@ function useVerifyEmail() {
   const [otp, setOtp] = useState("");
   const [emailVerificationError, setEmailVerificationError] = useState("");
 
+  // Loading states
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+
   const handleSendOTPToEmail = async (email) => {
+    setEmailVerificationError("");
+    setSendingOtp(true);
     try {
       const response = await sendOTPToEmailAPI(email);
-      console.log(response);
-
       if (response.status === 200) {
         setIsOTPSent(true);
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
       setEmailVerificationError(
-        error.response.data.msg || error.response.data.error
+        error.response?.data?.msg || error.response?.data?.error || "Failed to send OTP"
       );
+    } finally {
+      setSendingOtp(false);
     }
   };
 
   const handleVerifyOtp = async (email) => {
+    setEmailVerificationError("");
+    setVerifyingOtp(true);
     try {
       const response = await verifyOtpAPI(email, otp);
-      console.log(response);
-
       if (response.status === 200) {
         setIsOTPVerified(true);
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
       setEmailVerificationError(
-        error.response.data.msg || error.response.data.error
+        error.response?.data?.msg || error.response?.data?.error || "Failed to verify OTP"
       );
+    } finally {
+      setVerifyingOtp(false);
     }
   };
 
@@ -48,6 +55,8 @@ function useVerifyEmail() {
     handleSendOTPToEmail,
     handleVerifyOtp,
     emailVerificationError,
+    sendingOtp,
+    verifyingOtp
   };
 }
 

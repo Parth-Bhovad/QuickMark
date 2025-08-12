@@ -11,6 +11,9 @@ function useStudentMarkAttendance() {
   const currentUserRef = useRef(currentUser);
   const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
 
+  //loading state for submitting attendance
+  const [submittingAttendance, setSubmittingAttendance] = useState(false);
+
   useEffect(() => {
     currentUserRef.current = currentUser;
   }, [currentUser]);
@@ -24,6 +27,7 @@ function useStudentMarkAttendance() {
   const [feedback, setFeedback] = useState("");
 
   const handleSubmit = async (event) => {
+    setSubmittingAttendance(true);
     event.preventDefault();
     const form = event.currentTarget;
 
@@ -38,6 +42,8 @@ function useStudentMarkAttendance() {
       } catch (error) {
         console.log(error);
         setFeedback("Failed to mark attendance.");
+      } finally {
+        setSubmittingAttendance(false);
       }
     }
 
@@ -90,6 +96,7 @@ function useStudentMarkAttendance() {
       feedback,
       setFeedback,
       handleSubmit,
+      submittingAttendance
     };
   }
 

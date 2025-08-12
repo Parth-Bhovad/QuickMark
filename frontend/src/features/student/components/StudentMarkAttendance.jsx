@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import useStudentMarkAttendance from "../hooks/useStudentMarkAttendance";
+import LoadingButton from "../../../components/LoadingButton";
 
 function StudentMarkAttendance() {
-    const { otp, setOtp, validated, feedback, handleSubmit } = useStudentMarkAttendance();
+    const { otp, setOtp, validated, feedback, handleSubmit, submittingAttendance } = useStudentMarkAttendance();
 
     const otpRef = useRef(null);
     const [focusCount, setFocusCount] = useState(0);
@@ -112,9 +113,18 @@ function StudentMarkAttendance() {
                     </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button type="submit" disabled={otp.length < 6 || isBlocked} className="w-100">
+                {/* <Button type="submit" disabled={otp.length < 6 || isBlocked} className="w-100">
                     Submit
-                </Button>
+                </Button> */}
+                <LoadingButton
+                    loading={submittingAttendance}
+                    type="submit"
+                    className="w-100"
+                    disabled={otp.length < 6 || isBlocked}
+                >
+                    Mark Attendance
+                </LoadingButton>
+
             </Form>
 
             {feedback && (
