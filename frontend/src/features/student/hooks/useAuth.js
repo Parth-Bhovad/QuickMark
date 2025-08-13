@@ -32,6 +32,9 @@ function useAuth() {
         const data = await loginStudentAPI(studentEmail, studentPassword);
         console.log(data);
         checkAuth();
+        if (data?.token) {
+          navigate("/student/mark-attendance");
+        }
       }
       setValidated(true);
     } catch (error) {
@@ -40,7 +43,6 @@ function useAuth() {
       setValidated(false);
     } finally {
       setLoggingInStudent(false);
-      navigate("/student/mark-attendance");
     }
   };
 
@@ -54,6 +56,9 @@ function useAuth() {
       } else {
         const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword, otp);
         console.log(data);
+        if (data?.token) {
+          navigate("/student/mark-attendance");
+        }
       }
       setValidated(true);
     } catch (error) {
@@ -62,7 +67,6 @@ function useAuth() {
       setValidated(false);
     } finally {
       setRegisteringStudent(false);
-      navigate("/student/mark-attendance");
     }
   };
 
