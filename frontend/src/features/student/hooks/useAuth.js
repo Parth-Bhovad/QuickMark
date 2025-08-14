@@ -56,6 +56,7 @@ function useAuth() {
       } else {
         const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword, otp);
         console.log(data);
+        checkAuth();
         if (data?.token) {
           navigate("/student/mark-attendance");
         }
