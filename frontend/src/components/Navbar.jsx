@@ -1,149 +1,175 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-//importing auth context
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 
 function Navbar() {
-    const navigate = useNavigate();
-    const { currentUser, authChecked } = useAuthContext();
+  const navigate = useNavigate();
+  const { currentUser, authChecked } = useAuthContext();
 
-    const [showLoginPopup, setShowLoginPopup] = useState(false);
-    const [showSignupPopup, setShowSignupPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showSignupPopup, setShowSignupPopup] = useState(false);
 
-    const handleLoginRedirect = (role) => {
-        if (role === 'student') {
-            navigate('/student-login');
-            setShowLoginPopup(false);
-        } else if (role === 'teacher') {
-            navigate('/teacher-login');
-            setShowLoginPopup(false);
-        }
-    }
+  const handleLoginRedirect = (role) => {
+    navigate(`/${role}-login`);
+    setShowLoginPopup(false);
+  };
 
-    const handleSignupRedirect = (role) => {
-        if (role === 'student') {
-            navigate('/student-signup');
-            setShowSignupPopup(false);
-        } else if (role === 'teacher') {
-            navigate('/teacher-signup');
-            setShowSignupPopup(false);
-        }
-    }
+  const handleSignupRedirect = (role) => {
+    navigate(`/${role}-signup`);
+    setShowSignupPopup(false);
+  };
 
-    return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <div className="container-fluid">
-                <Link className="navbar-brand" to="/">QuickMark</Link>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav d-flex justify-content-end w-100">
-                        <li className="nav-item">
-                            <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-                        </li>
-                        {!currentUser &&
-                            <>
-                                <li className="nav-item">
-                                    <div className="nav-link" onClick={() => setShowLoginPopup(true)}>Login</div>
-                                </li>
-                                <li className="nav-item">
-                                    <div className="nav-link" onClick={() => setShowSignupPopup(true)}>SignUp</div>
-                                </li>
-                            </>}
+  return (
+    <>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top">
+        <div className="container-fluid px-3">
+          {/* Brand */}
+          <Link
+            className="navbar-brand fw-bold text-primary"
+            style={{ fontSize: "1.3rem" }}
+            to="/"
+          >
+            QuickMark
+          </Link>
 
-                        {currentUser && authChecked && currentUser.role === 'student' &&
-                            <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/student/mark-attendance">Mark Attendance</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/student/profile">Profile</Link>
-                                </li>
-                            </>}
+          {/* Mobile Toggle */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-                        {currentUser && authChecked && currentUser.role === 'teacher' &&
-                            <>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/teacher/attendance-session">Attendance Session</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/teacher/profile">Profile</Link>
-                                </li>
-                            </>}
-                    </ul>
-                </div>
-            </div>
+          {/* Links */}
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+              <li className="nav-item">
+                <Link className="nav-link fw-semibold" to="/">
+                  Home
+                </Link>
+              </li>
 
-            {showLoginPopup && <div
-                style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh",
-                    background: "rgba(0,0,0,0.5)",
-                    zIndex: 9999,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div
-                    className="bg-white rounded shadow p-4 text-center"
-                    style={{ width: "90%", maxWidth: "400px" }}
-                >
-                    <h4 className="mb-4">Select Your Role</h4>
-                    <div className="d-grid gap-2 mb-3">
-                        <button className="btn btn-primary" onClick={() => handleLoginRedirect('student')}>
-                            Student
-                        </button>
-                        <button className="btn btn-primary" onClick={() => handleLoginRedirect('teacher')}>
-                            Teacher
-                        </button>
-                    </div>
-                    <button className="btn btn-secondary w-100" onClick={() => setShowLoginPopup(false)}>
-                        Close
+              {!currentUser && (
+                <>
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => setShowLoginPopup(true)}
+                    >
+                      Login
                     </button>
-                </div>
-            </div>
-            }
-            {showSignupPopup && <div
-                style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh",
-                    background: "rgba(0,0,0,0.5)",
-                    zIndex: 9999,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div
-                    className="bg-white rounded shadow p-4 text-center"
-                    style={{ width: "90%", maxWidth: "400px" }}
-                >
-                    <h4 className="mb-4">Select Your Role</h4>
-                    <div className="d-grid gap-2 mb-3">
-                        <button className="btn btn-primary" onClick={() => handleSignupRedirect('student')}>
-                            Student
-                        </button>
-                        <button className="btn btn-primary" onClick={() => handleSignupRedirect('teacher')}>
-                            Teacher
-                        </button>
-                    </div>
-                    <button className="btn btn-secondary w-100" onClick={() => setShowSignupPopup(false)}>
-                        Close
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => setShowSignupPopup(true)}
+                    >
+                      Sign Up
                     </button>
-                </div>
+                  </li>
+                </>
+              )}
+
+              {currentUser && authChecked && currentUser.role === "student" && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link fw-semibold" to="/student/mark-attendance">
+                      Mark Attendance
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link fw-semibold" to="/student/profile">
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
+
+              {currentUser && authChecked && currentUser.role === "teacher" && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link fw-semibold" to="/teacher/attendance-session">
+                      Attendance Session
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link fw-semibold" to="/teacher/profile">
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Login Role Popup */}
+      {showLoginPopup && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center z-3">
+          <div className="bg-white rounded-4 shadow p-4 text-center" style={{ maxWidth: "400px", width: "90%" }}>
+            <h4 className="fw-bold mb-4">Login as</h4>
+            <div className="d-grid gap-3 mb-3">
+              <button
+                className="btn btn-primary fw-semibold"
+                onClick={() => handleLoginRedirect("student")}
+              >
+                Student
+              </button>
+              <button
+                className="btn btn-primary fw-semibold"
+                onClick={() => handleLoginRedirect("teacher")}
+              >
+                Teacher
+              </button>
             </div>
-            }
-        </nav>
-    );
+            <button
+              className="btn btn-outline-secondary w-100"
+              onClick={() => setShowLoginPopup(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Signup Role Popup */}
+      {showSignupPopup && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center z-3">
+          <div className="bg-white rounded-4 shadow p-4 text-center" style={{ maxWidth: "400px", width: "90%" }}>
+            <h4 className="fw-bold mb-4">Sign up as</h4>
+            <div className="d-grid gap-3 mb-3">
+              <button
+                className="btn btn-primary fw-semibold"
+                onClick={() => handleSignupRedirect("student")}
+              >
+                Student
+              </button>
+              <button
+                className="btn btn-primary fw-semibold"
+                onClick={() => handleSignupRedirect("teacher")}
+              >
+                Teacher
+              </button>
+            </div>
+            <button
+              className="btn btn-outline-secondary w-100"
+              onClick={() => setShowSignupPopup(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default Navbar;
