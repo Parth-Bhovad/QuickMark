@@ -9,7 +9,6 @@ import TeacherLoginPage from './features/teacher/pages/TeacherLoginPage'
 import TeacherForgotPasswordPage from './features/teacher/pages/TeacherForgotPasswordPage'
 import TeacherSignupPage from './features/teacher/pages/TeacherSignupPage'
 import AttendancePage from './pages/AttendancePage'
-import AttendanceList from './pages/AttendanceList'
 import { Routes, Route } from "react-router";
 import StudentRoute from './routes/StudentRoute';
 import TeacherRoute from './routes/TeacherRoute';
@@ -44,7 +43,6 @@ function App() {
         <Route path="/teacher-forgot-password" element={<TeacherForgotPasswordPage />} />
         <Route path="/teacher-signup" element={<TeacherSignupPage />} />
         <Route path="/attendance" element={<AttendancePage />} />
-        <Route path="/attendance-list" element={<AttendanceList />} />
         <Route path="/student/*" element={<StudentRoute />} />
         <Route path="/teacher/*" element={<TeacherRoute />} />
       </Routes>
