@@ -1,6 +1,8 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
+import LoadingButton from "../../../components/LoadingButton";
+import { useState } from "react";
 
 function TeacherLogin() {
   const {
@@ -10,9 +12,10 @@ function TeacherLogin() {
     setTeacherPassword,
     handleLoginTeacher,
     validated,
-    error
+    error,
+    loggingInTeacher
   } = useAuth();
-
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <main className="container">
       <h3 className="text-center mb-5 mt-3">Teacher Login Page</h3>
@@ -34,28 +37,42 @@ function TeacherLogin() {
 
         <Form.Group className="mb-4" controlId="formTeacherPassword">
           <Form.Label>Teacher Password:</Form.Label>
-          <Form.Control
-            required
-            type="password"
-            minLength={6}
-            placeholder="Enter password"
-            value={teacherPassword}
-            onChange={(e) => setTeacherPassword(e.target.value)}
-          />
+          <div className="input-group">
+            <Form.Control
+              required
+              type={showPassword ? "text" : "password"}
+              minLength={6}
+              placeholder="Enter password"
+              value={teacherPassword}
+              onChange={(e) => setTeacherPassword(e.target.value)}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+              tabIndex={-1}
+            >
+              {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
+            </Button>
+          </div>
           <Form.Control.Feedback type="invalid">
             Password should be at least 6 characters.
           </Form.Control.Feedback>
         </Form.Group>
-
-        <Button type="submit" className="w-100">
+        <LoadingButton
+          loading={loggingInTeacher}
+          type="submit"
+          variant="primary"
+          className="w-100 mt-3"
+        >
           Login
-        </Button>
+        </LoadingButton>
       </Form>
       {error && (
-          <div className="w-100 mt-3">
-            <Alert variant="danger">{error}</Alert>
-          </div>
-        )}
+        <div className="w-100 mt-3">
+          <Alert variant="danger">{error}</Alert>
+        </div>
+      )}
       <div className="d-flex justify-content-between mt-3">
         <Link to="/teacher-forgot-password" className="text-decoration-none">
           Forgot password?
