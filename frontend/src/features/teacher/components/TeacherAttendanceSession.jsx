@@ -1,7 +1,7 @@
 import { Container, Button, Modal, ListGroup, Alert, Card } from "react-bootstrap";
 //importing hooks
 import useTeacherAttendanceSession from "../hooks/useTeacherAttendanceSession";
-
+import LoadingButton from "../../../components/LoadingButton";
 function TeacherAttendanceSession() {
   const {
     selectedSubject,
@@ -43,7 +43,8 @@ function TeacherAttendanceSession() {
       {/* Get OTP card */}
       <Card className="shadow-sm border-0 rounded-4 mb-4">
         <Card.Body className="text-center">
-          <Button
+          <LoadingButton
+            loading={timer > 0}
             variant="primary"
             size="lg"
             className="px-5 py-2 fw-semibold"
@@ -53,7 +54,7 @@ function TeacherAttendanceSession() {
             disabled={!selectedSubject || timer > 0}
           >
             Get OTP
-          </Button>
+          </LoadingButton>
 
           {timer > 0 && (
             <Alert
