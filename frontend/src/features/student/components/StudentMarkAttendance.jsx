@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Container, Alert, Badge, Card } from "react-bootstrap";
 import useStudentMarkAttendance from "../hooks/useStudentMarkAttendance";
 import LoadingButton from "../../../components/LoadingButton";
 
@@ -12,27 +12,24 @@ function StudentMarkAttendance() {
     const [isBlocked, setIsBlocked] = useState(false);
     const [warningMsg, setWarningMsg] = useState("");
 
+    // Paste/drop block
     useEffect(() => {
         const otpEl = otpRef.current;
         if (!otpEl) return;
 
         let lastLen = otpEl.value.length;
 
-        // Block beforeinput paste/drop
         const handleBeforeInput = (e) => {
             if (e.inputType === "insertFromPaste" || e.inputType === "insertFromDrop") {
                 e.preventDefault();
-                console.log("Paste blocked: beforeinput");
             }
         };
 
-        // Fallback sudden insert detection
         const handleInput = () => {
             const cur = otpEl.value;
             if (cur.length - lastLen > 1) {
-                otpEl.value = cur.slice(0, lastLen); // revert
+                otpEl.value = cur.slice(0, lastLen);
                 setOtp(otpEl.value);
-                console.log("Paste blocked: sudden insert detected");
             } else {
                 lastLen = cur.length;
             }
@@ -47,6 +44,7 @@ function StudentMarkAttendance() {
         };
     }, []);
 
+    // Suspicious activity detection
     useEffect(() => {
         const input = otpRef.current;
 
@@ -60,13 +58,10 @@ function StudentMarkAttendance() {
 
             setFocusCount(prev => {
                 const newCount = prev + 1;
-
-                // If blurred 3+ times within 20 seconds, consider suspicious
                 if (newCount >= 3 && elapsed < 20) {
                     setIsBlocked(true);
-                    setWarningMsg("Suspicious activity detected. Please avoid switching apps while entering OTP.");
+                    setWarningMsg("⚠ Suspicious activity detected — Please avoid switching apps while entering OTP.");
                 }
-
                 return newCount;
             });
         };
@@ -85,62 +80,70 @@ function StudentMarkAttendance() {
     }, [startTime]);
 
     return (
-        <Container className="mt-5">
-            <h3 className="text-center mb-4">Student Mark Attendance</h3>
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+            <Card className="shadow-lg p-4" style={{ maxWidth: "420px", width: "100%" }}>
 
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formOtp">
-                    <Form.Label>Enter OTP:</Form.Label>
-                    <Form.Control
-                        ref={otpRef}
-                        required
-                        type="text"
-                        minLength={6}
-                        placeholder="Enter the OTP you received"
-                        value={otp}
-                        disabled={isBlocked}
-                        onChange={(e) => setOtp(e.target.value)}
-                        onCopy={(e) => e.preventDefault()}
-                        onPaste={(e) => e.preventDefault()}
-                        onCut={(e) => e.preventDefault()}
-                        onDragStart={(e) => e.preventDefault()}
-                        onDrop={(e) => e.preventDefault()}
-                        onContextMenu={(e) => e.preventDefault()}
-                        autoComplete="off"
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        Please enter a valid OTP.
-                    </Form.Control.Feedback>
-                </Form.Group>
+                <h3 className="text-center fw-bold mb-3 fs-4">Mark Your Attendance</h3>
+                <p className="text-muted text-center mb-4" style={{ fontSize: "1.15rem" }}>
+                    Please enter the one-time code given by your teacher. Keep this window open while entering.
+                </p>
 
-                {/* <Button type="submit" disabled={otp.length < 6 || isBlocked} className="w-100">
-                    Submit
-                </Button> */}
-                <LoadingButton
-                    loading={submittingAttendance}
-                    type="submit"
-                    className="w-100"
-                    disabled={otp.length < 6 || isBlocked}
-                >
-                    Mark Attendance
-                </LoadingButton>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formOtp">
+                        <Form.Label className="fw-semibold" style={{ fontSize: "1.1rem" }}>Enter OTP</Form.Label>
+                        <Form.Control
+                            ref={otpRef}
+                            required
+                            type="text"
+                            minLength={6}
+                            placeholder="Enter 6-digit code"
+                            value={otp}
+                            disabled={isBlocked}
+                            onChange={(e) => setOtp(e.target.value)}
+                            onCopy={(e) => e.preventDefault()}
+                            onPaste={(e) => e.preventDefault()}
+                            onCut={(e) => e.preventDefault()}
+                            onDragStart={(e) => e.preventDefault()}
+                            onDrop={(e) => e.preventDefault()}
+                            onContextMenu={(e) => e.preventDefault()}
+                            autoComplete="off"
+                            style={{
+                                fontSize: "1.3rem",
+                                letterSpacing: "0.15rem",
+                                textAlign: "center"
+                            }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Please enter a valid OTP.
+                        </Form.Control.Feedback>
+                    </Form.Group>
 
-            </Form>
+                    <LoadingButton
+                        loading={submittingAttendance}
+                        type="submit"
+                        className="w-100"
+                        disabled={otp.length < 6 || isBlocked}
+                    >
+                        Mark Attendance
+                    </LoadingButton>
+                </Form>
 
-            {feedback && (
-                <Alert
-                    variant={feedback.includes("successfully") ? "success" : "danger"}
-                    className="mt-4"
-                >
-                    {feedback}
-                </Alert>
-            )}
+                {feedback && (
+                    <Alert
+                        variant={feedback.includes("successfully") ? "success" : "danger"}
+                        className="mt-4 fade show"
+                        style={{ fontSize: "1.1rem" }}
+                    >
+                        {feedback}
+                    </Alert>
+                )}
 
-            {warningMsg && (
-                <Alert variant="warning" className="mt-3">
-                    {warningMsg}
-                </Alert>
-            )}
+                {warningMsg && (
+                    <Alert variant="warning" className="mt-3 animate__animated animate__shakeX" style={{ fontSize: "1.1rem" }}>
+                        {warningMsg}
+                    </Alert>
+                )}
+            </Card>
         </Container>
     );
 }
