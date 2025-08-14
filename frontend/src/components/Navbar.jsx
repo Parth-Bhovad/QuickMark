@@ -60,17 +60,14 @@ function Navbar() {
                 <>
                   <li className="nav-item">
                     <button
-                      className="btn btn-outline-primary btn-sm"
+                      className="nav-link fw-semibold btn btn-outline-primary btn-sm"
                       onClick={() => setShowLoginPopup(true)}
                     >
                       Login
                     </button>
                   </li>
                   <li className="nav-item">
-                    <button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => setShowSignupPopup(true)}
-                    >
+                    <button className="nav-link fw-semibold" onClick={() => setShowSignupPopup(true)}>
                       Sign Up
                     </button>
                   </li>
@@ -102,6 +99,11 @@ function Navbar() {
                   <li className="nav-item">
                     <Link className="nav-link fw-semibold" to="/teacher/profile">
                       Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link fw-semibold" to="/attendance-list">
+                      Attendance List
                     </Link>
                   </li>
                 </>
