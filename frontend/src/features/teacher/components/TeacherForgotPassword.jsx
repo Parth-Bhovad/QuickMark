@@ -2,6 +2,8 @@ import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import useVerifyEmail from "../../../hooks/useVerifyEmail";
 import isValidEmail from "../../../utils/isValidEmail";
+import LoadingButton from "../../../components/LoadingButton";
+import { useState } from "react";
 
 function TeacherForgotPassword() {
     const {
@@ -20,12 +22,14 @@ function TeacherForgotPassword() {
         setOtp,
         handleSendOTPToEmail,
         handleVerifyOtp,
+        sendingOtp,
+        verifyingOtp
     } = useVerifyEmail();
-    
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <main className="container">
             <h3 className="text-center mb-5 mt-3">Forgot Password</h3>
-            <Form noValidate validated={validated} onSubmit={handleForgotPassword}>
+            <Form noValidate validated={validated} onSubmit={(e) => handleForgotPassword(e, otp)}>
                 <Form.Group className="mb-3" controlId="formTeacherEmail">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
@@ -39,16 +43,23 @@ function TeacherForgotPassword() {
                         Please provide a valid email.
                     </Form.Control.Feedback>
                 </Form.Group>
-
-                <Button
+                {/* <Button
                     type="button"
                     onClick={() => handleSendOTPToEmail(teacherEmail)}
                     className="mb-3"
                     disabled={!isValidEmail(teacherEmail)}
                 >
                     Send OTP
-                </Button>
-
+                </Button> */}
+                <LoadingButton
+                    loading={sendingOtp}
+                    type="button"
+                    onClick={() => handleSendOTPToEmail(teacherEmail)}
+                    className="mb-3"
+                    disabled={!isValidEmail(teacherEmail)}
+                >
+                    Send OTP
+                </LoadingButton>
                 {isOTPSent && (
                     <>
                         <Form.Group className="mb-3" controlId="formOTP">
@@ -68,27 +79,47 @@ function TeacherForgotPassword() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button
+                        {/* <Button
                             type="button"
                             onClick={() => handleVerifyOtp(teacherEmail)}
                             className="mb-3"
                             disabled={!otp || otp.length !== 6}
                         >
                             Verify OTP
-                        </Button>
+                        </Button> */}
+
+                        <LoadingButton
+                            loading={verifyingOtp}
+                            type="button"
+                            onClick={() => handleVerifyOtp(teacherEmail)}
+                            className="mb-3"
+                            disabled={!otp || otp.length !== 6}
+                        >
+                            Verify OTP
+                        </LoadingButton>
                     </>
                 )}
 
                 <Form.Group className="mb-3" controlId="formTeacherPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control
-                        required
-                        type="password"
-                        minLength={6}
-                        placeholder="Enter password"
-                        value={teacherPassword}
-                        onChange={(e) => setTeacherPassword(e.target.value)}
-                    />
+                    <div className="input-group">
+                        <Form.Control
+                            required
+                            type={showPassword ? "text" : "password"}
+                            minLength={6}
+                            placeholder="Enter password"
+                            value={teacherPassword}
+                            onChange={(e) => setTeacherPassword(e.target.value)}
+                        />
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                            type="button"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
+                        </Button>
+                    </div>
                     <Form.Control.Feedback type="invalid">
                         Password should be at least 6 characters.
                     </Form.Control.Feedback>

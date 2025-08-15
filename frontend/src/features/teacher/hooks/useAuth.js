@@ -77,7 +77,7 @@ function useAuth() {
     }
   };
 
-  const handleForgotPassword = async (e) => {
+  const handleForgotPassword = async (e, otp) => {
     try {
       setForgettingPassword(true);
       e.preventDefault();
@@ -88,7 +88,8 @@ function useAuth() {
         // Call API to send OTP
         const data = await teacherForgotPasswordAPI(
           teacherEmail,
-          teacherPassword
+          teacherPassword,
+          otp
         );
         console.log(data);
       }

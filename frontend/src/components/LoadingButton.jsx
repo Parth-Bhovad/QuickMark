@@ -13,8 +13,6 @@ export default function LoadingButton({
       disabled={loading || disabled}
       className="fw-semibold"
       style={{
-        padding: "0.9rem 1.8rem",
-        fontSize: "1.1rem",
         borderRadius: "0.6rem",
         backgroundColor: variant === "primary" ? "#2563eb" : undefined, // normal color
         borderColor: variant === "primary" ? "#1d4ed8" : undefined,
