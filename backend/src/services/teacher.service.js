@@ -25,7 +25,7 @@ export const deleteTeacherService = async (teacherId) => {
 }
 
 export const addSubjectToTeacherService = async (subjectName, teacherId) => {
-    const subject = await findSubjectByName(subjectName);
+    let subject = await findSubjectByName(subjectName);
     //check if the subject already exists
     if (!subject) {
         subject = await createSubject(subjectName, teacherId);
@@ -51,10 +51,6 @@ export const getTeacherSubjectsService = async (teacherId) => {
             const subjectName = await findSubjectById(subjectId);
             subjectsNameArray.push(subjectName);
         }
-    }
-
-    if (!subjectsNameArray || subjectsNameArray.length === 0) {
-        throw new ExpressError(404, `Subjects not found`);
     }
 
     return subjectsNameArray;

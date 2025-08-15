@@ -47,6 +47,7 @@ app.use('/api/v1', mainRouter);
 
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something went wrong!" } = err;
+    console.log(err);
     res.status(statusCode).json({ msg: message });
 });
 
