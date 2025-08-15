@@ -1,6 +1,7 @@
 import { Card, Form, Button } from "react-bootstrap";
 import useTeacherProfile from "../hooks/useTeacherProfile";
 import useLogoutUser from "../../../hooks/useLogoutUser";
+import LoadingButton from "../../../components/LoadingButton"
 
 function TeacherProfile() {
   const {
@@ -80,14 +81,22 @@ function TeacherProfile() {
               </Form.Group>
 
               <div className="d-flex gap-2">
-                <Button
+                {/* <Button
                   variant="success"
                   className="flex-grow-1"
                   onClick={handleSubmit}
                   disabled={loading || !subjectName.trim()}
                 >
                   {loading ? "Adding..." : "Submit"}
-                </Button>
+                </Button> */}
+                <LoadingButton
+                  loading={loading}
+                  onClick={handleSubmit}
+                  disabled={!subjectName.trim() || loading}
+                  className="flex-grow-1"
+                >
+                  Submit
+                </LoadingButton>
                 <Button
                   variant="outline-secondary"
                   className="flex-grow-1"
