@@ -2,6 +2,8 @@ import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import useVerifyEmail from "../../../hooks/useVerifyEmail";
 import isValidEmail from "../../../utils/isValidEmail";
+import LoadingButton from "../../../components/LoadingButton";
+import { useState } from "react";
 
 function StudentForgotPassword() {
     const {
@@ -10,7 +12,8 @@ function StudentForgotPassword() {
         studentPassword,
         setStudentPassword,
         validated,
-        handleForgotPassword
+        handleForgotPassword,
+        forgotingPassword
     } = useAuth();
 
     const {
@@ -20,12 +23,14 @@ function StudentForgotPassword() {
         setOtp,
         handleSendOTPToEmail,
         handleVerifyOtp,
+        sendingOtp,
+        verifyingOtp
     } = useVerifyEmail();
-
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <main className="container">
             <h3 className="text-center mb-5 mt-3">Forgot Password</h3>
-            <Form noValidate validated={validated} onSubmit={handleForgotPassword}>
+            <Form noValidate validated={validated} onSubmit={(e) => {handleForgotPassword(e, otp)}}>
                 <Form.Group className="mb-3" controlId="formStudentEmail">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
@@ -40,14 +45,23 @@ function StudentForgotPassword() {
                     </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button
+                {/* <Button
                     type="button"
                     onClick={() => handleSendOTPToEmail(studentEmail)}
                     className="mb-3"
                     disabled={!isValidEmail(studentEmail)}
                 >
                     Send OTP
-                </Button>
+                </Button> */}
+                <LoadingButton
+                    loading={sendingOtp}
+                    type="button"
+                    onClick={() => handleSendOTPToEmail(studentEmail)}
+                    className="mb-3"
+                    disabled={!isValidEmail(studentEmail)}
+                >
+                    Send OTP
+                </LoadingButton>
 
                 {isOTPSent && (
                     <>
@@ -68,35 +82,62 @@ function StudentForgotPassword() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button
+                        {/* <Button
                             type="button"
                             onClick={() => handleVerifyOtp(studentEmail)}
                             className="mb-3"
                             disabled={!otp || otp.length !== 6}
                         >
                             Verify OTP
-                        </Button>
+                        </Button> */}
+                        <LoadingButton
+                            loading={verifyingOtp}
+                            type="button"
+                            onClick={() => handleVerifyOtp(studentEmail)}
+                            className="mb-3"
+                            disabled={!otp || otp.length !== 6}
+                        >
+                            Verify OTP
+                        </LoadingButton>
                     </>
                 )}
 
                 <Form.Group className="mb-3" controlId="formStudentPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control
-                        required
-                        type="password"
-                        minLength={6}
-                        placeholder="Enter password"
-                        value={studentPassword}
-                        onChange={(e) => setStudentPassword(e.target.value)}
-                    />
+                    <div className="input-group">
+                        <Form.Control
+                            required
+                            type={showPassword ? "text" : "password"}
+                            minLength={6}
+                            placeholder="Enter password"
+                            value={studentPassword}
+                            onChange={(e) => setStudentPassword(e.target.value)}
+                        />
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)}
+                            type="button"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
+                        </Button>
+                    </div>
                     <Form.Control.Feedback type="invalid">
                         Password should be at least 6 characters.
                     </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button type="submit" className="w-100" disabled={!isOTPVerified} >
+                {/* <Button type="submit" className="w-100" disabled={!isOTPVerified} >
                     Change Password
-                </Button>
+                </Button> */}
+                <LoadingButton
+                    loading={forgotingPassword}
+                    type="submit"
+                    className="w-100"
+                    disabled={!isOTPVerified}
+                >
+                    Change Password
+                </LoadingButton>
             </Form>
         </main>
     );

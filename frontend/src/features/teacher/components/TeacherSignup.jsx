@@ -2,6 +2,7 @@ import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import useVerifyEmail from "../../../hooks/useVerifyEmail";
 import isValidEmail from "../../../utils/isValidEmail";
+import { useState } from "react";
 
 function TeacherSignup() {
   const {
@@ -25,6 +26,7 @@ function TeacherSignup() {
     handleVerifyOtp,
     emailVerificationError
   } = useVerifyEmail();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="container">
@@ -98,14 +100,24 @@ function TeacherSignup() {
 
         <Form.Group className="mb-3" controlId="formTeacherPassword">
           <Form.Label>Teacher Password:</Form.Label>
-          <Form.Control
-            required
-            type="password"
-            minLength={6}
-            placeholder="Password"
-            value={teacherPassword}
-            onChange={(e) => setTeacherPassword(e.target.value)}
-          />
+          <div className="input-group">
+            <Form.Control
+              required
+              type={showPassword ? "text" : "password"}
+              minLength={6}
+              placeholder="Password"
+              value={teacherPassword}
+              onChange={(e) => setTeacherPassword(e.target.value)}
+            />
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowPassword(!showPassword)}
+              type="button"
+              tabIndex={-1}
+            >
+              {showPassword ? <i className="fa-solid fa-eye-slash"></i> : <i className="fa-solid fa-eye"></i>}
+            </Button>
+          </div>
           <Form.Control.Feedback type="invalid">
             Password should be at least 6 characters.
           </Form.Control.Feedback>

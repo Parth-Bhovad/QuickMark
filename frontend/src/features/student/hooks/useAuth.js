@@ -20,6 +20,7 @@ function useAuth() {
   const [loggingInStudent, setLoggingInStudent] = useState(false);
   const [registeringStudent, setRegisteringStudent] = useState(false);
   const [forgotingPassword, setForgotingPassword] = useState(false);
+  
 
   const handleLoginStudent = async (e) => {
     try {
@@ -56,6 +57,7 @@ function useAuth() {
       } else {
         const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword, otp);
         console.log(data);
+        checkAuth();
         if (data?.token) {
           navigate("/student/mark-attendance");
         }
@@ -70,7 +72,7 @@ function useAuth() {
     }
   };
 
-  const handleForgotPassword = async (e) => {
+  const handleForgotPassword = async (e, otp) => {
     try {
       setForgotingPassword(true);
       e.preventDefault();
@@ -78,7 +80,7 @@ function useAuth() {
       if (form.checkValidity() === false) {
         console.log("Form is invalid");
       } else {
-        const data = await studentForgotPasswordAPI(studentEmail, studentPassword);
+        const data = await studentForgotPasswordAPI(studentEmail, studentPassword, otp);
         console.log(data);
       }
       setValidated(true);

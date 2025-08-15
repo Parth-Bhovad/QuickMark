@@ -23,7 +23,10 @@ function useTeacherProfile() {
         setError("");
         try {
             const res = await addSubjectAPI(currentUser.id, subjectName);
-            setSubjects([...subjects, subjectName]);
+            if(subjects[0] == "No subjects available"){
+                setSubjects([]);
+            }
+            setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
             setSubjectName("");
             setShowInput(false);
         } catch (err) {
@@ -36,9 +39,9 @@ function useTeacherProfile() {
     const getTeacherProfile = async () => {
         try {
             const response = await getTeacherProfileAPI(currentUser.id);
+            setTeacherName(response.teacherName);
             if (response.subjects.length !== 0) {
                 setSubjects(response.subjects);
-                setTeacherName(response.teacherName);
             }
         } catch (error) {
             console.log(error);
