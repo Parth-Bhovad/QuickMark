@@ -49,7 +49,7 @@ function StudentForgotPassword() {
                     type="button"
                     onClick={() => handleSendOTPToEmail(studentEmail)}
                     className="mb-3"
-                    disabled={!isValidEmail(studentEmail)}
+                    disabled={!isValidEmail(studentEmail) || sendingOtp}
                 >
                     Send OTP
                 </LoadingButton>
@@ -77,7 +77,7 @@ function StudentForgotPassword() {
                             type="button"
                             onClick={() => handleVerifyOtp(studentEmail)}
                             className="mb-3"
-                            disabled={!otp || otp.length !== 6}
+                            disabled={!otp || otp.length !== 6 || verifyingOtp}
                         >
                             Verify OTP
                         </LoadingButton>
@@ -112,7 +112,7 @@ function StudentForgotPassword() {
                     loading={forgotingPassword}
                     type="submit"
                     className="w-100"
-                    disabled={!isOTPVerified}
+                    disabled={!isOTPVerified || forgotingPassword}
                 >
                     Change Password
                 </LoadingButton>

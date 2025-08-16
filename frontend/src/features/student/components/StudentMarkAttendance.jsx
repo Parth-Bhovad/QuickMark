@@ -122,7 +122,7 @@ function StudentMarkAttendance() {
                         loading={submittingAttendance}
                         type="submit"
                         className="w-100"
-                        disabled={otp.length < 6 || isBlocked}
+                        disabled={otp.length < 6 || isBlocked || submittingAttendance}
                     >
                         Mark Attendance
                     </LoadingButton>

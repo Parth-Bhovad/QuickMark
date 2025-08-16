@@ -65,6 +65,7 @@ function StudentLogin() {
 
         <LoadingButton
           loading={loggingInStudent}
+          disabled={!studentEmail || !studentPassword || loggingInStudent}
           type="submit"
           className="w-100"
         >

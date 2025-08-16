@@ -159,7 +159,7 @@ function StudentSignup() {
           loading={registeringStudent}
           type="submit"
           className="w-100"
-          disabled={!isOTPVerified}
+          disabled={!isOTPVerified || registeringStudent}
         >
           Sign Up
         </LoadingButton>

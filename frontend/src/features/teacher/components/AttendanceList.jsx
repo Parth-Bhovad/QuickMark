@@ -52,7 +52,7 @@ function AttendanceList() {
                     <LoadingButton
                         loading={gettingAttendance}
                         onClick={fetchAttendanceData}
-                        disabled={!selectedSubject}
+                        disabled={!selectedSubject || gettingAttendance}
                         size="lg"
                         className="px-5 py-2 fw-semibold"
                     >

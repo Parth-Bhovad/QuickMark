@@ -108,7 +108,7 @@ function Navbar() {
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link fw-semibold" to="/teacher/add-attendance">
-                      Add Attendance Manually
+                      Add Attendance
                     </Link>
                   </li>
                 </>

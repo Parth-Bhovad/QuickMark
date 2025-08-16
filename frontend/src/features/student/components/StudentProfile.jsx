@@ -92,7 +92,7 @@ function StudentProfile() {
                   variant="primary"
                   className="flex-grow-1"
                   onClick={handleAddSubject}
-                  disabled={!subjectName}
+                  disabled={!subjectName || addingSubject}
                 >
                   Add Subject
                 </LoadingButton>
@@ -118,6 +118,7 @@ function StudentProfile() {
           variant="outline-danger"
           className="w-100"
           onClick={handleLogout}
+          disabled={loggingOut}
         >
           <i className="bi bi-box-arrow-right"></i> Logout
         </LoadingButton>

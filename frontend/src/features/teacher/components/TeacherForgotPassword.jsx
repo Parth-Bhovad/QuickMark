@@ -12,7 +12,8 @@ function TeacherForgotPassword() {
         teacherPassword,
         setTeacherPassword,
         validated,
-        handleForgotPassword
+        handleForgotPassword,
+        forgettingPassword
     } = useAuth();
 
     const {
@@ -48,7 +49,7 @@ function TeacherForgotPassword() {
                     type="button"
                     onClick={() => handleSendOTPToEmail(teacherEmail)}
                     className="mb-3"
-                    disabled={!isValidEmail(teacherEmail)}
+                    disabled={!isValidEmail(teacherEmail) || sendingOtp}
                 >
                     Send OTP
                 </LoadingButton>
@@ -75,7 +76,7 @@ function TeacherForgotPassword() {
                             type="button"
                             onClick={() => handleVerifyOtp(teacherEmail)}
                             className="mb-3"
-                            disabled={!otp || otp.length !== 6}
+                            disabled={!otp || otp.length !== 6 || verifyingOtp}
                         >
                             Verify OTP
                         </LoadingButton>
@@ -107,9 +108,14 @@ function TeacherForgotPassword() {
                     </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button type="submit" className="w-100" disabled={!isOTPVerified} >
+                <LoadingButton
+                    type="submit"
+                    className="w-100"
+                    disabled={!isOTPVerified || forgettingPassword}
+                    loading={forgettingPassword}
+                >
                     Change Password
-                </Button>
+                </LoadingButton>
             </Form>
         </main>
     );
