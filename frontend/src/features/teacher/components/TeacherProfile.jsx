@@ -16,7 +16,7 @@ function TeacherProfile() {
     error,
   } = useTeacherProfile();
 
-  const { handleLogout } = useLogoutUser();
+  const { handleLogout, loggingOut } = useLogoutUser();
 
   return (
     <div
@@ -115,13 +115,14 @@ function TeacherProfile() {
 
       {/* Push logout button to bottom */}
       <div className="mt-auto pb-4">
-        <Button
+        <LoadingButton
+          loading={loggingOut}
           variant="outline-danger"
           className="w-100"
           onClick={handleLogout}
         >
           <i className="bi bi-box-arrow-right"></i> Logout
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );
