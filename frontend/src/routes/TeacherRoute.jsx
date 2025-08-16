@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import TeacherAttendanceSessionPage from "../features/teacher/pages/TeacherAttendanceSessionPage";
 import TeacherProfilePage from "../features/teacher/pages/TeacherProfilePage";
 import AttendanceListPage from "../features/teacher/pages/AttendanceListPage";
+import ManualAttendancePage from "../features/teacher/pages/ManualAttendancePage";
 import { useAuthContext } from "../context/AuthContext";
 
 const TeacherRoute = () => {
@@ -29,6 +30,10 @@ const TeacherRoute = () => {
     {
       path:"/attendance-list",
       element: <AttendanceListPage />
+    },
+    {
+      path: "/add-attendance",
+      element: <ManualAttendancePage />,
     }
   ]);
 
