@@ -1,6 +1,7 @@
 import { Card, Form, Button } from "react-bootstrap";
 import useStudentProfile from "../hooks/useStudentProfile";
 import useLogoutUser from "../../../hooks/useLogoutUser";
+import LoadingButton from "../../../components/LoadingButton";
 
 function StudentProfile() {
   const {
@@ -12,9 +13,9 @@ function StudentProfile() {
     subjectName,
     setSubjectName,
     rollNo,
-    loading,
     error,
     handleAddSubject,
+    addingSubject
   } = useStudentProfile();
 
   const { handleLogout } = useLogoutUser();
@@ -73,7 +74,6 @@ function StudentProfile() {
                 <Form.Select
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
-                  disabled={loading}
                 >
                   <option value="">-- Select a subject --</option>
                   {availableSubjects
@@ -87,19 +87,19 @@ function StudentProfile() {
               </Form.Group>
 
               <div className="d-flex gap-2">
-                <Button
-                  variant="success"
+                <LoadingButton
+                  loading={addingSubject}
+                  variant="primary"
                   className="flex-grow-1"
                   onClick={handleAddSubject}
-                  disabled={loading || !subjectName}
+                  disabled={!subjectName}
                 >
-                  {loading ? "Adding..." : "Submit"}
-                </Button>
+                  Add Subject
+                </LoadingButton>
                 <Button
                   variant="outline-secondary"
                   className="flex-grow-1"
                   onClick={() => setShowInput(false)}
-                  disabled={loading}
                 >
                   Cancel
                 </Button>
