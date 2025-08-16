@@ -80,7 +80,7 @@ function StudentMarkAttendance() {
     }, [startTime]);
 
     return (
-        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+        <Container className="d-flex justify-content-center align-items-center mt-5" style={{ minHeight: "80vh" }}>
             <Card className="shadow-lg p-4" style={{ maxWidth: "420px", width: "100%" }}>
 
                 <h3 className="text-center fw-bold mb-3 fs-4">Mark Your Attendance</h3>
@@ -122,7 +122,7 @@ function StudentMarkAttendance() {
                         loading={submittingAttendance}
                         type="submit"
                         className="w-100"
-                        disabled={otp.length < 6 || isBlocked}
+                        disabled={otp.length < 6 || isBlocked || submittingAttendance}
                     >
                         Mark Attendance
                     </LoadingButton>

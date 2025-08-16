@@ -28,7 +28,7 @@ function StudentForgotPassword() {
     } = useVerifyEmail();
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <main className="container">
+        <main className="container mt-5">
             <h3 className="text-center mb-5 mt-3">Forgot Password</h3>
             <Form noValidate validated={validated} onSubmit={(e) => {handleForgotPassword(e, otp)}}>
                 <Form.Group className="mb-3" controlId="formStudentEmail">
@@ -49,7 +49,7 @@ function StudentForgotPassword() {
                     type="button"
                     onClick={() => handleSendOTPToEmail(studentEmail)}
                     className="mb-3"
-                    disabled={!isValidEmail(studentEmail)}
+                    disabled={!isValidEmail(studentEmail) || sendingOtp}
                 >
                     Send OTP
                 </LoadingButton>
@@ -77,7 +77,7 @@ function StudentForgotPassword() {
                             type="button"
                             onClick={() => handleVerifyOtp(studentEmail)}
                             className="mb-3"
-                            disabled={!otp || otp.length !== 6}
+                            disabled={!otp || otp.length !== 6 || verifyingOtp}
                         >
                             Verify OTP
                         </LoadingButton>
@@ -112,7 +112,7 @@ function StudentForgotPassword() {
                     loading={forgotingPassword}
                     type="submit"
                     className="w-100"
-                    disabled={!isOTPVerified}
+                    disabled={!isOTPVerified || forgotingPassword}
                 >
                     Change Password
                 </LoadingButton>

@@ -16,7 +16,7 @@ function useManualAttendance() {
       setFeedback("");
       let res = await addManualAttendanceAPI(rollNo, selectedSubject, true);
       console.log(res);
-
+      setFeedback("Attendance added successfully for Roll No: " + rollNo);
       setRollNo("");
     } catch (err) {
       console.error("Error adding attendance:", err);

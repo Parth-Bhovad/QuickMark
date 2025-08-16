@@ -1,9 +1,9 @@
 function LandingPage() {
     return (
-        <main className="container-fluid py-5" style={{ background: "linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)" }}>
+        <main className="container-fluid py-5 mt-5" style={{ background: "linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)" }}>
 
             {/* Hero Section */}
-            <section className="text-center px-3 mb-5" style={{ maxWidth: "700px", margin: "0 auto" }}>
+            <section className="text-center px-3 mb-5 mt-5" style={{ maxWidth: "700px", margin: "0 auto" }}>
                 <h1
                     className="fw-bold mb-3 position-relative fade-in-up"
                     style={{ fontSize: "2.2rem", lineHeight: "1.2", display: "inline-block" }}

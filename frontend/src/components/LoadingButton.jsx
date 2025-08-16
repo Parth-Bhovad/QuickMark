@@ -42,7 +42,6 @@ export default function LoadingButton({
             aria-hidden="true"
             className="me-2"
           />
-          Loading...
         </>
       ) : (
         children

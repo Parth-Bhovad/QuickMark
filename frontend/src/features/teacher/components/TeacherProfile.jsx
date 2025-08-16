@@ -19,9 +19,9 @@ function TeacherProfile() {
   const { handleLogout, loggingOut } = useLogoutUser();
 
   return (
-    <div
-      className="container mt-4 d-flex flex-column"
-      style={{ maxWidth: "500px", minHeight: "100vh" }}
+    <main
+      className="container mt-5 d-flex flex-column pt-5"
+      style={{ maxWidth: "500px", minHeight: "90vh" }}
     >
       {/* Profile Card */}
       <Card className="shadow-sm border-0 rounded-4 mb-4">
@@ -112,11 +112,12 @@ function TeacherProfile() {
           variant="outline-danger"
           className="w-100"
           onClick={handleLogout}
+          disabled={loggingOut}
         >
           <i className="bi bi-box-arrow-right"></i> Logout
         </LoadingButton>
       </div>
-    </div>
+    </main>
   );
 }
 

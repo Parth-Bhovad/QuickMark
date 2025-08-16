@@ -20,7 +20,7 @@ function StudentLogin() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <main className="container">
+    <main className="container mt-5 pt-5">
       <h3 className="text-center mb-5 mt-3">Student Login Page</h3>
 
       <Form noValidate validated={validated} onSubmit={handleLoginStudent}>
@@ -65,6 +65,7 @@ function StudentLogin() {
 
         <LoadingButton
           loading={loggingInStudent}
+          disabled={!studentEmail || !studentPassword || loggingInStudent}
           type="submit"
           className="w-100"
         >

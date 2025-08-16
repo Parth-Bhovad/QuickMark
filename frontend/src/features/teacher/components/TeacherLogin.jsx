@@ -64,6 +64,7 @@ function TeacherLogin() {
           type="submit"
           variant="primary"
           className="w-100 mt-3"
+          disabled={!teacherEmail || !teacherPassword || loggingInTeacher}
         >
           Login
         </LoadingButton>

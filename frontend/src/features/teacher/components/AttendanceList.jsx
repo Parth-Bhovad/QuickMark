@@ -19,7 +19,7 @@ function AttendanceList() {
 
     return (
         <Container
-            className="mt-4 d-flex flex-column"
+            className="mt-4 d-flex flex-column justify-content-center align-items-center"
             style={{ maxWidth: "500px", minHeight: "100vh" }}
         >
             {/* Title */}
@@ -52,7 +52,7 @@ function AttendanceList() {
                     <LoadingButton
                         loading={gettingAttendance}
                         onClick={fetchAttendanceData}
-                        disabled={!selectedSubject}
+                        disabled={!selectedSubject || gettingAttendance}
                         size="lg"
                         className="px-5 py-2 fw-semibold"
                     >

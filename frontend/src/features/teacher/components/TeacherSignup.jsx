@@ -16,7 +16,7 @@ function TeacherSignup() {
     handleRegisterTeacher,
     validated,
     error,
-registeringTeacher
+    registeringTeacher
   } = useAuth();
 
   const {
@@ -54,7 +54,7 @@ registeringTeacher
           variant="primary"
           className="mb-3"
           onClick={() => handleSendOTPToEmail(teacherEmail)}
-          disabled={!isValidEmail(teacherEmail)}
+          disabled={!isValidEmail(teacherEmail) || sendingOtp}
         >
           Send OTP
         </LoadingButton>
@@ -80,7 +80,7 @@ registeringTeacher
               type="button"
               onClick={() => handleVerifyOtp(teacherEmail)}
               className="mb-3"
-              disabled={!otp || otp.length !== 6}
+              disabled={!otp || otp.length !== 6 || verifyingOtp}
             >
               Verify OTP
             </LoadingButton>
@@ -128,11 +128,11 @@ registeringTeacher
         </Form.Group>
 
         <LoadingButton
-        type="submit"
+          type="submit"
           loading={registeringTeacher}
           variant="primary"
           className="mb-3"
-          disabled={!isOTPVerified}
+          disabled={!isOTPVerified || registeringTeacher}
         >
           Sign Up
         </LoadingButton>
