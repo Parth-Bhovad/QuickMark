@@ -14,18 +14,21 @@ function useStudentProfile() {
     const [showInput, setShowInput] = useState(false);
     const [subjects, setSubjects] = useState(["No subjects available"]);
     const [rollNo, setRollNo] = useState("");
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-
+    //Adding loading state
+    const [addingSubject, setAddingSubject] = useState(false);
     const handleAddSubject = async () => {
+        setAddingSubject(true);
         if (!subjectName.trim()) {
             setError("Subject name cannot be empty.");
+            setAddingSubject(false);
             return;
         }
         if (subjects.includes(subjectName)) {
             console.log(`Subject already added: ${subjectName}`);
 
             setError("Subject already added.");
+            setAddingSubject(false);
             return;
         }
         try {
@@ -38,6 +41,8 @@ function useStudentProfile() {
         } catch (error) {
             console.error("Failed to add subject:", error);
             setError("Failed to add subject:", error);
+        }finally{
+            setAddingSubject(false);
         }
     };
 
@@ -82,10 +87,9 @@ function useStudentProfile() {
         subjectName,
         setSubjectName,
         rollNo,
-        loading,
-        setLoading,
         error,
-        handleAddSubject
+        handleAddSubject,
+        addingSubject
     };
 }
 
