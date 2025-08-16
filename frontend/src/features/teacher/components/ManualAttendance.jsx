@@ -18,7 +18,7 @@ function AddAttendanceManual() {
     const { rollNo, setRollNo, addingManualAttendance, handleSubmit, feedback } = useManualAttendance();
     return (
         <>
-            <div className="container my-5">
+            <div className="container my-5 d-flex flex-column justify-content-center align-items-center" style={{ maxWidth: "500px", minHeight: "90vh" }}>
                 <div className="card shadow-sm border-0">
                     <div className="card-body text-center">
                         <h2 className="card-title mb-4">✏️ Add Attendance Manually</h2>
@@ -63,9 +63,7 @@ function AddAttendanceManual() {
                         </Form>
                     </div>
                 </div>
-            </div>
-
-            {/* Feedback */}
+                {/* Feedback */}
             {feedback && (
                 <Alert
                     variant={feedback.includes("Failed") ? "danger" : "success"}
@@ -74,6 +72,7 @@ function AddAttendanceManual() {
                     {feedback}
                 </Alert>
             )}
+            </div>
 
             {/* Subject Selection Modal */}
             <Modal

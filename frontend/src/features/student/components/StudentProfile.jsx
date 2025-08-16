@@ -21,8 +21,8 @@ function StudentProfile() {
   const { handleLogout, loggingOut } = useLogoutUser();
 
   return (
-    <div
-      className="container mt-4 d-flex flex-column"
+    <main
+      className="container mt-4 d-flex flex-column mt-5 pt-5"
       style={{ maxWidth: "500px", minHeight: "100vh" }}
     >
       {/* Profile Card */}
@@ -123,7 +123,7 @@ function StudentProfile() {
           <i className="bi bi-box-arrow-right"></i> Logout
         </LoadingButton>
       </div>
-    </div>
+    </main>
   );
 }
 

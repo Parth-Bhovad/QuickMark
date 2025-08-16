@@ -17,7 +17,7 @@ function TeacherAttendanceSession() {
 
   return (
     <Container
-      className="mt-4 d-flex flex-column"
+      className="mt-4 d-flex flex-column justify-content-center align-items-center"
       style={{ maxWidth: "500px", minHeight: "100vh" }}
     >
       {/* Title */}
@@ -65,17 +65,16 @@ function TeacherAttendanceSession() {
             </Alert>
           )}
         </Card.Body>
+        {/* Feedback */}
+        {feedback && (
+          <Alert
+            variant={feedback.includes("Failed") ? "danger" : "success"}
+            className="text-center mt-3 py-2 mb-0 rounded-4 shadow-sm"
+          >
+            {feedback}
+          </Alert>
+        )}
       </Card>
-
-      {/* Feedback */}
-      {feedback && (
-        <Alert
-          variant={feedback.includes("Failed") ? "danger" : "success"}
-          className="text-center mt-3 py-2 mb-0 rounded-4 shadow-sm"
-        >
-          {feedback}
-        </Alert>
-      )}
 
       {/* Subject selection modal */}
       <Modal

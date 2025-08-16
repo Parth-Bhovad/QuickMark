@@ -23,7 +23,7 @@ function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
         <div className="container-fluid px-3">
           {/* Brand */}
           <Link

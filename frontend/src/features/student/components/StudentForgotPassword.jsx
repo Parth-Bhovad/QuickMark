@@ -28,7 +28,7 @@ function StudentForgotPassword() {
     } = useVerifyEmail();
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <main className="container">
+        <main className="container mt-5">
             <h3 className="text-center mb-5 mt-3">Forgot Password</h3>
             <Form noValidate validated={validated} onSubmit={(e) => {handleForgotPassword(e, otp)}}>
                 <Form.Group className="mb-3" controlId="formStudentEmail">

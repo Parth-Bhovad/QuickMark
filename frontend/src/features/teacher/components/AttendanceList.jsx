@@ -19,7 +19,7 @@ function AttendanceList() {
 
     return (
         <Container
-            className="mt-4 d-flex flex-column"
+            className="mt-4 d-flex flex-column justify-content-center align-items-center"
             style={{ maxWidth: "500px", minHeight: "100vh" }}
         >
             {/* Title */}

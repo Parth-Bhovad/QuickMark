@@ -35,7 +35,7 @@ function StudentSignup() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <main className="container">
+    <main className="container mt-5 pt-5">
       <h3 className="text-center mb-5 mt-3">Student Signup Page</h3>
 
       <Form noValidate validated={validated} onSubmit={(e) => handleRegisterStudent(e, otp)}>
