@@ -3,6 +3,7 @@ import { addAttendanceService, deleteAttendanceService, getAttendanceService } f
 //importing utils
 import { getVerificationCode } from "../utils/generateOTP.js";
 import { findSubjectByName } from "../dao/subject.dao.js";
+import { findStudentByRollNo } from "../dao/student.dao.js";
 
 export const addAttendance = async (req, res) => {
     try {
@@ -40,3 +41,20 @@ export const getAttendance = async (req, res) => {
     }
     res.status(200).json({ attendance });
 }
+
+export const addAttendanceByTeacher = async (req, res) => {
+    const { rollNo, subjectName, isPresent = false } = req.body;
+    const subjectId = await findSubjectByName(subjectName);
+    
+    if (!subjectId) {
+        return res.status(404).json({ message: "Subject not found" });
+    }
+
+    const student = await findStudentByRollNo(rollNo);
+    if (!student) {
+        return res.status(404).json({ message: "Student not found" });
+    }
+
+    const attendance = await addAttendanceService({ studentId: student._id, subjectId, isPresent });
+    res.status(201).json({ message: "Attendance added successfully by teacher", attendance });
+};

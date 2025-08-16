@@ -16,7 +16,7 @@ function TeacherProfile() {
     error,
   } = useTeacherProfile();
 
-  const { handleLogout } = useLogoutUser();
+  const { handleLogout, loggingOut } = useLogoutUser();
 
   return (
     <div
@@ -81,14 +81,6 @@ function TeacherProfile() {
               </Form.Group>
 
               <div className="d-flex gap-2">
-                {/* <Button
-                  variant="success"
-                  className="flex-grow-1"
-                  onClick={handleSubmit}
-                  disabled={loading || !subjectName.trim()}
-                >
-                  {loading ? "Adding..." : "Submit"}
-                </Button> */}
                 <LoadingButton
                   loading={loading}
                   onClick={handleSubmit}
@@ -115,13 +107,14 @@ function TeacherProfile() {
 
       {/* Push logout button to bottom */}
       <div className="mt-auto pb-4">
-        <Button
+        <LoadingButton
+          loading={loggingOut}
           variant="outline-danger"
           className="w-100"
           onClick={handleLogout}
         >
           <i className="bi bi-box-arrow-right"></i> Logout
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   );

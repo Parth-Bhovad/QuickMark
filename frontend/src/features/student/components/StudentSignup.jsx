@@ -56,20 +56,6 @@ function StudentSignup() {
         </Form.Group>
 
         {/* /* Send OTP Button */}
-        {/* <Button
-          type="button"
-          onClick={() => handleSendOTPToEmail(studentEmail)}
-          className="mb-3"
-          disabled={!isValidEmail(studentEmail) || sendingOtp || isOTPSent}
-        >
-          {sendingOtp ? (
-            <>
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Sending...
-            </>
-          ) : (
-            "Send OTP"
-          )}
-        </Button> */}
         <LoadingButton
           loading={sendingOtp}
           onClick={() => handleSendOTPToEmail(studentEmail)}
@@ -98,21 +84,6 @@ function StudentSignup() {
                 Please enter a valid 6-digit OTP.
               </Form.Control.Feedback>
             </Form.Group>
-
-            {/* <Button
-              type="button"
-              onClick={() => handleVerifyOtp(studentEmail)}
-              className="mb-3"
-              disabled={!otp || otp.length !== 6 || verifyingOtp}
-            >
-              {verifyingOtp ? (
-                <>
-                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Verifying...
-                </>
-              ) : (
-                "Verify OTP"
-              )}
-            </Button> */}
             <LoadingButton
               loading={verifyingOtp}
               onClick={() => handleVerifyOtp(studentEmail)}
@@ -184,9 +155,6 @@ function StudentSignup() {
         </Form.Group>
 
         {/* Sign Up */}
-        {/* <Button type="submit" className="w-100" disabled={!isOTPVerified}>
-          Sign Up
-        </Button> */}
         <LoadingButton
           loading={registeringStudent}
           type="submit"
