@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import useVerifyEmail from "../../../hooks/useVerifyEmail";
 import isValidEmail from "../../../utils/isValidEmail";
 import { useState } from "react";
+import LoadingButton from "../../../components/LoadingButton";
 
 function TeacherSignup() {
   const {
@@ -14,7 +15,8 @@ function TeacherSignup() {
     setTeacherPassword,
     handleRegisterTeacher,
     validated,
-    error
+    error,
+registeringTeacher
   } = useAuth();
 
   const {
@@ -24,7 +26,9 @@ function TeacherSignup() {
     setOtp,
     handleSendOTPToEmail,
     handleVerifyOtp,
-    emailVerificationError
+    emailVerificationError,
+    sendingOtp,
+    verifyingOtp
   } = useVerifyEmail();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,16 +49,15 @@ function TeacherSignup() {
             Please enter a valid email.
           </Form.Control.Feedback>
         </Form.Group>
-
-        <Button
-          type="button"
-          onClick={() => handleSendOTPToEmail(teacherEmail)}
+        <LoadingButton
+          loading={sendingOtp}
+          variant="primary"
           className="mb-3"
+          onClick={() => handleSendOTPToEmail(teacherEmail)}
           disabled={!isValidEmail(teacherEmail)}
         >
           Send OTP
-        </Button>
-
+        </LoadingButton>
         {isOTPSent && (
           <>
             <Form.Group className="mb-3" controlId="formOTP">
@@ -72,14 +75,15 @@ function TeacherSignup() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Button
+            <LoadingButton
+              loading={verifyingOtp}
               type="button"
               onClick={() => handleVerifyOtp(teacherEmail)}
               className="mb-3"
               disabled={!otp || otp.length !== 6}
             >
               Verify OTP
-            </Button>
+            </LoadingButton>
           </>
         )}
 
@@ -123,9 +127,15 @@ function TeacherSignup() {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Button type="submit" className="w-100" disabled={!isOTPVerified}>
+        <LoadingButton
+        type="submit"
+          loading={registeringTeacher}
+          variant="primary"
+          className="mb-3"
+          disabled={!isOTPVerified}
+        >
           Sign Up
-        </Button>
+        </LoadingButton>
       </Form>
       {error && (
         <div className="w-100 mt-3">
