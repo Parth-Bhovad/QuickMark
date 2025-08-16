@@ -43,14 +43,6 @@ function TeacherForgotPassword() {
                         Please provide a valid email.
                     </Form.Control.Feedback>
                 </Form.Group>
-                {/* <Button
-                    type="button"
-                    onClick={() => handleSendOTPToEmail(teacherEmail)}
-                    className="mb-3"
-                    disabled={!isValidEmail(teacherEmail)}
-                >
-                    Send OTP
-                </Button> */}
                 <LoadingButton
                     loading={sendingOtp}
                     type="button"
@@ -78,16 +70,6 @@ function TeacherForgotPassword() {
                                 Please enter a valid 6-digit OTP.
                             </Form.Control.Feedback>
                         </Form.Group>
-
-                        {/* <Button
-                            type="button"
-                            onClick={() => handleVerifyOtp(teacherEmail)}
-                            className="mb-3"
-                            disabled={!otp || otp.length !== 6}
-                        >
-                            Verify OTP
-                        </Button> */}
-
                         <LoadingButton
                             loading={verifyingOtp}
                             type="button"

@@ -81,14 +81,6 @@ function TeacherProfile() {
               </Form.Group>
 
               <div className="d-flex gap-2">
-                {/* <Button
-                  variant="success"
-                  className="flex-grow-1"
-                  onClick={handleSubmit}
-                  disabled={loading || !subjectName.trim()}
-                >
-                  {loading ? "Adding..." : "Submit"}
-                </Button> */}
                 <LoadingButton
                   loading={loading}
                   onClick={handleSubmit}
