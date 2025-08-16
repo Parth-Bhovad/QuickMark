@@ -1,6 +1,6 @@
 import { Router } from 'express';
 //importing controllers
-import { addAttendance, deleteAttendance, getAttendance } from '../controllers/attendance.controller.js';
+import { addAttendance, deleteAttendance, getAttendance, addAttendanceByTeacher } from '../controllers/attendance.controller.js';
 //importing utils
 import { generateAttendanceOTP, storeVerificationCode } from '../utils/generateOTP.js';
 //importing custom error classes
@@ -23,6 +23,7 @@ attendanceRouter.get('/check-active-session', isLoggedIn, (req, res) => {
     }
 });
 attendanceRouter.post('/', isLoggedIn, wrapAsync(addAttendance));
+attendanceRouter.post('/by-teacher', isLoggedIn, wrapAsync(addAttendanceByTeacher));
 attendanceRouter.get('/otp', isLoggedIn, (req, res) => {
     // Store OTP generation state in memory (simple implementation)
     if (attendanceRouter.otpActive) {
