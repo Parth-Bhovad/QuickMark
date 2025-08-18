@@ -41,7 +41,7 @@ function useStudentMarkAttendance() {
         setIsAttendanceMarked(true);
       } catch (error) {
         console.log(error);
-        setFeedback("Failed to mark attendance.");
+        setFeedback("Failed to mark attendance: " + (error.response.data.message || "Unknown error"));
       } finally {
         setSubmittingAttendance(false);
       }
