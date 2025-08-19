@@ -23,7 +23,6 @@ const teacherSchema = new Schema({
         default: [],
         type: Schema.Types.ObjectId,
         ref: "Subject",
-        unique: true
     }],
 });
 
