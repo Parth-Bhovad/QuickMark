@@ -13,6 +13,9 @@ function useTeacherAttendanceSession() {
     const [timer, setTimer] = useState(0);
     const [showPopup, setShowPopup] = useState(true);
 
+    //adding loading state
+    const [gettingOtp, setGettingOtp] = useState(false);
+
     const getTeacherSubjects = async () => {
         try {
             const subjects = await getTeacherSubjectsAPI(currentUser.id);
@@ -34,12 +37,16 @@ function useTeacherAttendanceSession() {
 
     const handleGetOtp = async () => {
         try {
+            setGettingOtp(true);
             const res = await getAttendanceOtpAPI(selectedSubject);
             setFeedback(`OTP: ${res.data.otp}`);
             setTimer(30);
         } catch (error) {
             console.log(error);
+            setGettingOtp(false);
             setFeedback("Failed to fetch OTP: " + (error.response.data.msg || error.message));
+        }finally{
+            setGettingOtp(false);
         }
     };
 
@@ -63,7 +70,9 @@ function useTeacherAttendanceSession() {
         timer,
         setTimer,
         showPopup,
-        setShowPopup
+        setShowPopup,
+        gettingOtp,
+        setGettingOtp,
     };
 }
 

@@ -13,6 +13,7 @@ function TeacherAttendanceSession() {
     timer,
     showPopup,
     setShowPopup,
+    gettingOtp,
   } = useTeacherAttendanceSession();
 
   return (
@@ -51,7 +52,7 @@ function TeacherAttendanceSession() {
             onClick={async () => {
               await handleGetOtp();
             }}
-            disabled={!selectedSubject || timer > 0}
+            disabled={!selectedSubject || gettingOtp}
           >
             Get OTP
           </LoadingButton>
