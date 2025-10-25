@@ -61,5 +61,4 @@ export const studentForgotPasswordService = async (studentEmail, newPassword) =>
     // Hash the password
     newPassword = await hashPassword(newPassword);
     changeStudentPassword(student, newPassword);
-    return { message: "Password reset successfully" };
 }

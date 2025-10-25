@@ -21,7 +21,6 @@ export const deleteTeacherService = async (teacherId) => {
         throw new ExpressError(404, `Teacher with ID: ${teacherId} not found`);
     }
     await deleteTeacherById(teacherId);
-    return teacher;
 }
 
 export const addSubjectToTeacherService = async (subjectName, teacherId) => {
@@ -64,5 +63,4 @@ export const teacherForgotPasswordService = async (teacherEmail, newPassword) =>
     // Hash the password
     newPassword = await hashPassword(newPassword);
     changeTeacherPassword(teacher, newPassword);
-    return { message: "Password reset successfully" };
 }
