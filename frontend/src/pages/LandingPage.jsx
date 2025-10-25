@@ -26,7 +26,7 @@ function LandingPage() {
                     className="text-muted mb-4 fade-in-up"
                     style={{ fontSize: "1.1rem", animationDelay: "0.5s" }}
                 >
-                    QuickMark handles attendance in seconds — so you can focus on what really matters, your lesson.
+                    QuickMark handles attendance in seconds. so you can focus on what really matters, your lesson.
                 </p>
                 <div
                     className="d-flex justify-content-center gap-3 flex-wrap fade-in-up"
