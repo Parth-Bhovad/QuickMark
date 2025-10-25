@@ -10,6 +10,7 @@ function useStudentMarkAttendance() {
   const { currentUser } = useAuthContext();
   const currentUserRef = useRef(currentUser);
   const [isAttendanceMarked, setIsAttendanceMarked] = useState(false);
+  const isAttendanceMarkedRef = useRef(false);
 
   //loading state for submitting attendance
   const [submittingAttendance, setSubmittingAttendance] = useState(false);
@@ -17,6 +18,10 @@ function useStudentMarkAttendance() {
   useEffect(() => {
     currentUserRef.current = currentUser;
   }, [currentUser]);
+
+  useEffect(() => {
+    isAttendanceMarkedRef.current = isAttendanceMarked;
+  }, [isAttendanceMarked]);
 
   const [otp, setOtp] = useState("");
   const otpRef = useRef(otp);
@@ -56,7 +61,8 @@ function useStudentMarkAttendance() {
     if (document.visibilityState === "hidden") {
       const user = currentUserRef.current;
       const otp = otpRef.current;
-
+      const isAttendanceMarked = isAttendanceMarkedRef.current;
+      
       if (isAttendanceMarked) {
         await deleteStudentAtendanceAPI(user.id, new Date().toISOString().split("T")[0], otp);
       }
