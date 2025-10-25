@@ -33,6 +33,11 @@ export const deleteStudentByRollNo = async (rollNo) => {
     return student;
 }
 
+export const findStudentsBySubjectId = async (subjectId) => {
+    const students = await Student.find({ subjects: subjectId });
+    return students;
+}
+
 export const addSubjectToStudent = async (studentId, subjectName) => {
     console.log(`Adding subject ${subjectName} to student with ID ${studentId}`);
     
