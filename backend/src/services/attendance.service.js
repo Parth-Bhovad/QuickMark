@@ -139,6 +139,9 @@ export const addAttendanceByTeacherService = async (rollNo, subjectId) => {
   if (!student) {
     throw new ExpressError(404, "Student not found with the given roll number");
   }
+  if(student.subjects.includes(subjectId) === false){
+    throw new ExpressError(400, "Student is not enrolled in the given subject");
+  }
   const today = new Date();
   const yyyyMmDd = today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
   const isAttendanceExists = await findAttendance(
