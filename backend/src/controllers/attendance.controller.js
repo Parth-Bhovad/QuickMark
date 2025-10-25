@@ -3,55 +3,31 @@ import {
   addAttendanceService,
   deleteAttendanceService,
   getAttendanceService,
+  addInitialAttendanceService,
+  addAttendanceByTeacherService,
 } from "../services/attendance.service.js";
 //importing utils
-import { getVerificationCode } from "../utils/generateOTP.js";
+import {
+  getVerificationCode,
+  generateAttendanceOTP,
+  storeVerificationCode,
+} from "../utils/generateOTP.js";
 import { findSubjectByName } from "../dao/subject.dao.js";
 import { findStudentByRollNo } from "../dao/student.dao.js";
 import { findAttendance } from "../dao/attendance.dao.js";
 
 export const addAttendance = async (req, res) => {
-  try {
-    const getSubjectName = getVerificationCode(req.body.otp);
-    // If the OTP is invalid, getVerificationCode will return undefined
-    // If the OTP is valid, it will return the subject name associated with that OTP
-    if (getSubjectName === undefined) {
-      return res.status(404).json({ message: "Invalid OTP" });
-    }
-    const subjectId = await findSubjectByName(getSubjectName);
-    const { studentId, isPresent = false } = req.body;
-    const today = new Date();
-    const yyyyMmDd = today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
-    const isAttendanceExists = await findAttendance(
-      studentId,
-      yyyyMmDd,
-      subjectId
-    );
-    if (isAttendanceExists) {
-      return res.status(400).json({
-        message: "Attendance already exists for the given student and subject",
-      });
-    }
-    const attendance = await addAttendanceService({
-      studentId,
-      subjectId,
-      isPresent,
-    });
-    res
-      .status(201)
-      .json({ message: "Attendance added successfully", attendance });
-  } catch (error) {
-    console.error("Error adding attendance:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
+  const { studentId, otp } = req.body;
+  await addAttendanceService(studentId, otp);
+  res.status(201);
 };
 
 export const deleteAttendance = async (req, res) => {
   const { studentId, date, otp } = req.body;
   const subjectName = getVerificationCode(otp);
-  const subjectId = await findSubjectByName(subjectName);
-  await deleteAttendanceService(studentId, date, subjectId);
-  res.status(200).json({ message: "Attendance deleted successfully" });
+  const subject = await findSubjectByName(subjectName);
+  await deleteAttendanceService(studentId, date, subject._id);
+  res.status(200);
 };
 
 export const getAttendance = async (req, res) => {
@@ -65,37 +41,20 @@ export const getAttendance = async (req, res) => {
 };
 
 export const addAttendanceByTeacher = async (req, res) => {
-  const { rollNo, subjectName, isPresent = false } = req.body;
+  const { rollNo, subjectName } = req.body;
   const subjectId = await findSubjectByName(subjectName);
 
   if (!subjectId) {
     return res.status(404).json({ message: "Subject not found" });
   }
 
-  const student = await findStudentByRollNo(rollNo);
-  if (!student) {
-    return res.status(404).json({ message: "Student not found" });
-  }
+  await addAttendanceByTeacherService(rollNo, subjectId);
+  res.sendStatus(201);
+};
 
-  const today = new Date();
-  const yyyyMmDd = today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
-  const isAttendanceExists = await findAttendance(
-    student._id,
-    yyyyMmDd,
-    subjectId
-  );
-  if (isAttendanceExists) {
-    return res.status(400).json({
-      message: "Attendance already exists for the given student and subject",
-    });
-  }
-
-  const attendance = await addAttendanceService({
-    studentId: student._id,
-    subjectId,
-    isPresent,
-  });
-  res
-    .status(201)
-    .json({ message: "Attendance added successfully by teacher", attendance });
+export const getAttendanceOTP = (req, res) => {
+  const otp = generateAttendanceOTP();
+  storeVerificationCode(otp, req.query.subjectName, 30 * 1000); // Store OTP with a 30-second expiry
+  addInitialAttendanceService(otp);
+  res.json({ otp });
 };
