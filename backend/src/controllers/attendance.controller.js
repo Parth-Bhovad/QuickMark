@@ -19,7 +19,7 @@ import { findAttendance } from "../dao/attendance.dao.js";
 export const addAttendance = async (req, res) => {
   const { studentId, otp } = req.body;
   await addAttendanceService(studentId, otp);
-  res.status(201);
+  res.sendStatus(201);
 };
 
 export const deleteAttendance = async (req, res) => {
@@ -27,7 +27,7 @@ export const deleteAttendance = async (req, res) => {
   const subjectName = getVerificationCode(otp);
   const subject = await findSubjectByName(subjectName);
   await deleteAttendanceService(studentId, date, subject._id);
-  res.status(200);
+  res.sendStatus(200);
 };
 
 export const getAttendance = async (req, res) => {
