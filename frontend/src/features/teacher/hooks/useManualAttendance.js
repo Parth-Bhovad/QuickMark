@@ -20,7 +20,7 @@ function useManualAttendance() {
       setRollNo("");
     } catch (err) {
       console.error("Error adding attendance:", err);
-      setFeedback("Failed to add attendance. " + (err.response.data.message || ""));
+      setFeedback("Failed to add attendance. " + (err.response.data.msg || ""));
     } finally {
       setAddingManualAttendance(false);
     }
