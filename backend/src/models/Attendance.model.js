@@ -21,13 +21,11 @@ const attendanceSchema = new Schema({
         }
     },
     subjectId: {
-        default: [],
         type: Schema.Types.ObjectId,
         ref: "Subject",
         required: true,
     },
     studentId: {
-        default: [],
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
