@@ -21,7 +21,7 @@ function AddAttendanceManual() {
             <div className="container my-5 d-flex flex-column justify-content-center align-items-center" style={{ maxWidth: "500px", minHeight: "90vh" }}>
                 <div className="card shadow-sm border-0">
                     <div className="card-body text-center">
-                        <h2 className="card-title mb-4">✏️ Add Attendance Manually</h2>
+                        <h2 className="card-title mb-4">Add Attendance Manually</h2>
                         <Card className="shadow-sm border-0 rounded-4 mb-4">
                             <Card.Body className="text-center">
                                 <p className="mb-2 text-muted">Selected Subject</p>
