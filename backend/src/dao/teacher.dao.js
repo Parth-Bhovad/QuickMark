@@ -29,6 +29,13 @@ export const addSubjectToTeacher = async (teacherId, subjectId) => {
     return teacher;
 }
 
+export const removeSubjectFromTeacher = async (teacherId, subjectId) => {
+    const teacher = await findTeacherById(teacherId);
+    teacher.subjects = teacher.subjects.filter(subjId => subjId.toString() !== subjectId.toString());
+    await teacher.save();
+    return teacher;
+}
+
 export const changeTeacherPassword = async (teacher, newPassword) => {
     teacher.teacherPassword = newPassword;
     await teacher.save();

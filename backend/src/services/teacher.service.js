@@ -1,6 +1,6 @@
-import { findTeacherById, deleteTeacherById, addSubjectToTeacher, changeTeacherPassword, findTeacherByEmail } from '../dao/teacher.dao.js';
+import { findTeacherById, deleteTeacherById, addSubjectToTeacher, changeTeacherPassword, findTeacherByEmail, removeSubjectFromTeacher } from '../dao/teacher.dao.js';
 import { findSubjectByName, findSubjectById } from '../dao/subject.dao.js';
-import { createSubject } from '../dao/subject.dao.js';
+import { createSubject, addTeacherToSubject, removeTeacherFromSubject } from '../dao/subject.dao.js';
 //import Express Error
 import ExpressError from '../utils/ExpressError.js';
 //importing hashPassword utility
@@ -33,9 +33,24 @@ export const addSubjectToTeacherService = async (subjectName, teacherId) => {
     if (teacher.subjects && teacher.subjects.includes(subject._id)) {
         throw new ExpressError(400, `Subject ${subjectName} already exists for teacher`);
     }
-
+    await addTeacherToSubject(subject._id, teacherId);
     await addSubjectToTeacher(teacherId, subject._id);
     return subject;
+}
+
+export const removeSubjectFromTeacherService = async (subjectName, teacherId) => {
+    const subject = await findSubjectByName(subjectName);
+    if (!subject) {
+        throw new ExpressError(404, `Subject ${subjectName} not found`);
+    }
+
+    const teacher = await findTeacherById(teacherId);
+    if (!teacher.subjects || !teacher.subjects.includes(subject._id)) {
+        throw new ExpressError(400, `Subject ${subjectName} does not exist for teacher`);
+    }
+
+    await removeTeacherFromSubject(subject._id, teacherId);
+    await removeSubjectFromTeacher(teacherId, subject._id);
 }
 
 export const getTeacherSubjectsService = async (teacherId) => {
