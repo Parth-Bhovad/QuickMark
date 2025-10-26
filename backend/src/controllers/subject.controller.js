@@ -3,8 +3,8 @@ import { createSubjectService, getAvailableSubjectsService } from '../services/s
 
 export const createSubject = async (req, res) => {
     const { subjectName, teacherId } = req.body;
-        const newSubject = await createSubjectService(subjectName, teacherId);
-        res.status(201).json(newSubject);
+        await createSubjectService(subjectName, teacherId);
+        res.sendStatus(201);
 }
 
 export const getAvailableSubjects = async (req, res) => {

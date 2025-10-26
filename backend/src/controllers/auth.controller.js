@@ -50,7 +50,7 @@ export const logout = async (req, res) => {
     sameSite: process.env.NODE_ENV === "production" ? "none" : "Lax",
     maxAge: 2 * 24 * 60 * 60 * 1000 // 2 days in milliseconds
   });
-  res.status(200).json({ message: "Logged out successfully" });
+  res.sendStatus(200);
 };
 
 export const registerTeacher = async (req, res) => {
@@ -84,7 +84,7 @@ export const loginTeacher = async (req, res) => {
 export const sendOTPEmail = async (req, res) => {
   const { email } = req.body;
   const otp = await sendOTPEmailService(email);
-  res.status(200).json({ message: "OTP sent successfully" });
+  res.sendStatus(200);
 };
 
 export const verifyOTPEmail = async (req, res) => {

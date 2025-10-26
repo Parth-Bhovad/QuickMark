@@ -8,8 +8,7 @@ export const createSubjectService = async (subjectName, teacherId) => {
     if (existingSubject) {
         throw new ExpressError(400, "Subject already exists");
     }
-    const newSubject = await createSubject(subjectName, teacherId);
-    return newSubject;
+    await createSubject(subjectName, teacherId);
 }
 
 export const getAvailableSubjectsService = async () => {
