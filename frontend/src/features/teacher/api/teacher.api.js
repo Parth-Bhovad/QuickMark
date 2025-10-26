@@ -15,6 +15,11 @@ export const addSubjectAPI = async (teacherId, subjectName) => {
     return response.data;
 }
 
+export const removeSubjectAPI = async (teacherId, subjectName) => {
+    const response = await api.delete(`/teachers/${teacherId}/subjects`, { data: { subjectName } });
+    return response.data;
+}
+
 export const getTeacherProfileAPI = async (teacherId) => {
     const response = await api.get(`/teachers/${teacherId}`);
     return response.data;
