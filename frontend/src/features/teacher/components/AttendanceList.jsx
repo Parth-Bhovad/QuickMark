@@ -23,7 +23,7 @@ function AttendanceList() {
             style={{ maxWidth: "500px", minHeight: "100vh" }}
         >
             {/* Title */}
-            <h3 className="text-center fw-bold mb-4">📋 Attendance Export</h3>
+            <h3 className="text-center fw-bold mb-4">Attendance Export</h3>
 
             {/* Subject Selection Card */}
             <Card className="shadow-sm border-0 rounded-4 mb-4">

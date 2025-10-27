@@ -19,6 +19,107 @@ html, body {
   color: #333;
 }
 
+/* Animation keyframes */
+@keyframes underlineGrow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in utility */
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Heading styling */
+.hero-heading {
+  font-size: 2.6rem;
+  line-height: 1.2;
+}
+
+/* Blue underline */
+.hero-heading .underline {
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #00b4d8);
+  border-radius: 2px;
+  animation: underlineGrow 1.5s ease forwards 0.3s;
+}
+
+/* Subtext */
+.hero-subtext {
+  font-size: 1.1rem;
+  animation-delay: 0.5s;
+}
+
+/* Animation delay for hero buttons */
+.hero-section .fade-in-up:nth-of-type(3) {
+  animation-delay: 0.7s;
+}
+
+
+.how-it-works {
+  background: #f9fafb;
+}
+
+.step-box {
+  width: 230px;
+  transition: all 0.3s ease;
+}
+
+.step-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Connector line for desktop */
+.connector {
+  right: -60px;
+  width: 60px;
+  height: 2.5px;
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
+  border-radius: 10px;
+}
+
+/* Vertical connecting line for mobile */
+@media (max-width: 992px) {
+  .steps-wrapper::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 2.5px;
+    background: linear-gradient(180deg, #2563eb, #3b82f6);
+    transform: translateX(-50%);
+    border-radius: 10px;
+  }
+
+  .step-box {
+    width: 80%;
+  }
+}
+
+
 /* When viewport width ≤300px, show the blocker */
 @media  (max-width: 300px), (max-height: 600px)  {
   .split-blocker {

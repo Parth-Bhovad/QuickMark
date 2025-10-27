@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //importing APIs
-import { addSubjectAPI, getTeacherProfileAPI } from "../api/teacher.api";
+import { addSubjectAPI, getTeacherProfileAPI, removeSubjectAPI } from "../api/teacher.api";
 
 function useTeacherProfile() {
     const { currentUser, authChecked } = useAuthContext();
@@ -36,6 +36,26 @@ function useTeacherProfile() {
         }
     };
 
+    const handleRemoveSubject = async () => {
+        if (!subjectName.trim()) {
+            setError("Subject name cannot be empty.");
+            return;
+        }
+
+        setLoading(true);
+        setError("");
+        try {
+            await removeSubjectAPI(currentUser.id, subjectName);
+            setSubjects((prevSubjects) => prevSubjects.filter((sub) => sub !== subjectName));
+            setSubjectName("");
+        } catch (err) {
+            console.log(err);
+            setError("Failed to remove subject.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const getTeacherProfile = async () => {
         try {
             const response = await getTeacherProfileAPI(currentUser.id);
@@ -61,6 +81,7 @@ function useTeacherProfile() {
         subjectName,
         setSubjectName,
         handleSubmit,
+        handleRemoveSubject,
         loading,
         error
     });

@@ -25,3 +25,19 @@ export const getAvailableSubjects = async () => {
     const subjects = await Subject.find({});
     return subjects.map(subject => subject.subjectName);
 }
+
+export const addTeacherToSubject = async (subjectId, teacherId) => {
+    const subject = await Subject.findById(subjectId);
+    subject.teacherId = teacherId;
+    await subject.save();
+    return subject;
+}
+
+export const removeTeacherFromSubject = async (subjectId, teacherId) => {
+    const subject = await Subject.findById(subjectId);
+    if (subject.teacherId.toString() === teacherId.toString()) {
+        subject.teacherId = null;
+        await subject.save();
+    }
+    return subject;
+}

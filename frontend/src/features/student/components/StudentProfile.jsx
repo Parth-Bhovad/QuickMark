@@ -70,12 +70,11 @@ function StudentProfile() {
           ) : (
             <>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold">Select Subject</Form.Label>
                 <Form.Select
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
                 >
-                  <option value="">-- Select a subject --</option>
+                  <option value="" hidden default>Select a subject</option>
                   {availableSubjects
                     .filter((subject) => !subjects.includes(subject))
                     .map((subject, idx) => (

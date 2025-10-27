@@ -1,7 +1,7 @@
 import { Router } from 'express';
 //importing controllers
 import { registerTeacher, loginTeacher } from '../controllers/auth.controller.js';
-import { getTeacher, deleteTeacher, addSubjectToTeacher, getTeacherSubjects, teacherForgotPassword } from '../controllers/teacher.controller.js';
+import { getTeacher, deleteTeacher, addSubjectToTeacher, getTeacherSubjects, teacherForgotPassword, removeSubjectFromTeacher } from '../controllers/teacher.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
@@ -25,5 +25,6 @@ teacherRouter.put('/:teacherId', isLoggedIn, (req, res) => {
 teacherRouter.delete('/:teacherId', isLoggedIn, isTeacher, wrapAsync(deleteTeacher));
 teacherRouter.patch('/forgot-password', isVerifiedEmail, wrapAsync(teacherForgotPassword));
 teacherRouter.patch('/:teacherId/subjects', isLoggedIn, isTeacher, wrapAsync(addSubjectToTeacher));
+teacherRouter.delete('/:teacherId/subjects', isLoggedIn, isTeacher, wrapAsync(removeSubjectFromTeacher));
 
 export default teacherRouter;

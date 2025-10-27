@@ -1,61 +1,55 @@
+import "../App.css";
+
 function LandingPage() {
     return (
         <main className="container-fluid py-5 mt-5" style={{ background: "linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)" }}>
 
             {/* Hero Section */}
-            <section className="text-center px-3 mb-5 mt-5" style={{ maxWidth: "700px", margin: "0 auto" }}>
-                <h1
-                    className="fw-bold mb-3 position-relative fade-in-up"
-                    style={{ fontSize: "2.2rem", lineHeight: "1.2", display: "inline-block" }}
-                >
-                    <span style={{ color: "#007bff" }}>More time for teaching</span>, less time for attendance.
-                    <span
-                        style={{
-                            position: "absolute",
-                            left: 0,
-                            bottom: "-6px",
-                            width: "0%",
-                            height: "4px",
-                            background: "linear-gradient(90deg, #007bff, #00b4d8)",
-                            borderRadius: "2px",
-                            animation: "underlineGrow 1.5s ease forwards 0.3s"
-                        }}
-                    ></span>
+            <section className="hero-section text-center px-3 mb-5 mt-5 mx-auto" style={{ maxWidth: "700px" }}>
+                <h1 className="hero-heading fw-bold mb-3 position-relative fade-in-up d-inline-block">
+                    <span className="text-primary">More time for teaching</span>, less time for attendance.
+                    <span className="underline"></span>
                 </h1>
-                <p
-                    className="text-muted mb-4 fade-in-up"
-                    style={{ fontSize: "1.1rem", animationDelay: "0.5s" }}
-                >
-                    QuickMark handles attendance in seconds. so you can focus on what really matters, your lesson.
+
+                <p className="hero-subtext text-muted mb-4 fade-in-up">
+                    QuickMark handles attendance in seconds, so you can focus on what really matters, your lesson!
                 </p>
-                <div
-                    className="d-flex justify-content-center gap-3 flex-wrap fade-in-up"
-                    style={{ animationDelay: "0.7s" }}
-                >
+
+                <div className="d-flex justify-content-center gap-3 flex-wrap fade-in-up">
+                    {/* You can place buttons or CTAs here */}
                 </div>
             </section>
 
+
             {/* How it Works */}
-            <section className="text-center px-3 mb-5">
-                <h4 className="fw-bold mb-4">How It Works</h4>
-                <div className="d-flex flex-column gap-3 align-items-center">
+            <section className="how-it-works container text-center py-5">
+                <h2 className="fw-bold mb-5">How It Works</h2>
+
+                <div className="steps-wrapper d-flex flex-lg-row flex-column align-items-center justify-content-center position-relative">
+
                     {[
-                        { icon: "🧑‍🏫", text: "Teacher gets a code" },
-                        { icon: "🖥️", text: "Writes it on the board" },
-                        { icon: "👨‍🎓", text: "Students enter the code" },
-                        { icon: "✅", text: "Attendance marked" }
+                        { title: "Generate Code", desc: "Teacher creates a unique code." },
+                        { title: "Display Code", desc: "Shown to students in class." },
+                        { title: "Join with Code", desc: "Students enter the code." },
+                        { title: "Mark Attendance", desc: "System records automatically." }
                     ].map((step, idx) => (
                         <div
                             key={idx}
-                            className="d-flex align-items-center gap-3 bg-light p-3 rounded shadow-sm fade-in-up"
-                            style={{ maxWidth: "340px", width: "100%", animationDelay: `${0.9 + idx * 0.1}s` }}
+                            className="step-box text-start text-lg-center bg-white shadow-sm p-4 rounded-4 position-relative mb-4 mb-lg-0 mx-2"
                         >
-                            <span style={{ fontSize: "1.6rem" }}>{step.icon}</span>
-                            <span className="fw-semibold">{step.text}</span>
+                            <h5 className="fw-semibold mb-2">{step.title}</h5>
+                            <p className="text-muted small mb-0">{step.desc}</p>
+
+                            {/* Connector line */}
+                            {idx < 3 && (
+                                <div className="connector d-none d-lg-block position-absolute top-50 translate-middle-y"></div>
+                            )}
                         </div>
                     ))}
+
                 </div>
             </section>
+
 
             {/* FAQ Section */}
             <section className="container px-3 mb-5">

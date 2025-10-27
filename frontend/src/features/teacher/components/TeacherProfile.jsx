@@ -2,6 +2,7 @@ import { Card, Form, Button } from "react-bootstrap";
 import useTeacherProfile from "../hooks/useTeacherProfile";
 import useLogoutUser from "../../../hooks/useLogoutUser";
 import LoadingButton from "../../../components/LoadingButton"
+import useGetSubjects from "../hooks/useGetSubject";
 
 function TeacherProfile() {
   const {
@@ -12,12 +13,16 @@ function TeacherProfile() {
     subjectName,
     setSubjectName,
     handleSubmit,
+    handleRemoveSubject,
     loading,
     error,
   } = useTeacherProfile();
 
   const { handleLogout, loggingOut } = useLogoutUser();
 
+  const { allSubjects} = useGetSubjects();
+  console.log(allSubjects);
+  
   return (
     <main
       className="container mt-5 d-flex flex-column pt-5"
@@ -68,8 +73,24 @@ function TeacherProfile() {
           ) : (
             <>
               <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold"> Select Subject from Available Subjects </Form.Label>
+
+                <Form.Select
+                  value={subjectName}
+                  onChange={(e) => setSubjectName(e.target.value)}
+                >
+                  <option value="" disabled hidden>Select a subject</option>
+                  {allSubjects.map((subject, index) => (
+                    <option key={index} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </Form.Select>
+                <div className="p-3 w-full text-center fw-semibold">
+                  OR
+                </div>
                 <Form.Label className="fw-semibold">
-                  Enter Subject Name
+                  Enter Name of new Subject
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -88,6 +109,60 @@ function TeacherProfile() {
                   className="flex-grow-1"
                 >
                   Submit
+                </LoadingButton>
+                <Button
+                  variant="outline-secondary"
+                  className="flex-grow-1"
+                  onClick={() => setShowInput(false)}
+                  disabled={loading}
+                >
+                  Cancel
+                </Button>
+              </div>
+
+              {error && <div className="text-danger mt-2">{error}</div>}
+            </>
+          )}
+        </Card.Body>
+      </Card>
+
+      {/* Remove Subject */}
+      <Card className="shadow-sm border-0 rounded-4 mb-4">
+        <Card.Body>
+          {!showInput ? (
+            <Button
+              variant="danger"
+              className="w-100"
+              onClick={() => setShowInput(true)}
+            >
+              Remove Subject
+            </Button>
+          ) : (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-semibold"> Select Subject to remove </Form.Label>
+
+                <Form.Select
+                  value={subjectName}
+                  onChange={(e) => setSubjectName(e.target.value)}
+                >
+                  <option value="" disabled hidden>Select a subject</option>
+                  {allSubjects.map((subject, index) => (
+                    <option key={index} value={subject}>
+                      {subject}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
+              <div className="d-flex gap-2">
+                <LoadingButton
+                  loading={loading}
+                  onClick={handleRemoveSubject}
+                  disabled={!subjectName.trim() || loading}
+                  className="flex-grow-1"
+                >
+                  Remove
                 </LoadingButton>
                 <Button
                   variant="outline-secondary"
