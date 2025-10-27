@@ -58,7 +58,7 @@ function AppNavbar() {
           <Navbar.Toggle aria-controls="main-navbar" />
           <Navbar.Collapse id="main-navbar" className="justify-content-end">
             <Nav className="align-items-lg-center gap-lg-3">
-              <Nav.Link as={Link} to="/" className="fw-semibold w-100 text-center" onClick={handleNavClick}>
+              <Nav.Link as={Link} to="/" className="fw-semibold" onClick={handleNavClick}>
                 Home
               </Nav.Link>
 
