@@ -8,7 +8,7 @@ function useTeacherProfile() {
     const { currentUser, authChecked } = useAuthContext();
 
     const [teacherName, setTeacherName] = useState("");
-    const [subjects, setSubjects] = useState(["No subjects available"]);
+    const [subjects, setSubjects] = useState([]);
     const [showAddSubjectInput, setShowAddSubjectInput] = useState(false);
     const [showRemoveSubjectInput, setShowRemoveSubjectInput] = useState(false);
     const [subjectName, setSubjectName] = useState("");
@@ -29,8 +29,9 @@ function useTeacherProfile() {
             }
             setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
             setSubjectName("");
-            setShowInput(false);
+            setShowAddSubjectInput(false);
         } catch (err) {
+            console.log(err);
             setError("Failed to add subject.");
         } finally {
             setLoading(false);
@@ -49,6 +50,7 @@ function useTeacherProfile() {
             await removeSubjectAPI(currentUser.id, subjectName);
             setSubjects((prevSubjects) => prevSubjects.filter((sub) => sub !== subjectName));
             setSubjectName("");
+            setShowRemoveSubjectInput(false);
         } catch (err) {
             console.log(err);
             setError("Failed to remove subject.");
