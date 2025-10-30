@@ -14,7 +14,7 @@ export const checkActiveSessionAPI = async () => {
     return response;
 }
 
-export const addSubjectToStudentAPI = async (studentId, subjectName) => {
+export const editStudentSubjectAPI = async (studentId, subjectName) => {
     const response = await api.patch(`/students/${studentId}/subjects`, { subjectName });
     return response.data;
 }
