@@ -9,9 +9,8 @@ function StudentProfile() {
     showInput,
     setShowInput,
     availableSubjects,
-    subjects,
-    subjectName,
-    setSubjectName,
+    enrolledSubjects,
+    onSubjectChange,
     rollNo,
     error,
     handleAddSubject,
@@ -51,7 +50,7 @@ function StudentProfile() {
           <p className="text-muted mb-1">Roll No: {rollNo}</p>
           <p className="text-muted">
             Subjects:{" "}
-            {subjects.length ? subjects.join(", ") : "No subjects yet"}
+            {enrolledSubjects.length ? enrolledSubjects.join(", ") : "No subjects yet"}
           </p>
         </Card.Body>
       </Card>
@@ -70,19 +69,17 @@ function StudentProfile() {
           ) : (
             <>
               <Form.Group className="mb-3">
-                <Form.Select
-                  value={subjectName}
-                  onChange={(e) => setSubjectName(e.target.value)}
-                >
-                  <option value="" hidden default>Select a subject</option>
-                  {availableSubjects
-                    .filter((subject) => !subjects.includes(subject))
-                    .map((subject, idx) => (
-                      <option key={idx} value={subject}>
-                        {subject}
-                      </option>
-                    ))}
-                </Form.Select>
+                {availableSubjects
+                // .filter((availableSubject) => !enrolledSubjects.includes(availableSubject))
+                .map((sub, idx)=>(
+                  <Form.Check
+                    type="checkbox"
+                    label={sub}
+                    checked={enrolledSubjects.includes(sub)}
+                    onChange={() => onSubjectChange(sub)}
+                    key={idx}
+                  />
+                ))}
               </Form.Group>
 
               <div className="d-flex gap-2">
@@ -91,7 +88,7 @@ function StudentProfile() {
                   variant="primary"
                   className="flex-grow-1"
                   onClick={handleAddSubject}
-                  disabled={!subjectName || addingSubject}
+                  // disabled={!subjectName || addingSubject}
                 >
                   Add Subject
                 </LoadingButton>
