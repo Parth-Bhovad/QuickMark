@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 //importing controllers
 import { registerStudent, loginStudent } from '../controllers/auth.controller.js';
-import { getStudent, deleteStudent, addSubjectToStudent, studentForgotPassword } from '../controllers/student.controller.js';
+import { getStudent, deleteStudent, editStudentSubject, studentForgotPassword } from '../controllers/student.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
@@ -25,5 +25,5 @@ studentRouter.put('/:studentId', isLoggedIn, (req, res) => {
 });
 studentRouter.delete('/:studentId', isLoggedIn, wrapAsync(deleteStudent));
 studentRouter.patch('/forgot-password', isVerifiedEmail, wrapAsync(studentForgotPassword));
-studentRouter.patch('/:studentId/subjects', isLoggedIn, wrapAsync(addSubjectToStudent));
+studentRouter.patch('/:studentId/subjects', isLoggedIn, wrapAsync(editStudentSubject));
 export default studentRouter;
