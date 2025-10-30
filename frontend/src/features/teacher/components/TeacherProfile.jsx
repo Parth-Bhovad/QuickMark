@@ -8,8 +8,10 @@ function TeacherProfile() {
   const {
     teacherName,
     subjects,
-    showInput,
-    setShowInput,
+    showAddSubjectInput,
+    setShowAddSubjectInput,
+    showRemoveSubjectInput,
+    setShowRemoveSubjectInput,
     subjectName,
     setSubjectName,
     handleSubmit,
@@ -62,11 +64,11 @@ function TeacherProfile() {
       {/* Add Subject */}
       <Card className="shadow-sm border-0 rounded-4 mb-4">
         <Card.Body>
-          {!showInput ? (
+          {!showAddSubjectInput ? (
             <Button
               variant="primary"
               className="w-100"
-              onClick={() => setShowInput(true)}
+              onClick={() => setShowAddSubjectInput(true)}
             >
               + Add Subject
             </Button>
@@ -80,7 +82,8 @@ function TeacherProfile() {
                   onChange={(e) => setSubjectName(e.target.value)}
                 >
                   <option value="" disabled hidden>Select a subject</option>
-                  {allSubjects.map((subject, index) => (
+                  {allSubjects.filter(sub => !subjects.includes(sub))
+                  .map((subject, index) => (
                     <option key={index} value={subject}>
                       {subject}
                     </option>
@@ -113,7 +116,7 @@ function TeacherProfile() {
                 <Button
                   variant="outline-secondary"
                   className="flex-grow-1"
-                  onClick={() => setShowInput(false)}
+                  onClick={() => setShowAddSubjectInput(false)}
                   disabled={loading}
                 >
                   Cancel
@@ -129,11 +132,11 @@ function TeacherProfile() {
       {/* Remove Subject */}
       <Card className="shadow-sm border-0 rounded-4 mb-4">
         <Card.Body>
-          {!showInput ? (
+          {!showRemoveSubjectInput ? (
             <Button
               variant="danger"
               className="w-100"
-              onClick={() => setShowInput(true)}
+              onClick={() => setShowRemoveSubjectInput(true)}
             >
               Remove Subject
             </Button>
@@ -147,7 +150,7 @@ function TeacherProfile() {
                   onChange={(e) => setSubjectName(e.target.value)}
                 >
                   <option value="" disabled hidden>Select a subject</option>
-                  {allSubjects.map((subject, index) => (
+                  {subjects.map((subject, index) => (
                     <option key={index} value={subject}>
                       {subject}
                     </option>
@@ -167,7 +170,7 @@ function TeacherProfile() {
                 <Button
                   variant="outline-secondary"
                   className="flex-grow-1"
-                  onClick={() => setShowInput(false)}
+                  onClick={() => setShowRemoveSubjectInput(false)}
                   disabled={loading}
                 >
                   Cancel

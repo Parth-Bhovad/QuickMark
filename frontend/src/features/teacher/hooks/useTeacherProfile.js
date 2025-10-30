@@ -9,7 +9,8 @@ function useTeacherProfile() {
 
     const [teacherName, setTeacherName] = useState("");
     const [subjects, setSubjects] = useState(["No subjects available"]);
-    const [showInput, setShowInput] = useState(false);
+    const [showAddSubjectInput, setShowAddSubjectInput] = useState(false);
+    const [showRemoveSubjectInput, setShowRemoveSubjectInput] = useState(false);
     const [subjectName, setSubjectName] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -76,8 +77,10 @@ function useTeacherProfile() {
     return ({
         teacherName,
         subjects,
-        showInput,
-        setShowInput,
+        showAddSubjectInput,
+        setShowAddSubjectInput,
+        showRemoveSubjectInput,
+        setShowRemoveSubjectInput,
         subjectName,
         setSubjectName,
         handleSubmit,

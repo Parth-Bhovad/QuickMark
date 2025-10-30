@@ -38,12 +38,9 @@ export const findStudentsBySubjectId = async (subjectId) => {
     return students;
 }
 
-export const addSubjectToStudent = async (studentId, subjectName) => {
-    console.log(`Adding subject ${subjectName} to student with ID ${studentId}`);
-    
-    const subject = await findSubjectByName(subjectName);
+export const editStudentSubject = async (studentId, ids) => {
     const student = await findStudentById(studentId);
-    student.subjects.push(subject._id);
+    student.subjects=ids;
     await student.save();
     return student;
 }

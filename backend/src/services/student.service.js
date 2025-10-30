@@ -1,5 +1,5 @@
-import { findStudentByRollNo, findStudentById, deleteStudentByRollNo, addSubjectToStudent, findStudentByEmail, changeStudentPassword } from "../dao/student.dao.js";
-import { findSubjectById, findSubjectByName } from "../dao/subject.dao.js";
+import { findStudentByRollNo, findStudentById, deleteStudentByRollNo, editStudentSubject, findStudentByEmail, changeStudentPassword } from "../dao/student.dao.js";
+import { findSubjectById, findSubjectByName, findSubjectsByNames } from "../dao/subject.dao.js";
 //importing Express Error
 import ExpressError from "../utils/ExpressError.js";
 //importing hashPassword utility
@@ -23,20 +23,14 @@ export const deleteStudentService = async (rollNo) => {
     return student;
 }
 
-export const addSubjectToStudentService = async (studentId, subjectName) => {
-    const student = await findStudentById(studentId);
-    if (!student) {
-        throw new ExpressError(404, `Student with ID: ${studentId} not found`);
+export const editStudentSubjectService = async (studentId, subjectNames) => {
+    const subjects = await findSubjectsByNames(subjectNames);
+    if (subjectNames.length > 0) {
+        const ids = subjects.map(subject => subject._id);
+        await editStudentSubject(studentId, ids);
+    } else {
+        await editStudentSubject(studentId, []);
     }
-    const subject = await findSubjectByName(subjectName);
-    if (!subject) {
-        throw new ExpressError(404, `Subject with name: ${subjectName} not found`);
-    }
-    if (student.subjects.includes(subject._id)) {
-        throw new ExpressError(400, `Subject ${subjectName} is already added to student ${student.studentName}`);
-    }
-    await addSubjectToStudent(studentId, subjectName);
-    return student;
 }
 
 export const getStudentSubjectsService = async (studentId) => {

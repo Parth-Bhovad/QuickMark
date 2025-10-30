@@ -2,46 +2,30 @@ import { useEffect, useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //importing APIs
-import { getStudentProfileAPI, addSubjectToStudentAPI } from "../api/student.api.js";
+import { getStudentProfileAPI, editStudentSubjectAPI } from "../api/student.api.js";
 import { getAvailableSubjectsAPI } from "../../../api/getAvailableSubjects.api.js";
 
 function useStudentProfile() {
     const { currentUser, authChecked } = useAuthContext();
 
-    const [subjectName, setSubjectName] = useState("");
+    // const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [availableSubjects, setAvailableSubjects] = useState([]);
     const [studentName, setStudentName] = useState("");
     const [showInput, setShowInput] = useState(false);
-    const [subjects, setSubjects] = useState(["No subjects available"]);
+    const [enrolledSubjects, setEnrolledSubjects] = useState([]);
     const [rollNo, setRollNo] = useState("");
     const [error, setError] = useState("");
     //Adding loading state
     const [addingSubject, setAddingSubject] = useState(false);
     const handleAddSubject = async () => {
         setAddingSubject(true);
-        if (!subjectName.trim()) {
-            setError("Subject name cannot be empty.");
-            setAddingSubject(false);
-            return;
-        }
-        if (subjects.includes(subjectName)) {
-            console.log(`Subject already added: ${subjectName}`);
-
-            setError("Subject already added.");
-            setAddingSubject(false);
-            return;
-        }
         try {
-            await addSubjectToStudentAPI(currentUser.id, subjectName);
-            if(subjects[0] == "No subjects available"){
-                setSubjects([]);
-            }
-            setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
-            setSubjectName("");
+            await editStudentSubjectAPI(currentUser.id, enrolledSubjects);
+            console.log(enrolledSubjects);
         } catch (error) {
             console.error("Failed to add subject:", error);
             setError("Failed to add subject:", error);
-        }finally{
+        } finally {
             setAddingSubject(false);
         }
     };
@@ -53,7 +37,7 @@ function useStudentProfile() {
             setStudentName(response.studentName);
             setRollNo(response.rollNo);
             if (response.subjects.length !== 0) {
-                setSubjects(response.subjects);
+                setEnrolledSubjects(response.subjects);
             }
         } catch (error) {
             console.error("Failed to fetch student profile:", error);
@@ -77,15 +61,22 @@ function useStudentProfile() {
         getAvailableSubjects();
     }, [authChecked, currentUser]);
 
+    const onSubjectChange = (subject) => {
+        setEnrolledSubjects((prevSelected) => {
+            return prevSelected.includes(subject)
+                ? prevSelected.filter((sub) => sub !== subject)
+                : [...prevSelected, subject];
+        });
+    };
+
     return {
         studentName,
         setStudentName,
         availableSubjects,
         showInput,
         setShowInput,
-        subjects,
-        subjectName,
-        setSubjectName,
+        enrolledSubjects,
+        onSubjectChange,
         rollNo,
         error,
         handleAddSubject,

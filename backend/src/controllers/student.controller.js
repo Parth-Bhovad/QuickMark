@@ -1,5 +1,5 @@
 //importing services
-import { getStudentService, deleteStudentService, addSubjectToStudentService, studentForgotPasswordService } from '../services/student.service.js';
+import { getStudentService, deleteStudentService, editStudentSubjectService, studentForgotPasswordService } from '../services/student.service.js';
 
 export const getStudent = async (req, res) => {
     let studentId = req.params.studentId;
@@ -16,11 +16,11 @@ export const deleteStudent = async (req, res) => {
     res.sendStatus(200);
 };
 
-export const addSubjectToStudent = async (req, res) => {
+export const editStudentSubject = async (req, res) => {
         let studentId = req.params.studentId;
         let { subjectName } = req.body;
 
-        await addSubjectToStudentService(studentId, subjectName);
+        await editStudentSubjectService(studentId, subjectName);
         res.sendStatus(200);
 }
 
