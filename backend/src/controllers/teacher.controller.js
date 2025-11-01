@@ -1,4 +1,3 @@
-import ExpressError from '../utils/ExpressError.js';
 import {deleteTeacherService, getTeacherService, addSubjectToTeacherService,getTeacherSubjectsService, teacherForgotPasswordService, removeSubjectFromTeacherService } from '../services/teacher.service.js';
 
 export const getTeacher = async (req, res) => {

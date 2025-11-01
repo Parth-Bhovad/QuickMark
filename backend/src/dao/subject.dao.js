@@ -31,15 +31,13 @@ export const getAvailableSubjects = async () => {
     return subjects.map(subject => subject.subjectName);
 }
 
-export const addTeacherToSubject = async (subjectId, teacherId) => {
-    const subject = await Subject.findById(subjectId);
+export const addTeacherToSubject = async (subject, teacherId) => {
     subject.teacherId = teacherId;
     await subject.save();
     return subject;
 }
 
-export const removeTeacherFromSubject = async (subjectId, teacherId) => {
-    const subject = await Subject.findById(subjectId);
+export const removeTeacherFromSubject = async (subject, teacherId) => {
     if (subject.teacherId.toString() === teacherId.toString()) {
         subject.teacherId = null;
         await subject.save();

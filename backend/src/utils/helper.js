@@ -12,17 +12,17 @@ export const signJWT = (userId, role) => {
     return token;
 }
 
-export const checkExistingStudent = async (studentEmail) => {
-    // Check if student already exists
-    const existingStudent = await findStudentByEmail(studentEmail);
-    return existingStudent;
-}
+// export const checkExistingStudent = async (studentEmail) => {
+//     // Check if student already exists
+//     const existingStudent = await findStudentByEmail(studentEmail);
+//     return existingStudent;
+// }
 
-export const checkExistingTeacher = async (teacherEmail) => {
-    // Check if teacher already exists
-    const existingTeacher = await findTeacherByEmail(teacherEmail);
-    return existingTeacher;
-}
+// export const checkExistingTeacher = async (teacherEmail) => {
+//     // Check if teacher already exists
+//     const existingTeacher = await findTeacherByEmail(teacherEmail);
+//     return existingTeacher;
+// }
 
 export const hashPassword = async (password) => {
     // Hash the password
