@@ -13,8 +13,6 @@ import {
   storeVerificationCode,
 } from "../utils/generateOTP.js";
 import { findSubjectByName } from "../dao/subject.dao.js";
-import { findStudentByRollNo } from "../dao/student.dao.js";
-import { findAttendance } from "../dao/attendance.dao.js";
 
 export const addAttendance = async (req, res) => {
   const { studentId, otp } = req.body;

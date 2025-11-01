@@ -31,5 +31,4 @@ export const findAttendanceAndMarkPresent = async (studentId, date, subjectId) =
         attendance.isPresent = true;
         await attendance.save();
     }
-    return attendance;
 };

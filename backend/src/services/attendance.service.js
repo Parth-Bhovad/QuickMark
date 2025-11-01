@@ -33,9 +33,7 @@ export const addAttendanceService = async (studentId, otp) => {
   const today = new Date();
   const yyyyMmDd = today.toISOString().split("T")[0]; // 'YYYY-MM-DD'
 
-  findAttendanceAndMarkPresent(studentId, yyyyMmDd, subject._id);
-
-  return;
+  await findAttendanceAndMarkPresent(studentId, yyyyMmDd, subject._id);
 };
 
 export const deleteAttendanceService = async (studentId, date, subjectId) => {
@@ -56,7 +54,6 @@ export const deleteAttendanceService = async (studentId, date, subjectId) => {
     );
   }
   await deleteAttendance(attendance._id);
-  return { message: "Attendance deleted successfully" };
 };
 
 export const getAttendanceService = async (subjectName) => {
@@ -156,6 +153,6 @@ export const addAttendanceByTeacherService = async (rollNo, subjectId) => {
     studentId: student._id,
     subjectId,
     date: yyyyMmDd,
-    isPresent: false,
+    isPresent: true,
   });
 };

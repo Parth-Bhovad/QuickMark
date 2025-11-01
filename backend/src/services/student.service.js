@@ -10,17 +10,12 @@ export const getStudentService = async (studentId) => {
     if (!student) {
         throw new ExpressError(404, `Student with ID: ${studentId} not found`);
     }
-    const subjectsNameArray = await getStudentSubjectsService(student._id);
+    const subjectsNameArray = await getStudentSubjectsService(student);
     return { studentName: student.studentName, subjects: subjectsNameArray, rollNo: student.rollNo };
 };
 
 export const deleteStudentService = async (rollNo) => {
-    const student = await findStudentByRollNo(rollNo);
-    if (!student) {
-        throw new ExpressError(404, `Student with Roll No: ${rollNo} not found`);
-    }
     await deleteStudentByRollNo(rollNo);
-    return student;
 }
 
 export const editStudentSubjectService = async (studentId, subjectNames) => {
@@ -33,11 +28,7 @@ export const editStudentSubjectService = async (studentId, subjectNames) => {
     }
 }
 
-export const getStudentSubjectsService = async (studentId) => {
-    const student = await findStudentById(studentId);
-    if (!student) {
-        throw new ExpressError(404, `Student with ID: ${studentId} not found`);
-    }
+export const getStudentSubjectsService = async (student) => {
     const subjectsNameArray = [];
     for (let i = 0; i < student.subjects.length; i++) {
         const subjectId = student.subjects[i];

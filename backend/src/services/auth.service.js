@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 //importing helpers
-import { signJWT, checkExistingStudent, checkExistingTeacher, hashPassword } from '../utils/helper.js';
+import { signJWT, hashPassword } from '../utils/helper.js';
 //importing utils
 import { generateEmailOTP, storeVerificationCode, getVerificationCode } from '../utils/generateOTP.js';
 //importing DAOs
-import { createStudent } from '../dao/student.dao.js';
-import { createTeacher, findTeacherByEmail } from "../dao/teacher.dao.js";
+import { createStudent, checkExistingStudent, findStudentByEmail } from '../dao/student.dao.js';
+import { createTeacher, checkExistingTeacher, findTeacherByEmail } from "../dao/teacher.dao.js";
 //importing transporter for sending emails
 import transporter from '../config/nodeMailer.config.js';
 //importing custom error class
@@ -32,7 +32,7 @@ export const registerStudentService = async (studentName, rollNo, studentEmail, 
 
 export const loginStudentService = async (studentEmail, studentPassword) => {
   // Check if student already exists
-  const existingStudent = await checkExistingStudent(studentEmail);
+  const existingStudent = await findStudentByEmail(studentEmail);
   if (!existingStudent) {
     throw new ExpressError(401, "Invalid email or password");
   }

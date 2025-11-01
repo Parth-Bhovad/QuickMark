@@ -1,11 +1,14 @@
 //importing models
 import Student from '../models/Student.model.js';
-import { findSubjectByName } from './subject.dao.js';
 
 export const createStudent = async (studentName, rollNo, studentEmail, studentPassword) => {
-    const newStudent = new Student({ studentName, rollNo, studentEmail, studentPassword });
-    await newStudent.save();
-    return newStudent;
+    await Student.create({ studentName, rollNo, studentEmail, studentPassword });
+}
+
+export const checkExistingStudent = async (studentEmail) => {
+    // Check if student already exists
+    const existingStudent = await Student.exists({ studentEmail });
+    return !!existingStudent;
 }
 
 export const findStudentByEmail = async (studentEmail) => {
@@ -29,8 +32,7 @@ export const findStudentByRollNo = async (rollNo) => {
 }
 
 export const deleteStudentByRollNo = async (rollNo) => {
-    const student = await Student.findOneAndDelete({ rollNo });
-    return student;
+    await Student.findOneAndDelete({ rollNo });
 }
 
 export const findStudentsBySubjectId = async (subjectId) => {
@@ -39,14 +41,10 @@ export const findStudentsBySubjectId = async (subjectId) => {
 }
 
 export const editStudentSubject = async (studentId, ids) => {
-    const student = await findStudentById(studentId);
-    student.subjects=ids;
-    await student.save();
-    return student;
+    await Student.findByIdAndUpdate(studentId, { subjects: ids });
 }
-
+    
 export const changeStudentPassword = async (student, newPassword) => {
     student.studentPassword = newPassword;
     await student.save();
-    return student;
 }

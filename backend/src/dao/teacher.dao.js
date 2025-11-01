@@ -2,9 +2,13 @@
 import Teacher from '../models/Teacher.model.js';
 
 export const createTeacher = async (teacherName, teacherEmail, teacherPassword) => {
-    const newTeacher = new Teacher({ teacherName, teacherEmail, teacherPassword });
-    await newTeacher.save();
-    return newTeacher;
+    await Teacher.create({ teacherName, teacherEmail, teacherPassword });
+}
+
+export const checkExistingTeacher = async (teacherEmail) => {
+    // Check if teacher already exists
+    const existingTeacher = await Teacher.exists({ teacherEmail });
+    return !!existingTeacher;
 }
 
 export const findTeacherById = async (teacherId) => {
@@ -18,19 +22,15 @@ export const findTeacherByEmail = async (teacherEmail) => {
 }
 
 export const deleteTeacherById = async (teacherId) => {
-    const teacher = await Teacher.findByIdAndDelete(teacherId);
-    return teacher;
+    await Teacher.findByIdAndDelete(teacherId);
 }
 
-export const addSubjectToTeacher = async (teacherId, subjectId) => {
-    const teacher = await findTeacherById(teacherId);
+export const addSubjectToTeacher = async (teacher, subjectId) => {
     teacher.subjects.push(subjectId);
     await teacher.save();
-    return teacher;
 }
 
-export const removeSubjectFromTeacher = async (teacherId, subjectId) => {
-    const teacher = await findTeacherById(teacherId);
+export const removeSubjectFromTeacher = async (teacher, subjectId) => {
     teacher.subjects = teacher.subjects.filter(subjId => subjId.toString() !== subjectId.toString());
     await teacher.save();
     return teacher;
