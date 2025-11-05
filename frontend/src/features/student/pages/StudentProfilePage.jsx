@@ -1,9 +1,12 @@
 import StudentProfile from "../components/StudentProfile";
+import StudentProvider from "../context/StudentProvider";
 
 function StudentProfilePage() {
     return (
         <main>
-            <StudentProfile />
+            <StudentProvider>
+                <StudentProfile />
+            </StudentProvider>
         </main>
     );
 }
