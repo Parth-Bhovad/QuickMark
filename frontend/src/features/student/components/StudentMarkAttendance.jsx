@@ -66,7 +66,7 @@ function StudentMarkAttendance() {
                 const newCount = prev + 1;
                 if (newCount >= 2 && elapsed < 20) {
                     setIsBlocked(true);
-                    setWarningMsg("⚠ Suspicious activity detected — Please avoid switching apps while entering OTP.");
+                    setWarningMsg("⚠ Suspicious activity detected");
                 }
                 return newCount;
             });
