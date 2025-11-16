@@ -1,7 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
-import useVerifyEmail from "../../../hooks/useVerifyEmail";
-import isValidEmail from "../../../utils/isValidEmail";
+// import useVerifyEmail from "../../../hooks/useVerifyEmail";
+// import isValidEmail from "../../../utils/isValidEmail";
 import LoadingButton from "../../../components/LoadingButton";
 import { useState } from "react";
 
@@ -16,21 +16,21 @@ function StudentForgotPassword() {
         forgotingPassword
     } = useAuth();
 
-    const {
-        isOTPSent,
-        isOTPVerified,
-        otp,
-        setOtp,
-        handleSendOTPToEmail,
-        handleVerifyOtp,
-        sendingOtp,
-        verifyingOtp
-    } = useVerifyEmail();
+    // const {
+    //     isOTPSent,
+    //     isOTPVerified,
+    //     otp,
+    //     setOtp,
+    //     handleSendOTPToEmail,
+    //     handleVerifyOtp,
+    //     sendingOtp,
+    //     verifyingOtp
+    // } = useVerifyEmail();
     const [showPassword, setShowPassword] = useState(false);
     return (
         <main className="container mt-5">
             <h3 className="text-center mb-5 mt-3">Forgot Password</h3>
-            <Form noValidate validated={validated} onSubmit={(e) => {handleForgotPassword(e, otp)}}>
+            <Form noValidate validated={validated} onSubmit={(e) => {handleForgotPassword(e)}}>
                 <Form.Group className="mb-3" controlId="formStudentEmail">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
@@ -44,7 +44,7 @@ function StudentForgotPassword() {
                         Please provide a valid email.
                     </Form.Control.Feedback>
                 </Form.Group>
-                <LoadingButton
+                {/* <LoadingButton
                     loading={sendingOtp}
                     type="button"
                     onClick={() => handleSendOTPToEmail(studentEmail)}
@@ -52,9 +52,9 @@ function StudentForgotPassword() {
                     disabled={!isValidEmail(studentEmail) || sendingOtp}
                 >
                     Send OTP
-                </LoadingButton>
+                </LoadingButton> */}
 
-                {isOTPSent && (
+                {/* {isOTPSent && (
                     <>
                         <Form.Group className="mb-3" controlId="formOTP">
                             <Form.Label>Confirm OTP:</Form.Label>
@@ -82,7 +82,7 @@ function StudentForgotPassword() {
                             Verify OTP
                         </LoadingButton>
                     </>
-                )}
+                )} */}
 
                 <Form.Group className="mb-3" controlId="formStudentPassword">
                     <Form.Label>Password:</Form.Label>
@@ -112,7 +112,7 @@ function StudentForgotPassword() {
                     loading={forgotingPassword}
                     type="submit"
                     className="w-100"
-                    disabled={!isOTPVerified || forgotingPassword}
+                    disabled={forgotingPassword}
                 >
                     Change Password
                 </LoadingButton>

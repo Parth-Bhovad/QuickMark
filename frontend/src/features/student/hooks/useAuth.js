@@ -47,7 +47,7 @@ function useAuth() {
     }
   };
 
-  const handleRegisterStudent = async (e, otp) => {
+  const handleRegisterStudent = async (e) => {
     try {
       setRegisteringStudent(true);
       e.preventDefault();
@@ -55,7 +55,7 @@ function useAuth() {
       if (form.checkValidity() === false) {
         console.log("Form is invalid");
       } else {
-        const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword, otp);
+        const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword);
         console.log(data);
         checkAuth();
         if (data?.token) {
@@ -72,7 +72,7 @@ function useAuth() {
     }
   };
 
-  const handleForgotPassword = async (e, otp) => {
+  const handleForgotPassword = async (e) => {
     try {
       setForgotingPassword(true);
       e.preventDefault();
@@ -80,10 +80,11 @@ function useAuth() {
       if (form.checkValidity() === false) {
         console.log("Form is invalid");
       } else {
-        const data = await studentForgotPasswordAPI(studentEmail, studentPassword, otp);
+        const data = await studentForgotPasswordAPI(studentEmail, studentPassword);
         console.log(data);
       }
       setValidated(true);
+      navigate("/student-login");
     } catch (error) {
       console.log(error);
       setError(error.response?.data?.msg || "Request failed");

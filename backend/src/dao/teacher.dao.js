@@ -2,7 +2,8 @@
 import Teacher from '../models/Teacher.model.js';
 
 export const createTeacher = async (teacherName, teacherEmail, teacherPassword) => {
-    await Teacher.create({ teacherName, teacherEmail, teacherPassword });
+    const teacher = await Teacher.create({ teacherName, teacherEmail, teacherPassword });
+    return teacher;
 }
 
 export const checkExistingTeacher = async (teacherEmail) => {

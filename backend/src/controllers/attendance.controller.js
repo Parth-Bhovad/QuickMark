@@ -40,13 +40,13 @@ export const getAttendance = async (req, res) => {
 
 export const addAttendanceByTeacher = async (req, res) => {
   const { rollNo, subjectName } = req.body;
-  const subjectId = await findSubjectByName(subjectName);
+  const subject = await findSubjectByName(subjectName);
 
-  if (!subjectId) {
+  if (!subject) {
     return res.status(404).json({ message: "Subject not found" });
   }
 
-  await addAttendanceByTeacherService(rollNo, subjectId);
+  await addAttendanceByTeacherService(rollNo, subject._id);
   res.sendStatus(201);
 };
 

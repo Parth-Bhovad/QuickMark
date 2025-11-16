@@ -1,9 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect, useRef } from "react";
 import { Form, Container, Alert, Badge, Card } from "react-bootstrap";
 import useStudentMarkAttendance from "../hooks/useStudentMarkAttendance";
 import LoadingButton from "../../../components/LoadingButton";
 
 function StudentMarkAttendance() {
+
+    const navigate = useNavigate();
+
     const { otp, setOtp, validated, feedback, handleSubmit, submittingAttendance } = useStudentMarkAttendance();
 
     const otpRef = useRef(null);
@@ -21,15 +26,16 @@ function StudentMarkAttendance() {
 
         const handleBeforeInput = (e) => {
             if (e.inputType === "insertFromPaste" || e.inputType === "insertFromDrop") {
-                e.preventDefault();
+                navigate("/");
             }
         };
 
         const handleInput = () => {
             const cur = otpEl.value;
             if (cur.length - lastLen > 1) {
-                otpEl.value = cur.slice(0, lastLen);
-                setOtp(otpEl.value);
+                navigate("/");
+                // otpEl.value = cur.slice(0, lastLen);
+                // setOtp(otpEl.value);
             } else {
                 lastLen = cur.length;
             }
@@ -42,7 +48,7 @@ function StudentMarkAttendance() {
             otpEl.removeEventListener("beforeinput", handleBeforeInput);
             otpEl.removeEventListener("input", handleInput);
         };
-    }, []);
+    }, [navigate]);
 
     // Suspicious activity detection
     useEffect(() => {
@@ -58,7 +64,7 @@ function StudentMarkAttendance() {
 
             setFocusCount(prev => {
                 const newCount = prev + 1;
-                if (newCount >= 3 && elapsed < 20) {
+                if (newCount >= 2 && elapsed < 20) {
                     setIsBlocked(true);
                     setWarningMsg("⚠ Suspicious activity detected — Please avoid switching apps while entering OTP.");
                 }
@@ -101,7 +107,7 @@ function StudentMarkAttendance() {
                             disabled={isBlocked}
                             onChange={(e) => setOtp(e.target.value)}
                             onCopy={(e) => e.preventDefault()}
-                            onPaste={(e) => e.preventDefault()}
+                            onPaste={() => navigate("/")}
                             onCut={(e) => e.preventDefault()}
                             onDragStart={(e) => e.preventDefault()}
                             onDrop={(e) => e.preventDefault()}

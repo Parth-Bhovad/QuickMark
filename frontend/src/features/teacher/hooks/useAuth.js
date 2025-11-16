@@ -47,7 +47,7 @@ function useAuth() {
     }
   };
 
-  const handleRegisterTeacher = async (e, otp) => {
+  const handleRegisterTeacher = async (e) => {
     try {
       setRegisteringTeacher(true);
       e.preventDefault();
@@ -59,11 +59,11 @@ function useAuth() {
           teacherEmail,
           teacherPassword,
           teacherName,
-          otp
+          // otp
         );
         console.log(response);
         checkAuth();
-        if (response?.data?.token) {
+        if (response.data.token) {
           navigate("/teacher/attendance-session");
         }
       }
@@ -77,7 +77,7 @@ function useAuth() {
     }
   };
 
-  const handleForgotPassword = async (e, otp) => {
+  const handleForgotPassword = async (e) => {
     try {
       setForgettingPassword(true);
       e.preventDefault();
@@ -89,11 +89,12 @@ function useAuth() {
         const data = await teacherForgotPasswordAPI(
           teacherEmail,
           teacherPassword,
-          otp
+          // otp
         );
         console.log(data);
       }
       setValidated(true);
+      navigate("/teacher-login");
     } catch (error) {
       console.log(error);
       setError(error.response.data.msg || error.response.data.error);

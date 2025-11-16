@@ -2,7 +2,8 @@
 import Student from '../models/Student.model.js';
 
 export const createStudent = async (studentName, rollNo, studentEmail, studentPassword) => {
-    await Student.create({ studentName, rollNo, studentEmail, studentPassword });
+    const student = await Student.create({ studentName, rollNo, studentEmail, studentPassword });
+    return student;
 }
 
 export const checkExistingStudent = async (studentEmail) => {

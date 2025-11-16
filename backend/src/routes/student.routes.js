@@ -14,7 +14,7 @@ import wrapAsync from '../utils/wrapAsync.js';
 
 const studentRouter = Router({ mergeParams: true });
 
-studentRouter.post('/', validateRequest(registerStudentSchema), isVerifiedEmail, wrapAsync(registerStudent));
+studentRouter.post('/', validateRequest(registerStudentSchema), wrapAsync(registerStudent));
 
 studentRouter.post('/login', validateRequest(loginStudentSchema), wrapAsync(loginStudent));
 
@@ -24,6 +24,6 @@ studentRouter.put('/:studentId', isLoggedIn, (req, res) => {
     console.log("Update student route", studentId);
 });
 studentRouter.delete('/:studentId', isLoggedIn, wrapAsync(deleteStudent));
-studentRouter.patch('/forgot-password', isVerifiedEmail, wrapAsync(studentForgotPassword));
+studentRouter.patch('/forgot-password', wrapAsync(studentForgotPassword));
 studentRouter.patch('/:studentId/subjects', isLoggedIn, wrapAsync(editStudentSubject));
 export default studentRouter;

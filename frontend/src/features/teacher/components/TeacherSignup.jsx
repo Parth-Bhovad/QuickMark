@@ -1,7 +1,7 @@
 import { Form, Button, Alert } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
-import useVerifyEmail from "../../../hooks/useVerifyEmail";
-import isValidEmail from "../../../utils/isValidEmail";
+// import useVerifyEmail from "../../../hooks/useVerifyEmail";
+// import isValidEmail from "../../../utils/isValidEmail";
 import { useState } from "react";
 import LoadingButton from "../../../components/LoadingButton";
 
@@ -19,23 +19,23 @@ function TeacherSignup() {
     registeringTeacher
   } = useAuth();
 
-  const {
-    isOTPSent,
-    isOTPVerified,
-    otp,
-    setOtp,
-    handleSendOTPToEmail,
-    handleVerifyOtp,
-    emailVerificationError,
-    sendingOtp,
-    verifyingOtp
-  } = useVerifyEmail();
+  // const {
+  //   isOTPSent,
+  //   isOTPVerified,
+  //   otp,
+  //   setOtp,
+  //   handleSendOTPToEmail,
+  //   handleVerifyOtp,
+  //   emailVerificationError,
+  //   sendingOtp,
+  //   verifyingOtp
+  // } = useVerifyEmail();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="container">
       <h3 className="text-center mb-5 mt-3">Teacher Signup Page</h3>
-      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterTeacher(e, otp)}>
+      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterTeacher(e)}>
         <Form.Group className="mb-3" controlId="formTeacherEmail">
           <Form.Label>Teacher Email:</Form.Label>
           <Form.Control
@@ -49,7 +49,7 @@ function TeacherSignup() {
             Please enter a valid email.
           </Form.Control.Feedback>
         </Form.Group>
-        <LoadingButton
+        {/* <LoadingButton
           loading={sendingOtp}
           variant="primary"
           className="mb-3"
@@ -57,8 +57,8 @@ function TeacherSignup() {
           disabled={!isValidEmail(teacherEmail) || sendingOtp}
         >
           Send OTP
-        </LoadingButton>
-        {isOTPSent && (
+        </LoadingButton> */}
+        {/* {isOTPSent && (
           <>
             <Form.Group className="mb-3" controlId="formOTP">
               <Form.Label>Confirm OTP:</Form.Label>
@@ -85,7 +85,7 @@ function TeacherSignup() {
               Verify OTP
             </LoadingButton>
           </>
-        )}
+        )} */}
 
         <Form.Group className="mb-3" controlId="formTeacherName">
           <Form.Label>Teacher Name:</Form.Label>
@@ -132,7 +132,7 @@ function TeacherSignup() {
           loading={registeringTeacher}
           variant="primary"
           className="mb-3"
-          disabled={!isOTPVerified || registeringTeacher}
+          disabled={registeringTeacher}
         >
           Sign Up
         </LoadingButton>
@@ -142,11 +142,11 @@ function TeacherSignup() {
           <Alert variant="danger">{error}</Alert>
         </div>
       )}
-      {emailVerificationError && (
+      {/* {emailVerificationError && (
         <div className="w-100 mt-3">
           <Alert variant="danger">{emailVerificationError}</Alert>
-        </div>
-      )}
+        </div> */}
+      {/* )} */}
     </main>
   );
 }
