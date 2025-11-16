@@ -1,7 +1,7 @@
 import { Form, Button, Alert, Spinner } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
-import useVerifyEmail from "../../../hooks/useVerifyEmail";
-import isValidEmail from "../../../utils/isValidEmail";
+// import useVerifyEmail from "../../../hooks/useVerifyEmail";
+// import isValidEmail from "../../../utils/isValidEmail";
 import LoadingButton from "../../../components/LoadingButton";
 import { useState } from "react";
 
@@ -21,24 +21,24 @@ function StudentSignup() {
     registeringStudent,
   } = useAuth();
 
-  const {
-    isOTPSent,
-    isOTPVerified,
-    otp,
-    setOtp,
-    handleSendOTPToEmail,
-    handleVerifyOtp,
-    emailVerificationError,
-    sendingOtp,
-    verifyingOtp
-  } = useVerifyEmail();
+  // const {
+  //   isOTPSent,
+  //   isOTPVerified,
+  //   otp,
+  //   setOtp,
+  //   handleSendOTPToEmail,
+  //   handleVerifyOtp,
+  //   emailVerificationError,
+  //   sendingOtp,
+  //   verifyingOtp
+  // } = useVerifyEmail();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="container mt-5 pt-5">
       <h3 className="text-center mb-5 mt-3">Student Signup Page</h3>
 
-      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterStudent(e, otp)}>
+      <Form noValidate validated={validated} onSubmit={(e) => handleRegisterStudent(e)}>
 
         {/* Email */}
         <Form.Group className="mb-3" controlId="formStudentEmail">
@@ -56,17 +56,17 @@ function StudentSignup() {
         </Form.Group>
 
         {/* /* Send OTP Button */}
-        <LoadingButton
+        {/* <LoadingButton
           loading={sendingOtp}
           onClick={() => handleSendOTPToEmail(studentEmail)}
           className="mb-3"
           disabled={!isValidEmail(studentEmail) || sendingOtp}
         >
           Send OTP
-        </LoadingButton>
+        </LoadingButton> */}
 
         {/* OTP Verification */}
-        {isOTPSent && (
+        {/* {isOTPSent && (
           <>
             <Form.Group className="mb-3" controlId="formOTP">
               <Form.Label>Confirm OTP:</Form.Label>
@@ -93,7 +93,7 @@ function StudentSignup() {
               Verify OTP
             </LoadingButton>
           </>
-        )}
+        )} */}
 
         {/* Roll Number */}
         <Form.Group className="mb-3" controlId="formRollNo">
@@ -159,7 +159,7 @@ function StudentSignup() {
           loading={registeringStudent}
           type="submit"
           className="w-100"
-          disabled={!isOTPVerified || registeringStudent}
+          disabled={registeringStudent}
         >
           Sign Up
         </LoadingButton>
@@ -171,11 +171,11 @@ function StudentSignup() {
           <Alert variant="danger">{error}</Alert>
         </div>
       )}
-      {emailVerificationError && (
+      {/* {emailVerificationError && (
         <div className="w-100 mt-3">
           <Alert variant="danger">{emailVerificationError}</Alert>
         </div>
-      )}
+      )} */}
     </main>
   );
 }
