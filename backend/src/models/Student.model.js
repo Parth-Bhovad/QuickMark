@@ -5,8 +5,8 @@ const userSchema = new Schema({
     rollNo: {
         type: Number,
         required: true,
-        min: 10000,
-        max: 99999,
+        min: 68001,
+        max: 68140,
         unique: true,
     },
     studentName: {
