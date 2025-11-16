@@ -9,15 +9,15 @@ function generateEmailOTP(length = 6) {
 
 function generateAttendanceOTP(length = 6) {
   const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no O/I
-  const lower = 'abcdefghijkmnpqrstuvwxyz'; // no o/l
+  // const lower = 'abcdefghijkmnpqrstuvwxyz'; // no o/l
   const digits = '23456789'; // no 0/1
-  const special = '!@#&*';
+  // const special = '!@#&*';
 
-  const all = upper + lower + digits + special;
-
+  const all = upper + digits;
+  
   let otp = '';
   for (let i = 0; i < length; i++) {
-    const charSet = [upper, lower, digits, special][i % 4]; // rotate types
+    const charSet = [upper, digits][i % 2]; // rotate types
     otp += charSet[Math.floor(Math.random() * charSet.length)];
   }
 
