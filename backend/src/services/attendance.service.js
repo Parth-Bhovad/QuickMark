@@ -136,7 +136,7 @@ export const addAttendanceByTeacherService = async (rollNo, subjectId) => {
   if (!student) {
     throw new ExpressError(404, "Student not found with the given roll number");
   }
-  if(student.subjects.includes(subjectId) === false){
+  if (student.subjects.includes(subjectId) === false) {
     throw new ExpressError(400, "Student is not enrolled in the given subject");
   }
   const today = new Date();
@@ -146,13 +146,18 @@ export const addAttendanceByTeacherService = async (rollNo, subjectId) => {
     yyyyMmDd,
     subjectId
   );
-  if (isAttendanceExists) {
+  if (isAttendanceExists.isPresent == true) {
     throw new ExpressError(400, "Attendance already exists for the given student and subject");
   }
-  await addAttendance({
-    studentId: student._id,
-    subjectId,
-    date: yyyyMmDd,
-    isPresent: true,
-  });
+
+  if (isAttendanceExists.isPresent == false) {
+    await findAttendanceAndMarkPresent(student._id, yyyyMmDd, subjectId);
+  } else {
+    await addAttendance({
+      studentId: student._id,
+      subjectId,
+      date: yyyyMmDd,
+      isPresent: true,
+    });
+  }
 };
