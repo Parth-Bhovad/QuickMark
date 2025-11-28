@@ -56,13 +56,11 @@ function useStudentMarkAttendance() {
   };
 
   const handleVisibilityChange = async () => {
-    console.log("Visibility Event Listener added");
-
     if (document.visibilityState === "hidden") {
       const user = currentUserRef.current;
       const otp = otpRef.current;
       const isAttendanceMarked = isAttendanceMarkedRef.current;
-      
+
       if (isAttendanceMarked) {
         await deleteStudentAtendanceAPI(user.id, new Date().toISOString().split("T")[0], otp);
       }
@@ -70,40 +68,52 @@ function useStudentMarkAttendance() {
     }
   };
 
-    useEffect(() => {
-      const checkActiveSession = async () => {
-        try {
-          const res = await checkActiveSessionAPI();
-          console.log(res.status);
-        } catch (error) {
-          console.log(error.status);
-          if (error.status === 429) {
-            navigate("/");
-          }
+  useEffect(() => {
+    const checkActiveSession = async () => {
+      try {
+        const res = await checkActiveSessionAPI();
+        console.log(res.status);
+      } catch (error) {
+        console.log(error.status);
+        if (error.status === 429) {
+          navigate("/");
         }
-      };
-
-      checkActiveSession();
-      document.addEventListener("visibilitychange", handleVisibilityChange);
-
-      // Cleanup function to remove the event listener
-      return () => {
-        document.removeEventListener("visibilitychange", handleVisibilityChange);
-        console.log("Visibility change listener removed");
-        
-      };
-    }, []);
-
-    return {
-      otp,
-      setOtp,
-      validated,
-      setValidated,
-      feedback,
-      setFeedback,
-      handleSubmit,
-      submittingAttendance
+      }
     };
-  }
 
-  export default useStudentMarkAttendance;
+    checkActiveSession();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      (async () => {
+        if (isAttendanceMarkedRef.current) {
+          const user = currentUserRef.current;
+          const otp = otpRef.current;
+
+          await deleteStudentAtendanceAPI(
+            user.id,
+            new Date().toISOString().split("T")[0],
+            otp
+          );
+        }
+      })();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      console.log("Visibility change listener removed");
+
+    };
+  }, []);
+
+  return {
+    otp,
+    setOtp,
+    validated,
+    setValidated,
+    feedback,
+    setFeedback,
+    handleSubmit,
+    submittingAttendance
+  };
+}
+
+export default useStudentMarkAttendance;

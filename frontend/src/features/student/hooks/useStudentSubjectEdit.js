@@ -46,8 +46,8 @@ function useStudentSubjectEdit() {
                 const response = await getAvailableSubjectsAPI(currentUser.id);
                 setAvailableSubjects(response.availableSubjects);
             } catch (error) {
-                console.error("Failed to fetch available subjects:", error);
-                setError("Failed to fetch available subjects:", error);
+                console.error("Failed to fetch available subjects:", error.response.data.msg);
+                setError(error.response.data.msg);
             }
         };
         getAvailableSubjects();
