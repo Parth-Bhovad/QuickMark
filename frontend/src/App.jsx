@@ -12,6 +12,9 @@ import AttendancePage from './pages/AttendancePage'
 import { Routes, Route } from "react-router";
 import StudentRoute from './routes/StudentRoute';
 import TeacherRoute from './routes/TeacherRoute';
+import Demo from './ReactQueryDemo'
+
+
 function App() {
   useEffect(() => {
     const checkSplit = () => {
@@ -45,6 +48,7 @@ function App() {
         <Route path="/attendance" element={<AttendancePage />} />
         <Route path="/student/*" element={<StudentRoute />} />
         <Route path="/teacher/*" element={<TeacherRoute />} />
+        <Route path="/demo" element={<Demo />} />
       </Routes>
       {/* Split-screen blocker overlay */}
       <div id="splitScreenBlocker" className="split-blocker">

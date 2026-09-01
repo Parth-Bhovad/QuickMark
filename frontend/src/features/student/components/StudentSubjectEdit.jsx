@@ -13,7 +13,6 @@ function StudentSubjectEdit({ setShowInput }) {
         addingSubject,
         error
     } = useStudentSubjectEdit();
-    console.log("StudentSubjectEdit re rendered");
     return (
         <>
             <Form.Group className="mb-3">

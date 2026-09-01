@@ -29,6 +29,6 @@ subjectRouter.get('/:subjectId/attendance', (req, res) => {
     let subjectId = req.params.subjectId;
     console.log("Get subject attendance route", subjectId);
 });
-subjectRouter.get('/', isLoggedIn, WrapAsync(getAvailableSubjects));
+subjectRouter.get('/', WrapAsync(getAvailableSubjects));
 
 export default subjectRouter;

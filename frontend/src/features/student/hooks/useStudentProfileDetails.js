@@ -1,39 +1,26 @@
-import { useEffect, useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
-//Student Context
-import { useStudentContext } from "../context/StudentContext";
+import { useStudentContext } from "../context/StudentContext.jsx";
 //importing APIs
-import { getStudentProfileAPI } from "../api/student.api.js";
+
+//react query
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+
+import { studentProfileQueryOptions } from "../queries/studentProfile.query.js";
 
 function useStudentProfileDetails() {
     const { currentUser, authChecked } = useAuthContext();
-    const { enrolledSubjects, setEnrolledSubjects } = useStudentContext();
+    const { setEnrolledSubjects } = useStudentContext();
 
-    const [studentName, setStudentName] = useState("");
-    const [rollNo, setRollNo] = useState("");
-    const [error, setError] = useState(null);
 
+    const { isPending, data, error } = useQuery(studentProfileQueryOptions(currentUser?.id, authChecked));
+    console.log(data)
     useEffect(() => {
-        if (!authChecked) return;
-        const getStudentProfile = async () => {
-            try {
-                const response = await getStudentProfileAPI(currentUser.id);
+        setEnrolledSubjects(data?.enrolledSubjects || []);
+    }, [setEnrolledSubjects, data?.enrolledSubjects]);
 
-                setStudentName(response.studentName);
-                setRollNo(response.rollNo);
-                if (response.subjects.length !== 0) {
-                    setEnrolledSubjects(response.subjects);
-                }
-            } catch (error) {
-                console.error("Failed to fetch student profile:", error);
-                setError("Failed to fetch student profile:", error);
-            }
-        }
-        getStudentProfile();
-    }, [currentUser, authChecked, setEnrolledSubjects]);
-
-    return { studentName, enrolledSubjects, rollNo, error };
+    return { studentName: data?.studentName, enrolledSubjects: data?.subjects, rollNo: data?.rollNo, error, isPending }
 }
 
 export default useStudentProfileDetails;
