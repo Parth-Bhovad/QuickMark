@@ -18,7 +18,7 @@ function StudentProfileDetails() {
     if(error){
         return <div>Failed to fetch student profile</div>
     }
-    console.log(enrolledSubjects)
+    
     return (
         <Card className="shadow-sm border-0 rounded-4 mb-4">
             <Card.Body className="text-center">

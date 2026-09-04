@@ -1,4 +1,3 @@
-import { useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //Student Context
@@ -12,11 +11,10 @@ import { useQueryClient, useMutation, useQuery, queryOptions } from "@tanstack/r
 import { studentProfileQueryOptions } from "../queries/studentProfile.query.js";
 
 function useStudentSubjectEdit() {
-
     const queryClient = useQueryClient();
 
     const { currentUser, authChecked } = useAuthContext();
-    const { mutateAsync } = useMutation({
+    const { mutateAsync, isPending: mutationPending, isError: isMutationError, error:mutationError } = useMutation({
         mutationFn: editStudentSubjectAPI,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: studentProfileQueryOptions(currentUser?.id, authChecked).queryKey })
@@ -25,20 +23,8 @@ function useStudentSubjectEdit() {
 
     const { enrolledSubjects, setEnrolledSubjects } = useStudentContext();
 
-    const [error, setError] = useState("");
-    //Adding loading state
-    const [addingSubject, setAddingSubject] = useState(false);
-
     const handleAddSubject = async () => {
-        setAddingSubject(true);
-        try {
-            await mutateAsync({ studentId: currentUser?.id, subjectName: enrolledSubjects });
-        } catch (error) {
-            console.error("Failed to add subject:", error);
-            setError("Failed to add subject:", error);
-        } finally {
-            setAddingSubject(false);
-        }
+        await mutateAsync({ studentId: currentUser?.id, subjectName: enrolledSubjects });
     };
 
     const onSubjectChange = (subject) => {
@@ -49,9 +35,9 @@ function useStudentSubjectEdit() {
         });
     };
 
-    const availableSubjectsOptions = queryOptions({ queryKey: ['availableSubjects'], queryFn: getAvailableSubjectsAPI });
+    const availableSubjectsOptions = queryOptions({ queryKey: ['availableSubjects'], queryFn: getAvailableSubjectsAPI, staleTime: 5 * 60 * 1000, });
 
-    const { data, isPending, isError } = useQuery(availableSubjectsOptions);
+    const { data, isPending: queryPending, isError: isQueryError, error:queryError } = useQuery(availableSubjectsOptions);
 
     return ({
         availableSubjects: data?.availableSubjects || [],
@@ -59,8 +45,12 @@ function useStudentSubjectEdit() {
         setEnrolledSubjects,
         handleAddSubject,
         onSubjectChange,
-        addingSubject,
-        error
+        mutationPending,
+        mutationError,
+        queryPending,
+        queryError,
+        isQueryError,
+        isMutationError
     });
 }
 

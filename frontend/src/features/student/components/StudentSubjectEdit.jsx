@@ -8,15 +8,19 @@ function StudentSubjectEdit({ setShowInput }) {
     const {
         availableSubjects,
         enrolledSubjects,
-        onSubjectChange,
         handleAddSubject,
-        addingSubject,
-        error
+        onSubjectChange,
+        mutationPending,
+        mutationError,
+        queryPending,
+        queryError,
+        isQueryError,
+        isMutationError
     } = useStudentSubjectEdit();
     return (
         <>
             <Form.Group className="mb-3">
-                {availableSubjects
+                {queryPending ? (<div>loading</div>) : (availableSubjects
                     .map((sub, idx) => (
                         <Form.Check
                             type="checkbox"
@@ -25,12 +29,12 @@ function StudentSubjectEdit({ setShowInput }) {
                             onChange={() => onSubjectChange(sub)}
                             key={idx}
                         />
-                    ))}
+                    )))}
             </Form.Group>
 
             <div className="d-flex gap-2">
                 <LoadingButton
-                    loading={addingSubject}
+                    loading={mutationPending}
                     variant="primary"
                     className="flex-grow-1"
                     onClick={handleAddSubject}
@@ -46,7 +50,8 @@ function StudentSubjectEdit({ setShowInput }) {
                 </Button>
             </div>
 
-            {error && <div className="text-danger mt-2">{error}</div>}
+            {isMutationError && <div className="text-danger mt-2">{mutationError.response.data.msg}</div>}
+            {isQueryError && <div className="text-danger mt-2">{queryError.response.data.msg} </div>}
         </>
     );
 }

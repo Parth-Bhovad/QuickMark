@@ -15,7 +15,7 @@ function useStudentProfileDetails() {
 
 
     const { isPending, data, error } = useQuery(studentProfileQueryOptions(currentUser?.id, authChecked));
-    console.log(data)
+    
     useEffect(() => {
         setEnrolledSubjects(data?.enrolledSubjects || []);
     }, [setEnrolledSubjects, data?.enrolledSubjects]);
