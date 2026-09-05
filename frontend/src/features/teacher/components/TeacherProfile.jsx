@@ -10,56 +10,58 @@ function TeacherProfile() {
     subjects,
     showAddSubjectInput,
     setShowAddSubjectInput,
-    showRemoveSubjectInput,
-    setShowRemoveSubjectInput,
     subjectName,
     setSubjectName,
     handleSubmit,
-    handleRemoveSubject,
-    loading,
-    error,
+    isAddSubjectPending,
+    isAddSubjectError,
+    isQueryPending,
+    subjectError,
+    queryError,
+    isQueryError
   } = useTeacherProfile();
 
   const { handleLogout, loggingOut } = useLogoutUser();
 
-  const { allSubjects} = useGetSubjects();
-  console.log(allSubjects);
-  
+  const { allSubjects } = useGetSubjects();
+
   return (
     <main
       className="container mt-5 d-flex flex-column pt-5"
       style={{ maxWidth: "500px", minHeight: "90vh" }}
     >
       {/* Profile Card */}
-      <Card className="shadow-sm border-0 rounded-4 mb-4">
-        <Card.Body className="text-center">
-          {/* Avatar */}
-          <div
-            style={{
-              width: "80px",
-              height: "80px",
-              backgroundColor: "#e9f2ff",
-              borderRadius: "50%",
-              margin: "0 auto 15px auto",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "2rem",
-              fontWeight: "bold",
-              color: "#007bff",
-            }}
-          >
-            {teacherName ? teacherName.charAt(0).toUpperCase() : "T"}
-          </div>
+      {isQueryPending ? (<div>loading</div>) : (
+        <Card className="shadow-sm border-0 rounded-4 mb-4">
+          <Card.Body className="text-center">
+            {/* Avatar */}
+            <div
+              style={{
+                width: "80px",
+                height: "80px",
+                backgroundColor: "#e9f2ff",
+                borderRadius: "50%",
+                margin: "0 auto 15px auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "2rem",
+                fontWeight: "bold",
+                color: "#007bff",
+              }}
+            >
+              {teacherName ? teacherName.charAt(0).toUpperCase() : "T"}
+            </div>
 
-          <h5 className="fw-bold">{teacherName}</h5>
-          <p className="text-muted mb-1">Teacher</p>
-          <p className="text-muted">
-            Subjects:{" "}
-            {subjects.length ? subjects.join(", ") : "No subjects yet"}
-          </p>
-        </Card.Body>
-      </Card>
+            <h5 className="fw-bold">{teacherName}</h5>
+            <p className="text-muted mb-1">Teacher</p>
+            <p className="text-muted">
+              Subjects:{" "}
+              {subjects.length ? subjects.join(", ") : "No subjects yet"}
+            </p>
+          </Card.Body>
+        </Card>
+      )}
 
       {/* Add Subject */}
       <Card className="shadow-sm border-0 rounded-4 mb-4">
@@ -83,11 +85,11 @@ function TeacherProfile() {
                 >
                   <option value="" disabled hidden>Select a subject</option>
                   {allSubjects.filter(sub => !subjects.includes(sub))
-                  .map((subject, index) => (
-                    <option key={index} value={subject}>
-                      {subject}
-                    </option>
-                  ))}
+                    .map((subject, index) => (
+                      <option key={index} value={subject}>
+                        {subject}
+                      </option>
+                    ))}
                 </Form.Select>
                 <div className="p-3 w-full text-center fw-semibold">
                   OR
@@ -100,15 +102,15 @@ function TeacherProfile() {
                   value={subjectName}
                   onChange={(e) => setSubjectName(e.target.value)}
                   placeholder="Enter subject name"
-                  disabled={loading}
+                  disabled={isAddSubjectPending}
                 />
               </Form.Group>
 
               <div className="d-flex gap-2">
                 <LoadingButton
-                  loading={loading}
+                  loading={isAddSubjectPending}
                   onClick={handleSubmit}
-                  disabled={!subjectName.trim() || loading}
+                  disabled={!subjectName.trim() || isAddSubjectPending}
                   className="flex-grow-1"
                 >
                   Submit
@@ -117,13 +119,13 @@ function TeacherProfile() {
                   variant="outline-secondary"
                   className="flex-grow-1"
                   onClick={() => setShowAddSubjectInput(false)}
-                  disabled={loading}
+                  disabled={isAddSubjectPending}
                 >
                   Cancel
                 </Button>
               </div>
 
-              {error && <div className="text-danger mt-2">{error}</div>}
+              {isAddSubjectError && <div className="text-danger mt-2">{subjectError.message}</div>}
             </>
           )}
         </Card.Body>
@@ -182,6 +184,8 @@ function TeacherProfile() {
           )}
         </Card.Body>
       </Card>
+
+      {isQueryError && <div className="text-danger mt-2">{queryError.message}</div>}
 
       {/* Push logout button to bottom */}
       <div className="mt-auto pb-4">
