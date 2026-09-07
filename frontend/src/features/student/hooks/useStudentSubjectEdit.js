@@ -4,9 +4,8 @@ import { useAuthContext } from "../../../context/AuthContext";
 import { useStudentContext } from "../context/StudentContext";
 //importing APIs
 import { editStudentSubjectAPI } from "../api/student.api.js";
-import { getAvailableSubjectsAPI } from "../../../api/getAvailableSubjects.api.js";
 
-import { useQueryClient, useMutation, useQuery, queryOptions } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 import { studentProfileQueryOptions } from "../queries/studentProfile.query.js";
 
@@ -14,7 +13,7 @@ function useStudentSubjectEdit() {
     const queryClient = useQueryClient();
 
     const { currentUser, authChecked } = useAuthContext();
-    const { mutateAsync, isPending: mutationPending, isError: isMutationError, error:mutationError } = useMutation({
+    const { mutateAsync, isPending: mutationPending, isError: isMutationError, error: mutationError } = useMutation({
         mutationFn: editStudentSubjectAPI,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: studentProfileQueryOptions(currentUser?.id, authChecked).queryKey })
@@ -35,21 +34,13 @@ function useStudentSubjectEdit() {
         });
     };
 
-    const availableSubjectsOptions = queryOptions({ queryKey: ['availableSubjects'], queryFn: getAvailableSubjectsAPI, staleTime: 5 * 60 * 1000, });
-
-    const { data, isPending: queryPending, isError: isQueryError, error:queryError } = useQuery(availableSubjectsOptions);
-
     return ({
-        availableSubjects: data?.availableSubjects || [],
         enrolledSubjects,
         setEnrolledSubjects,
         handleAddSubject,
         onSubjectChange,
         mutationPending,
         mutationError,
-        queryPending,
-        queryError,
-        isQueryError,
         isMutationError
     });
 }

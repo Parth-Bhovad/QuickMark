@@ -1,30 +1,18 @@
-import {getAvailableSubjectsAPI} from "../../../api/getAvailableSubjects.api";
-import { useEffect, useState } from "react";
+import { getAvailableSubjectsAPI } from "../../../api/getAvailableSubjects.api";
+import { useQuery, queryOptions } from "@tanstack/react-query";
 
 function useGetSubjects() {
+    const availableSubjectsOptions = queryOptions({ queryKey: ['availableSubjects'], queryFn: getAvailableSubjectsAPI, staleTime: 5 * 60 * 1000, });
 
-    const [allSubjects, setAllSubjects] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchSubjects = async () => {
-            try {
-                const data = await getAvailableSubjectsAPI();
-                console.log(data);
-                setAllSubjects(data.availableSubjects);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSubjects();
-    }, []);
+    const { data, isPending, isError, error } = useQuery(availableSubjectsOptions);
 
     return (
-        { allSubjects, loading, error }
+        {
+            availableSubjects: data?.availableSubjects || [],
+            isLoadingAvailableSubjects: isPending,
+            isAvailableSubjectsError: error,
+            availableSubjectsError: isError
+        }
     );
 }
 

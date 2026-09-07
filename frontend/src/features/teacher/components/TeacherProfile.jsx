@@ -29,7 +29,7 @@ function TeacherProfile() {
 
   const { handleLogout, loggingOut } = useLogoutUser();
 
-  const { allSubjects } = useGetSubjects();
+  const { availableSubjects, isLoadingAvailableSubjects, isAvailableSubjectsError, availableSubjectsError } = useGetSubjects();
 
   return (
     <main
@@ -90,13 +90,16 @@ function TeacherProfile() {
                   onChange={(e) => setSubjectName(e.target.value)}
                 >
                   <option value="" disabled hidden>Select a subject</option>
-                  {allSubjects.filter(sub => !subjects.includes(sub))
-                    .map((subject, index) => (
-                      <option key={index} value={subject}>
-                        {subject}
-                      </option>
-                    ))}
+                  {isLoadingAvailableSubjects ? (<div>loading</div>) : (
+                    availableSubjects.filter(sub => !subjects.includes(sub))
+                      .map((subject, index) => (
+                        <option key={index} value={subject}>
+                          {subject}
+                        </option>
+                      ))
+                  )}
                 </Form.Select>
+                {isAvailableSubjectsError && <div className="text-danger mt-2">{availableSubjectsError.message}</div>}
                 <div className="p-3 w-full text-center fw-semibold">
                   OR
                 </div>
