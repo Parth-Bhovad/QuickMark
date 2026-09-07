@@ -2,7 +2,7 @@ import { useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //importing APIs
-import { addSubjectAPI, getTeacherProfileAPI } from "../api/teacher.api";
+import { addSubjectAPI, getTeacherProfileAPI, removeSubjectAPI } from "../api/teacher.api";
 import { useQuery, queryOptions, useMutation, useQueryClient } from "@tanstack/react-query"
 
 function useTeacherProfile() {
@@ -23,26 +23,12 @@ function useTeacherProfile() {
         }
     });
 
-    const handleRemoveSubject = async () => {
-        if (!subjectName.trim()) {
-            setError("Subject name cannot be empty.");
-            return;
+    const { mutateAsync: removeSubject, isPending: isRemoveSubjectPending, isError: isRemoveSubjectError, error: removeSubjectError } = useMutation({
+        mutationFn: () => removeSubjectAPI(currentUser?.id, subjectName),
+        onSuccess: () => {
+            queryClient.invalidateQueries(teacherProfileOptions.queryKey);
         }
-
-        setLoading(true);
-        setError("");
-        try {
-            await removeSubjectAPI(currentUser.id, subjectName);
-            setSubjects((prevSubjects) => prevSubjects.filter((sub) => sub !== subjectName));
-            setSubjectName("");
-            setShowRemoveSubjectInput(false);
-        } catch (err) {
-            console.log(err);
-            setError("Failed to remove subject.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    });
 
     const { data, isPending: isQueryPending, error: queryError, isError: isQueryError } = useQuery(teacherProfileOptions);
 
@@ -61,7 +47,11 @@ function useTeacherProfile() {
         isAddSubjectPending,
         isQueryPending,
         queryError,
-        isQueryError
+        isQueryError,
+        removeSubject,
+        isRemoveSubjectPending,
+        isRemoveSubjectError,
+        removeSubjectError
     });
 }
 

@@ -10,6 +10,8 @@ function TeacherProfile() {
     subjects,
     showAddSubjectInput,
     setShowAddSubjectInput,
+    showRemoveSubjectInput,
+    setShowRemoveSubjectInput,
     subjectName,
     setSubjectName,
     handleSubmit,
@@ -18,7 +20,11 @@ function TeacherProfile() {
     isQueryPending,
     subjectError,
     queryError,
-    isQueryError
+    isQueryError,
+    removeSubject,
+    isRemoveSubjectPending,
+    isRemoveSubjectError,
+    removeSubjectError
   } = useTeacherProfile();
 
   const { handleLogout, loggingOut } = useLogoutUser();
@@ -162,9 +168,9 @@ function TeacherProfile() {
 
               <div className="d-flex gap-2">
                 <LoadingButton
-                  loading={loading}
-                  onClick={handleRemoveSubject}
-                  disabled={!subjectName.trim() || loading}
+                  loading={isRemoveSubjectPending}
+                  onClick={async () => { await removeSubject() }}
+                  disabled={!subjectName.trim() || isRemoveSubjectPending}
                   className="flex-grow-1"
                 >
                   Remove
@@ -173,13 +179,13 @@ function TeacherProfile() {
                   variant="outline-secondary"
                   className="flex-grow-1"
                   onClick={() => setShowRemoveSubjectInput(false)}
-                  disabled={loading}
+                  disabled={isRemoveSubjectPending}
                 >
                   Cancel
                 </Button>
               </div>
 
-              {error && <div className="text-danger mt-2">{error}</div>}
+              {isRemoveSubjectError && <div className="text-danger mt-2">{removeSubjectError.message}</div>}
             </>
           )}
         </Card.Body>
