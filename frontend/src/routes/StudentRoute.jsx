@@ -17,7 +17,7 @@ const StudentRoute = () => {
         if (!currentUser || currentUser.role !== "student") {
             navigate("/student-login");
         }
-    }, [currentUser, authChecked]);
+    }, [currentUser, authChecked, navigate]);
 
     const element = useRoutes([
         {

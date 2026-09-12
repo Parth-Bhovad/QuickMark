@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { loginStudentAPI, registerStudentAPI, studentForgotPasswordAPI } from "../api/auth.api.js";
 import { useAuthContext } from "../../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
@@ -16,81 +17,72 @@ function useAuth() {
   const [error, setError] = useState(null);
   const { checkAuth } = useAuthContext();
 
-  //loading states
-  const [loggingInStudent, setLoggingInStudent] = useState(false);
-  const [registeringStudent, setRegisteringStudent] = useState(false);
-  const [forgotingPassword, setForgotingPassword] = useState(false);
-  
-
-  const handleLoginStudent = async (e) => {
-    try {
-      setLoggingInStudent(true);
-      e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        const data = await loginStudentAPI(studentEmail, studentPassword);
-        console.log(data);
-        checkAuth();
-        if (data?.token) {
-          navigate("/student/mark-attendance");
-        }
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }) => loginStudentAPI(email, password),
+    onSuccess: (data) => {
+      checkAuth();
+      if (data?.token) {
+        navigate("/student/mark-attendance");
       }
-      setValidated(true);
-    } catch (error) {
-      console.log(error);
+    },
+    onError: (error) => {
       setError(error.response?.data?.msg || error.response?.data?.error || "Login failed");
       setValidated(false);
-    } finally {
-      setLoggingInStudent(false);
-    }
-  };
+    },
+  });
 
-  const handleRegisterStudent = async (e) => {
-    try {
-      setRegisteringStudent(true);
-      e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        const data = await registerStudentAPI(rollNo, studentName, studentEmail, studentPassword);
-        console.log(data);
-        checkAuth();
-        if (data?.token) {
-          navigate("/student/mark-attendance");
-        }
+  const registerMutation = useMutation({
+    mutationFn: ({ rollNumber, name, email, password }) => registerStudentAPI(rollNumber, name, email, password),
+    onSuccess: (data) => {
+      checkAuth();
+      if (data?.token) {
+        navigate("/student/mark-attendance");
       }
-      setValidated(true);
-    } catch (error) {
-      console.log(error);
+    },
+    onError: (error) => {
       setError(error.response?.data?.msg || error.response?.data?.error || "Registration failed");
       setValidated(false);
-    } finally {
-      setRegisteringStudent(false);
-    }
+    },
+  });
+
+  const forgotPasswordMutation = useMutation({
+    mutationFn: ({ email, password }) => studentForgotPasswordAPI(email, password),
+    onSuccess: () => navigate("/student-login"),
+    onError: (error) => {
+      setError(error.response?.data?.msg || "Request failed");
+    },
+  });
+
+  const handleLoginStudent = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    loginMutation.mutate({ email: studentEmail, password: studentPassword });
   };
 
-  const handleForgotPassword = async (e) => {
-    try {
-      setForgotingPassword(true);
-      e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        const data = await studentForgotPasswordAPI(studentEmail, studentPassword);
-        console.log(data);
-      }
-      setValidated(true);
-      navigate("/student-login");
-    } catch (error) {
-      console.log(error);
-      setError(error.response?.data?.msg || "Request failed");
-    } finally {
-      setForgotingPassword(false);
-    }
+  const handleRegisterStudent = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    registerMutation.mutate({
+      rollNumber: rollNo,
+      name: studentName,
+      email: studentEmail,
+      password: studentPassword,
+    });
+  };
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    forgotPasswordMutation.mutate({ email: studentEmail, password: studentPassword });
   };
 
   return {
@@ -111,9 +103,9 @@ function useAuth() {
     handleForgotPassword,
     error,
     setError,
-    loggingInStudent,
-    registeringStudent,
-    forgotingPassword
+    loggingInStudent: loginMutation.isPending,
+    registeringStudent: registerMutation.isPending,
+    forgotingPassword: forgotPasswordMutation.isPending
   };
 }
 

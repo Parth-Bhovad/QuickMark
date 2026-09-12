@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 //importing APIs
 import {
   loginTeacherAPI,
@@ -17,90 +18,67 @@ function useAuth() {
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState("");
 
-  //loading state
-  const [loggingInTeacher, setLoggingInTeacher] = useState(false);
-  const [registeringTeacher, setRegisteringTeacher] = useState(false);
-  const [forgettingPassword, setForgettingPassword] = useState(false);
-
-  const handleLoginTeacher = async (e) => {
-    try {
-      setLoggingInTeacher(true);
-      const form = e.currentTarget;
-      e.preventDefault();
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        const response = await loginTeacherAPI(teacherEmail, teacherPassword);
-        console.log(response);
-        checkAuth();
-        if (response.data.token) {
-          navigate("/teacher/attendance-session");
-        }
+  const loginMutation = useMutation({
+    mutationFn: ({ email, password }) => loginTeacherAPI(email, password),
+    onSuccess: (response) => {
+      checkAuth();
+      if (response.data.token) {
+        navigate("/teacher/attendance-session");
       }
+    },
+    onError: (error) => {
+      setError(error.response?.data?.msg || error.response?.data?.error || "Login failed");
       setValidated(true);
-    } catch (error) {
-      console.log(error);
-      setError(error.response.data.msg || error.response.data.error);
-      setValidated(true);
-    } finally {
-      setLoggingInTeacher(false);
-    }
-  };
+    },
+  });
 
-  const handleRegisterTeacher = async (e) => {
-    try {
-      setRegisteringTeacher(true);
-      e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        const response = await registerTeacherAPI(
-          teacherEmail,
-          teacherPassword,
-          teacherName,
-          // otp
-        );
-        console.log(response);
-        checkAuth();
-        if (response.data.token) {
-          navigate("/teacher/attendance-session");
-        }
+  const registerMutation = useMutation({
+    mutationFn: ({ email, password, name }) => registerTeacherAPI(email, password, name),
+    onSuccess: (response) => {
+      checkAuth();
+      if (response.data.token) {
+        navigate("/teacher/attendance-session");
       }
-      setValidated(true);
-    } catch (error) {
-      console.log(error);
-      setError(error.response.data.msg || error.response.data.error);
+    },
+    onError: (error) => {
+      setError(error.response?.data?.msg || error.response?.data?.error || "Registration failed");
       setValidated(false);
-    } finally {
-      setRegisteringTeacher(false);
-    }
+    },
+  });
+
+  const forgotPasswordMutation = useMutation({
+    mutationFn: ({ email, password }) => teacherForgotPasswordAPI(email, password),
+    onSuccess: () => navigate("/teacher-login"),
+    onError: (error) => {
+      setError(error.response?.data?.msg || error.response?.data?.error || "Request failed");
+    },
+  });
+
+  const handleLoginTeacher = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    loginMutation.mutate({ email: teacherEmail, password: teacherPassword });
   };
 
-  const handleForgotPassword = async (e) => {
-    try {
-      setForgettingPassword(true);
-      e.preventDefault();
-      const form = e.currentTarget;
-      if (form.checkValidity() === false) {
-        console.log("Form is invalid");
-      } else {
-        // Call API to send OTP
-        const data = await teacherForgotPasswordAPI(
-          teacherEmail,
-          teacherPassword,
-          // otp
-        );
-        console.log(data);
-      }
-      setValidated(true);
-      navigate("/teacher-login");
-    } catch (error) {
-      console.log(error);
-      setError(error.response.data.msg || error.response.data.error);
-    } finally {
-      setForgettingPassword(false);
-    }
+  const handleRegisterTeacher = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    registerMutation.mutate({ email: teacherEmail, password: teacherPassword, name: teacherName });
+  };
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    setValidated(true);
+    if (!e.currentTarget.checkValidity()) return;
+
+    setError("");
+    forgotPasswordMutation.mutate({ email: teacherEmail, password: teacherPassword });
   };
 
   return {
@@ -117,9 +95,9 @@ function useAuth() {
     handleForgotPassword,
     error,
     setError,
-    loggingInTeacher,
-    registeringTeacher,
-    forgettingPassword,
+    loggingInTeacher: loginMutation.isPending,
+    registeringTeacher: registerMutation.isPending,
+    forgettingPassword: forgotPasswordMutation.isPending,
   };
 }
 

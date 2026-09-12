@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 //importing AuthContext
 import { useAuthContext } from "../context/AuthContext";
 //importing APIs
@@ -7,23 +7,29 @@ import { logoutUserAPI } from "../api/logoutUser.api.js";
 
 function useLogoutUser() {
   const { setCurrentUser, setAuthChecked } = useAuthContext();
-  //Adding loading state
-  const [loggingOut, setLoggingOut] = useState(false);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const authQuery = queryOptions({ queryKey: ["auth", "me"] });
 
-  const handleLogout = async () => {
-    try {
-      setLoggingOut(true);
+  const logoutMutation = useMutation({
+    mutationFn: logoutUserAPI,
+    onMutate: () => {
       setCurrentUser(null);
       setAuthChecked(false);
-      await logoutUserAPI();
-      setLoggingOut(false);
+      queryClient.removeQueries({ queryKey: authQuery.queryKey });
+    },
+    onSuccess: () => {
       navigate("/");
-    } catch (error) {
-      setLoggingOut(false);
-    }
+    },
+    onError: () => {
+      setAuthChecked(true);
+    },
+  });
+
+  return {
+    handleLogout: logoutMutation.mutate,
+    loggingOut: logoutMutation.isPending,
   };
-  return { handleLogout, loggingOut };
 }
 
 export default useLogoutUser;
