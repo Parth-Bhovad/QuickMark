@@ -52,7 +52,7 @@ function useStudentMarkAttendance() {
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [navigate, markAttendanceMutation.isSuccess, currentUser.id, otp]);
+  }, [navigate, markAttendanceMutation.isSuccess, currentUser?.id, otp]);
 
   return {
     otp,

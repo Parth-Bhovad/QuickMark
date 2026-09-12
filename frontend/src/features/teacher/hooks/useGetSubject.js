@@ -10,8 +10,8 @@ function useGetSubjects() {
         {
             availableSubjects: data?.availableSubjects || [],
             isLoadingAvailableSubjects: isPending,
-            isAvailableSubjectsError: error,
-            availableSubjectsError: isError
+            isAvailableSubjectsError: isError,
+            availableSubjectsError: error
         }
     );
 }
