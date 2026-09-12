@@ -54,8 +54,8 @@ function AddAttendanceManual() {
                                 loading={addingManualAttendance}
                                 variant="primary"
                                 className="mt-3"
+                                type={"submit"}
                                 onClick={(e) => handleSubmit(e, selectedSubject)}
-                                type="submit"
                                 disabled={!rollNo.trim() || !selectedSubject || addingManualAttendance}
                             >
                                 Add Attendance
