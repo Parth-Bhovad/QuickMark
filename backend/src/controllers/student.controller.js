@@ -17,11 +17,12 @@ export const deleteStudent = async (req, res) => {
 };
 
 export const editStudentSubject = async (req, res) => {
-        let studentId = req.params.studentId;
-        let { subjectName } = req.body;
+    let studentId = req.params.studentId;
+    let { subjectName } = req.body;
+    console.log("studentId: ", studentId, "subjectName: ", subjectName);
 
-        await editStudentSubjectService(studentId, subjectName);
-        res.sendStatus(200);
+    await editStudentSubjectService(studentId, subjectName);
+    res.sendStatus(200);
 }
 
 export const studentForgotPassword = async (req, res) => {

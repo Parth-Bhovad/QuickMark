@@ -1,94 +1,57 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //importing APIs
 import { addSubjectAPI, getTeacherProfileAPI, removeSubjectAPI } from "../api/teacher.api";
+import { useQuery, queryOptions, useMutation, useQueryClient } from "@tanstack/react-query"
 
 function useTeacherProfile() {
+
+    const queryClient = useQueryClient();
+
     const { currentUser, authChecked } = useAuthContext();
 
-    const [teacherName, setTeacherName] = useState("");
-    const [subjects, setSubjects] = useState([]);
     const [showAddSubjectInput, setShowAddSubjectInput] = useState(false);
     const [showRemoveSubjectInput, setShowRemoveSubjectInput] = useState(false);
     const [subjectName, setSubjectName] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
-    const handleSubmit = async () => {
-        if (!subjectName.trim()) {
-            setError("Subject name cannot be empty.");
-            return;
+    const teacherProfileOptions = queryOptions({ queryKey: ['teacherProfile', currentUser?.id], queryFn: () => getTeacherProfileAPI(currentUser?.id), enabled: !!currentUser?.id && authChecked });
+    const { mutateAsync, isPending: isAddSubjectPending, isError: isAddSubjectError, error: subjectError } = useMutation({
+        mutationFn: () => addSubjectAPI(currentUser?.id, subjectName),
+        onSuccess: () => {
+            queryClient.invalidateQueries(teacherProfileOptions.queryKey);
         }
-        setLoading(true);
-        setError("");
-        try {
-            const res = await addSubjectAPI(currentUser.id, subjectName);
-            if(subjects[0] == "No subjects available"){
-                setSubjects([]);
-            }
-            setSubjects((prevSubjects) => [...prevSubjects, subjectName]);
-            setSubjectName("");
-            setShowAddSubjectInput(false);
-        } catch (err) {
-            console.log(err);
-            setError("Failed to add subject.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    });
 
-    const handleRemoveSubject = async () => {
-        if (!subjectName.trim()) {
-            setError("Subject name cannot be empty.");
-            return;
+    const { mutateAsync: removeSubject, isPending: isRemoveSubjectPending, isError: isRemoveSubjectError, error: removeSubjectError } = useMutation({
+        mutationFn: () => removeSubjectAPI(currentUser?.id, subjectName),
+        onSuccess: () => {
+            queryClient.invalidateQueries(teacherProfileOptions.queryKey);
         }
+    });
 
-        setLoading(true);
-        setError("");
-        try {
-            await removeSubjectAPI(currentUser.id, subjectName);
-            setSubjects((prevSubjects) => prevSubjects.filter((sub) => sub !== subjectName));
-            setSubjectName("");
-            setShowRemoveSubjectInput(false);
-        } catch (err) {
-            console.log(err);
-            setError("Failed to remove subject.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const getTeacherProfile = async () => {
-        try {
-            const response = await getTeacherProfileAPI(currentUser.id);
-            setTeacherName(response.teacherName);
-            if (response.subjects.length !== 0) {
-                setSubjects(response.subjects);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        if (!authChecked) return;
-        getTeacherProfile();
-    }, [authChecked, currentUser]);
+    const { data, isPending: isQueryPending, error: queryError, isError: isQueryError } = useQuery(teacherProfileOptions);
 
     return ({
-        teacherName,
-        subjects,
+        teacherName: data?.teacherName,
+        subjects: data?.subjects || [],
         showAddSubjectInput,
         setShowAddSubjectInput,
         showRemoveSubjectInput,
         setShowRemoveSubjectInput,
         subjectName,
         setSubjectName,
-        handleSubmit,
-        handleRemoveSubject,
-        loading,
-        error
+        handleSubmit: mutateAsync,
+        isAddSubjectError,
+        subjectError,
+        isAddSubjectPending,
+        isQueryPending,
+        queryError,
+        isQueryError,
+        removeSubject,
+        isRemoveSubjectPending,
+        isRemoveSubjectError,
+        removeSubjectError
     });
 }
 

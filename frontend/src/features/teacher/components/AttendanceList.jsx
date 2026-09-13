@@ -5,7 +5,7 @@ import LoadingButton from "../../../components/LoadingButton";
 import useAttendanceList from "../hooks/useAttendanceList";
 
 function AttendanceList() {
-    
+
     const {
         selectedSubject,
         setSelectedSubject,
@@ -14,8 +14,8 @@ function AttendanceList() {
         showPopup,
         setShowPopup,
     } = useTeacherAttendanceSession();
-    
-    const { gettingAttendance, fetchAttendanceData } = useAttendanceList(selectedSubject);
+
+    const { isLoadingAttendance, fetchAttendance, isAttendanceError, attendanceError } = useAttendanceList(selectedSubject);
 
     return (
         <Container
@@ -50,14 +50,15 @@ function AttendanceList() {
                         file.
                     </p>
                     <LoadingButton
-                        loading={gettingAttendance}
-                        onClick={fetchAttendanceData}
-                        disabled={!selectedSubject || gettingAttendance}
+                        loading={isLoadingAttendance}
+                        onClick={fetchAttendance}
+                        disabled={!selectedSubject || isLoadingAttendance}
                         size="lg"
                         className="px-5 py-2 fw-semibold"
                     >
                         Download Attendance
                     </LoadingButton>
+                    {isAttendanceError && <div className="text-danger mt-2">{attendanceError.message}</div>}
                 </Card.Body>
             </Card>
 

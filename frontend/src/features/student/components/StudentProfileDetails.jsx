@@ -7,8 +7,18 @@ function StudentProfileDetails() {
     const {
         studentName,
         rollNo,
-        enrolledSubjects
+        enrolledSubjects,
+        isPending,
+        error
     } = useStudentProfileDetails();
+
+    if(isPending){
+        return <div>loading</div>
+    }
+    if(error){
+        return <div>Failed to fetch student profile</div>
+    }
+    
     return (
         <Card className="shadow-sm border-0 rounded-4 mb-4">
             <Card.Body className="text-center">
@@ -35,7 +45,7 @@ function StudentProfileDetails() {
                 <p className="text-muted mb-1">Roll No: {rollNo}</p>
                 <p className="text-muted">
                     Subjects:{" "}
-                    {enrolledSubjects.length ? enrolledSubjects.join(", ") : "No subjects yet"}
+                    {enrolledSubjects?.length ? enrolledSubjects.join(", ") : "No subjects yet"}
                 </p>
             </Card.Body>
         </Card>

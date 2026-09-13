@@ -146,11 +146,12 @@ export const addAttendanceByTeacherService = async (rollNo, subjectId) => {
     yyyyMmDd,
     subjectId
   );
-  if (isAttendanceExists.isPresent == true) {
+  
+  if (isAttendanceExists && isAttendanceExists.isPresent == true) {
     throw new ExpressError(400, "Attendance already exists for the given student and subject");
   }
 
-  if (isAttendanceExists.isPresent == false) {
+  if (isAttendanceExists && isAttendanceExists.isPresent == false) {
     await findAttendanceAndMarkPresent(student._id, yyyyMmDd, subjectId);
   } else {
     await addAttendance({

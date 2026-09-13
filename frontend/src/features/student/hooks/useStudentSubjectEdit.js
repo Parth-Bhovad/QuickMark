@@ -1,33 +1,29 @@
-import { useEffect, useState } from "react";
 //importing auth context
 import { useAuthContext } from "../../../context/AuthContext";
 //Student Context
 import { useStudentContext } from "../context/StudentContext";
 //importing APIs
 import { editStudentSubjectAPI } from "../api/student.api.js";
-import { getAvailableSubjectsAPI } from "../../../api/getAvailableSubjects.api.js";
+
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+
+import { studentProfileQueryOptions } from "../queries/studentProfile.query.js";
 
 function useStudentSubjectEdit() {
-    const { enrolledSubjects, setEnrolledSubjects } = useStudentContext();
+    const queryClient = useQueryClient();
+
     const { currentUser, authChecked } = useAuthContext();
+    const { mutateAsync, isPending: mutationPending, isError: isMutationError, error: mutationError } = useMutation({
+        mutationFn: editStudentSubjectAPI,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: studentProfileQueryOptions(currentUser?.id, authChecked).queryKey })
+        }
+    });
 
-
-    const [availableSubjects, setAvailableSubjects] = useState([]);
-    const [error, setError] = useState("");
-    //Adding loading state
-    const [addingSubject, setAddingSubject] = useState(false);
+    const { enrolledSubjects, setEnrolledSubjects } = useStudentContext();
 
     const handleAddSubject = async () => {
-        setAddingSubject(true);
-        try {
-            await editStudentSubjectAPI(currentUser.id, enrolledSubjects);
-            console.log(enrolledSubjects);
-        } catch (error) {
-            console.error("Failed to add subject:", error);
-            setError("Failed to add subject:", error);
-        } finally {
-            setAddingSubject(false);
-        }
+        await mutateAsync({ studentId: currentUser?.id, subjectName: enrolledSubjects });
     };
 
     const onSubjectChange = (subject) => {
@@ -38,28 +34,14 @@ function useStudentSubjectEdit() {
         });
     };
 
-    useEffect(() => {
-        if (!authChecked) return;
-        const getAvailableSubjects = async () => {
-            try {
-                console.log("Fetching available subjects...");
-                const response = await getAvailableSubjectsAPI(currentUser.id);
-                setAvailableSubjects(response.availableSubjects);
-            } catch (error) {
-                console.error("Failed to fetch available subjects:", error.response.data.msg);
-                setError(error.response.data.msg);
-            }
-        };
-        getAvailableSubjects();
-    }, [authChecked, currentUser]);
     return ({
-        availableSubjects,
         enrolledSubjects,
         setEnrolledSubjects,
         handleAddSubject,
         onSubjectChange,
-        addingSubject,
-        error
+        mutationPending,
+        mutationError,
+        isMutationError
     });
 }
 

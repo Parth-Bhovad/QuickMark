@@ -3,21 +3,23 @@ import LoadingButton from "../../../components/LoadingButton";
 
 //custom hooks
 import useStudentSubjectEdit from "../hooks/useStudentSubjectEdit";
+import useGetSubjects from "../../teacher/hooks/useGetSubject";
 
 function StudentSubjectEdit({ setShowInput }) {
     const {
-        availableSubjects,
         enrolledSubjects,
-        onSubjectChange,
         handleAddSubject,
-        addingSubject,
-        error
+        onSubjectChange,
+        mutationPending,
+        mutationError,
+        isMutationError
     } = useStudentSubjectEdit();
-    console.log("StudentSubjectEdit re rendered");
+
+    const { availableSubjects, isLoadingAvailableSubjects, isAvailableSubjectsError, availableSubjectsError } = useGetSubjects();
     return (
         <>
             <Form.Group className="mb-3">
-                {availableSubjects
+                {isLoadingAvailableSubjects ? (<div>loading</div>) : (availableSubjects
                     .map((sub, idx) => (
                         <Form.Check
                             type="checkbox"
@@ -26,12 +28,12 @@ function StudentSubjectEdit({ setShowInput }) {
                             onChange={() => onSubjectChange(sub)}
                             key={idx}
                         />
-                    ))}
+                    )))}
             </Form.Group>
 
             <div className="d-flex gap-2">
                 <LoadingButton
-                    loading={addingSubject}
+                    loading={mutationPending}
                     variant="primary"
                     className="flex-grow-1"
                     onClick={handleAddSubject}
@@ -47,7 +49,8 @@ function StudentSubjectEdit({ setShowInput }) {
                 </Button>
             </div>
 
-            {error && <div className="text-danger mt-2">{error}</div>}
+            {isMutationError && <div className="text-danger mt-2">{mutationError.response.data.msg}</div>}
+            {isAvailableSubjectsError && <div className="text-danger mt-2">{availableSubjectsError.response.data.msg} </div>}
         </>
     );
 }
