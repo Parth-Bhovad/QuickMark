@@ -27,6 +27,20 @@ export const findStudentsById = async (studentIds) => {
     return students;
 }
 
+export const findStudentsPaginated = async (skip, limit) => {
+    const [students, totalStudents] = await Promise.all([
+        Student.find({})
+            .select('studentName rollNo studentEmail')
+            .sort({ rollNo: 1 })
+            .skip(skip)
+            .limit(limit)
+            .lean(),
+        Student.countDocuments({}),
+    ]);
+
+    return { students, totalStudents };
+}
+
 export const findStudentByRollNo = async (rollNo) => {
     const student = await Student.findOne({ rollNo });
     return student;

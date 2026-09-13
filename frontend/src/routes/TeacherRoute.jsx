@@ -4,6 +4,7 @@ import TeacherAttendanceSessionPage from "../features/teacher/pages/TeacherAtten
 import TeacherProfilePage from "../features/teacher/pages/TeacherProfilePage";
 import AttendanceListPage from "../features/teacher/pages/AttendanceListPage";
 import ManualAttendancePage from "../features/teacher/pages/ManualAttendancePage";
+import StudentsPage from "../features/teacher/pages/StudentsPage";
 import { useAuthContext } from "../context/AuthContext";
 
 const TeacherRoute = () => {
@@ -34,7 +35,11 @@ const TeacherRoute = () => {
     {
       path: "/add-attendance",
       element: <ManualAttendancePage />,
-    }
+    },
+    {
+      path: "/students",
+      element: <StudentsPage />,
+    },
   ]);
 
   return element;

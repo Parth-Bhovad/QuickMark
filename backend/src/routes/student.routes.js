@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 //importing controllers
 import { registerStudent, loginStudent } from '../controllers/auth.controller.js';
-import { getStudent, deleteStudent, editStudentSubject, studentForgotPassword } from '../controllers/student.controller.js';
+import { getStudents, getStudent, deleteStudent, editStudentSubject, studentForgotPassword } from '../controllers/student.controller.js';
 //importing middlewares
 import validateRequest from '../middlewares/validateRequest.middleware.js';
 import isVerifiedEmail from '../middlewares/isVerifiedEmail.middleware.js';
@@ -11,6 +11,7 @@ import isLoggedIn from '../middlewares/isLoggedIn.js';
 import { registerStudentSchema, loginStudentSchema } from '../validators/student.validator.js';
 //importing wrapAsync
 import wrapAsync from '../utils/wrapAsync.js';
+import isTeacher from '../middlewares/isTeacher.js';
 
 const studentRouter = Router({ mergeParams: true });
 
@@ -18,6 +19,7 @@ studentRouter.post('/', validateRequest(registerStudentSchema), wrapAsync(regist
 
 studentRouter.post('/login', validateRequest(loginStudentSchema), wrapAsync(loginStudent));
 
+studentRouter.get('/', isLoggedIn, isTeacher, wrapAsync(getStudents));
 studentRouter.get('/:studentId', isLoggedIn, wrapAsync(getStudent));
 studentRouter.put('/:studentId', isLoggedIn, (req, res) => {
     let studentId = req.params.studentId;
