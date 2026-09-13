@@ -1,4 +1,4 @@
-import { findStudentByRollNo, findStudentById, deleteStudentByRollNo, editStudentSubject, findStudentByEmail, changeStudentPassword } from "../dao/student.dao.js";
+import { findStudentByRollNo, findStudentById, findStudentsPaginated, deleteStudentByRollNo, editStudentSubject, findStudentByEmail, changeStudentPassword } from "../dao/student.dao.js";
 import { findSubjectById, findSubjectByName, findSubjectsByNames } from "../dao/subject.dao.js";
 //importing Express Error
 import ExpressError from "../utils/ExpressError.js";
@@ -12,6 +12,23 @@ export const getStudentService = async (studentId) => {
     }
     const subjectsNameArray = await getStudentSubjectsService(student);
     return { studentName: student.studentName, subjects: subjectsNameArray, rollNo: student.rollNo };
+};
+
+export const getStudentsService = async (page = 1) => {
+    const pageSize = 10;
+    const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1);
+    const { students, totalStudents } = await findStudentsPaginated(
+        (currentPage - 1) * pageSize,
+        pageSize,
+    );
+
+    return {
+        students,
+        page: currentPage,
+        limit: pageSize,
+        totalStudents,
+        totalPages: Math.ceil(totalStudents / pageSize),
+    };
 };
 
 export const deleteStudentService = async (rollNo) => {

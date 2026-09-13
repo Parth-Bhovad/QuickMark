@@ -13,12 +13,15 @@ function useLogoutUser() {
 
   const logoutMutation = useMutation({
     mutationFn: logoutUserAPI,
-    onMutate: () => {
+    // onMutate: () => {
+    //   queryClient.removeQueries({ queryKey: authQuery.queryKey });
+    //   setCurrentUser(null);
+    //   setAuthChecked(false);
+    // },
+    onSuccess: () => {
       queryClient.removeQueries({ queryKey: authQuery.queryKey });
       setCurrentUser(null);
       setAuthChecked(false);
-    },
-    onSuccess: () => {
       navigate("/");
     },
     onError: () => {

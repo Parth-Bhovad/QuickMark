@@ -113,6 +113,9 @@ function AppNavbar() {
                   <Nav.Link as={Link} to="/teacher/add-attendance" className="fw-semibold" onClick={handleNavClick}>
                     Add Attendance
                   </Nav.Link>
+                  <Nav.Link as={Link} to="/teacher/students" className="fw-semibold" onClick={handleNavClick}>
+                    Student List
+                  </Nav.Link>
                 </>
               )}
             </Nav>
