@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
       return response.data.user;
     },
     retry: false,
+    enabled: false
   }));
 
   useEffect(() => {
